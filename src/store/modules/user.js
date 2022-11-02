@@ -23,8 +23,8 @@ const user = {
     }
   },
   mutations: {
-    setNickname (state, name) {
-      state.profile.nickname = name
+    setProfile (state, profile) {
+      state.profile = profile
     }
   }
 }
