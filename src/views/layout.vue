@@ -9,7 +9,9 @@
     <div class="content-main">
       <router-view></router-view>
     </div>
-    <div class="footer-area">页脚区域</div>
+    <div class="footer-area">
+      <rfooter></rfooter>
+    </div>
   </div>
 </template>
 
@@ -18,6 +20,8 @@
 import rnav from '@/components/r-nav/index'
 // 菜单logo组件
 import rheader from '@/components/r-header/index'
+// 页脚组件
+import rfooter from '@/components/r-footer/index'
 export default {
   name: 'layout',
   setup () {
@@ -25,7 +29,8 @@ export default {
   },
   components: {
     rnav,
-    rheader
+    rheader,
+    rfooter
   }
 }
 </script>

@@ -40,8 +40,8 @@ export default {
 <style scoped lang="scss">
 .r-nav-components{
   background-color: #19ce60;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 14px;
+  padding-bottom: 14px;
   .r-nav-inner{
     ul{
       li{
@@ -57,7 +57,7 @@ export default {
             content: '';
             width: 1px;
             height: 14px;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.8);
             position: absolute;
             right: 0;
             top: 4px;

@@ -8,6 +8,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.index-page{
+  height: 500px;
+}
 </style>
