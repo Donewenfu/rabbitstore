@@ -1,5 +1,9 @@
 <template>
-  <div class="index-page container">首页</div>
+  <div class="index-page">
+    <div class="container">
+      <div class="box"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -10,6 +14,12 @@ export default {
 
 <style scoped lang="scss">
 .index-page{
-  height: 500px;
+  height: 1000px;
+  background-color: #f5f5f5;
+  .box{
+    width: 200px;
+    height: 200px;
+    background-color: orange;
+  }
 }
 </style>

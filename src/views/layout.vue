@@ -1,14 +1,22 @@
 <template>
   <div class="layout">
+    <!--顶部组件-->
     <div class="nav-area">
       <rnav></rnav>
     </div>
+    <!--顶部导航组件-->
     <div class="header-area">
       <rheader></rheader>
     </div>
+    <!--顶部吸顶组件-->
+    <div class="header-sticky">
+      <stickynav></stickynav>
+    </div>
+    <!--网站内容区域-->
     <div class="content-main">
       <router-view></router-view>
     </div>
+    <!--网站页脚组件-->
     <div class="footer-area">
       <rfooter></rfooter>
     </div>
@@ -22,6 +30,8 @@ import rnav from '@/components/r-nav/index'
 import rheader from '@/components/r-header/index'
 // 页脚组件
 import rfooter from '@/components/r-footer/index'
+// 顶部吸顶组件
+import stickynav from '@/components/r-stickynav'
 export default {
   name: 'layout',
   setup () {
@@ -30,7 +40,8 @@ export default {
   components: {
     rnav,
     rheader,
-    rfooter
+    rfooter,
+    stickynav
   }
 }
 </script>

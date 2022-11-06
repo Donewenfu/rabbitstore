@@ -3,12 +3,22 @@
     <div class="r-nav-inner container clearfix">
       <div class="fr">
         <ul>
-          <li>
-            <a href="#">请先登录</a>
-          </li>
-          <li>
-            <a href="#">免费注册</a>
-          </li>
+          <template v-if="profile.account">
+            <li>
+              <a href="#">张三</a>
+            </li>
+            <li>
+              <a href="#">退出登录</a>
+            </li>
+          </template>
+          <template v-else>
+            <li>
+              <a href="#">请先登录</a>
+            </li>
+            <li>
+              <a href="#">免费注册</a>
+            </li>
+          </template>
           <li>
             <a href="#">我的订单</a>
           </li>
@@ -32,8 +42,22 @@
 </template>
 
 <script>
+// vuex
+import { useStore } from 'vuex'
+// 计算属性
+import { computed } from 'vue'
 export default {
-  name: 'appnav'
+  name: 'appnav',
+  setup () {
+    const store = useStore()
+    // 计算属性 获取用户的账户信息 判断是否需要显示账号
+    const profile = computed(() => {
+      return store.state.user.profile
+    })
+    return {
+      profile
+    }
+  }
 }
 </script>
 
