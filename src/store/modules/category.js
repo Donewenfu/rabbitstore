@@ -16,12 +16,11 @@ const category = {
   mutations: {
     // 设置分类导航数据
     setCategoryData (state, list) {
-      console.log('执行了')
-      console.log(list)
       state.cateList = list
     }
   },
   actions: {
+    // 异步调用mutations中的方法 setCategoryData
     async setListData ({ commit }) {
       const { result } = await getNavListData()
       commit('setCategoryData', result)

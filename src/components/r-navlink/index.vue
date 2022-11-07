@@ -24,12 +24,15 @@
     <!--移入显示盒子 -->
     <transition name="nav" tag="div">
       <div class="product-popup"  v-show="isShowPopup"  :style="bottomStyle" @mouseleave="hidePopup">
-        <transition-group tag="ul" @enter="enter">
+        <transition-group tag="ul" @enter="enter" v-if="cateChildrenData.length>0">
           <li v-for="(item,index) in cateChildrenData" :key="item.picture" :data-index="index" class="product-item">
             <img :src="item.picture" alt="">
             <span>{{ item.name }}</span>
           </li>
         </transition-group>
+        <div class="empty-content" v-else>
+          <rlogo :logoWidth="40"></rlogo>
+        </div>
       </div>
     </transition>
   </div>
@@ -71,7 +74,7 @@ export default {
     })
     // 当鼠标移入文字时显示商品弹窗
     const showPopup = (index) => {
-      cateChildrenData.value = navList.value[index].children
+      cateChildrenData.value = navList.value[index].children ? navList.value[index].children : []
       isShowPopup.value = true
     }
     // 当鼠标移出文字隐藏弹窗
