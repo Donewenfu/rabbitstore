@@ -32,10 +32,23 @@ import rheader from '@/components/r-header/index'
 import rfooter from '@/components/r-footer/index'
 // 顶部吸顶组件
 import stickynav from '@/components/r-stickynav'
+// vuex
+import { useStore } from 'vuex'
+// vue
+import { computed, provide } from 'vue'
 export default {
   name: 'layout',
   setup () {
-
+    // vuex数据
+    const store = useStore()
+    // 计算属性
+    const navListData = computed(() => {
+      return store.state.category.cateList
+    })
+    // 使用vuex 发送dispatch actions 异步提交 mutations
+    store.dispatch('category/setListData')
+    // 将数据提供给后代组件 provide
+    provide('navList', navListData)
   },
   components: {
     rnav,

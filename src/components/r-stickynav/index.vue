@@ -1,25 +1,24 @@
 <template>
-  <div class="c-stickynav-components" :class="{'show':y>75}">
+  <div class="c-stickynav-components" :class="{'show':y>75}" >
     <div class="container clearfix innercontent">
-      <!--logo-->
-      <rlogo logoStyle="horizontal" :logo-width="150" class="fl"></rlogo>
       <!--导航区域-->
-      <rnavlink class="fl"></rnavlink>
+      <rnavlink class="fl" comType="sticky" v-show="y>75"></rnavlink>
     </div>
   </div>
 </template>
 
 <script>
-import rlogo from '@/components/r-logo'
+// 导航链接组件
 import rnavlink from '@/components/r-navlink'
+// 获取滚动高度
 import { useWindowScroll } from '@vueuse/core'
 export default {
   name: 'stickynav',
   components: {
-    rlogo,
     rnavlink
   },
   setup () {
+    // 获取滚动的高度
     const { y } = useWindowScroll()
     return { y }
   }
@@ -35,6 +34,7 @@ export default {
   width: 100%;
   height: 70px;
   background-color: #fff;
+  box-shadow: 5px 5px 10px #ececec;
   position: fixed;
   top: 0;
   left: 0;

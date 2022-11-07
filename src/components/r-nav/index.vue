@@ -3,6 +3,7 @@
     <div class="r-nav-inner container clearfix">
       <div class="fr">
         <ul>
+          <!--已登录-->
           <template v-if="profile.account">
             <li>
               <a href="#">张三</a>
@@ -11,6 +12,7 @@
               <a href="#">退出登录</a>
             </li>
           </template>
+          <!--未登录-->
           <template v-else>
             <li>
               <a href="#">请先登录</a>

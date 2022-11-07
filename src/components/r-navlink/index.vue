@@ -1,53 +1,104 @@
 <template>
   <div class="r-navlink-components fl">
+    <div class="logo-area fl">
+      <rlogo :logo-width="comType==='header'?120:120"  :logo-style="comType"></rlogo>
+    </div>
     <div class="fl">
       <ul class="clearfix">
-        <li>
-          <a href="#">首页</a>
-        </li>
-        <li>
-          <a href="#">生鲜</a>
-        </li>
-        <li>
-          <a href="#">美食</a>
-        </li>
-        <li>
-          <a href="#">餐厨</a>
-        </li>
-        <li>
-          <a href="#">电器</a>
-        </li>
-        <li>
-          <a href="#">居家</a>
-        </li>
-        <li>
-          <a href="#">洗护</a>
-        </li>
-        <li>
-          <a href="#">孕婴</a>
-        </li>
-        <li>
-          <a href="#">服装</a>
+        <li v-for="(item,index) in navList" :key="index" @mouseenter="showPopup(index)" >
+          <a href="#">{{ item.name }}</a>
         </li>
       </ul>
     </div>
     <!--搜索框-->
     <div class="search-area fl">
       <i class="iconfont icon-fangdajing"></i>
-      <input type="text" placeholder="搜一搜">
+      <input type="text" placeholder="搜一搜" v-model.trim="searchKey" class="searchinput">
+      <i class="iconfont icon-guanbi" @click="delinputText" v-if="showDelicon"></i>
     </div>
     <!--购物车-->
     <div class="cart-area fr">
       <i class="iconfont icon-gouwuche"></i>
       <span class="cartnum">8</span>
     </div>
-
+    <!--移入显示盒子 -->
+    <transition name="nav" tag="div">
+      <div class="product-popup"  v-show="isShowPopup"  :style="bottomStyle" @mouseleave="hidePopup">
+        <transition-group tag="ul" @enter="enter">
+          <li v-for="(item,index) in cateChildrenData" :key="item.picture" :data-index="index" class="product-item">
+            <img :src="item.picture" alt="">
+            <span>{{ item.name }}</span>
+          </li>
+        </transition-group>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+// logo
+import rlogo from '@/components/r-logo'
+// 动画库
+import Velocity from 'velocity-animate'
+// vue
+import { computed, inject, ref } from 'vue'
 export default {
-  name: 'navlink'
+  name: 'navlink',
+  props: {
+    comType: {
+      type: String,
+      default: 'header'
+    }
+  },
+  setup (props) {
+    // 接收祖先组件提供的数据
+    const navList = inject('navList')
+    // 是否显示移入弹窗
+    const isShowPopup = ref(false)
+    // 移入的children 数据
+    const cateChildrenData = ref([])
+    // 搜索输入字段
+    const searchKey = ref('')
+    // 根据组件类型进行样式的编写
+    const bottomStyle = computed(() => {
+      return {
+        bottom: props.comType === 'header' ? '-111px' : '-124px'
+      }
+    })
+    // 是否显示输入框删除图标
+    const showDelicon = computed(() => {
+      return searchKey.value.length > 0
+    })
+    // 当鼠标移入文字时显示商品弹窗
+    const showPopup = (index) => {
+      cateChildrenData.value = navList.value[index].children
+      isShowPopup.value = true
+    }
+    // 当鼠标移出文字隐藏弹窗
+    const hidePopup = () => {
+      isShowPopup.value = false
+      cateChildrenData.value = []
+    }
+    // 进入标签事件
+    const enter = (el) => {
+      // 逐渐显示的时间
+      const showTime = (el.dataset.index) * 120
+      setTimeout(() => {
+        Velocity(el, {
+          opacity: 1,
+          translateX: '-100px'
+        })
+      }, showTime)
+    }
+    // 删除输入的文字信息
+    const delinputText = () => {
+      searchKey.value = ''
+    }
+    return { navList, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon }
+  },
+  components: {
+    rlogo
+  }
 }
 </script>
 
@@ -57,6 +108,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   ul{
     margin-left: 40px;
     height: 100%;
@@ -82,13 +134,22 @@ export default {
     margin-left: 18px;
     input{
       width: 200px;
-      padding: 10px 10px 10px 28px;
+      padding: 10px 35px 10px 28px;
       border-bottom: 1px solid #E7E7E7;
     }
     i{
       font-size: 15px;
       color: #333;
       position: absolute;
+      top: 6px;
+    }
+    .icon-guanbi{
+      position: absolute;
+      right: 0;
+      color: #e3e3e3;
+      cursor: pointer;
+      font-size: 14px;
+      top: 7px;
     }
   }
   .cart-area{
@@ -110,5 +171,53 @@ export default {
       font-size: 10px;
     }
   }
+  .product-popup{
+    border-radius: $borderRadius;
+    width: 1240px;
+    height: 100px;
+    background-color: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    box-shadow: 5px 5px 5px #f5f4f4;
+    transition: all .3s linear;
+    &.show{
+      opacity: 1;
+    }
+    &.hide{
+      opacity: 0;
+    }
+    ul{
+      margin-left: 260px;
+      display: flex;
+      align-items: center;
+      li{
+        opacity: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 20px;
+        cursor: pointer;
+        padding: 5px;
+        box-sizing: border-box;
+        img{
+          width: 70px;
+          height: 70px;
+        }
+        span{
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  .nav-enter-active,
+  .nav-leave-active {
+    transition: opacity 0.3s ease;
+  }
+  .nav-enter-from,
+  .nav-leave-to {
+    opacity: 0;
+  }
 }
+
 </style>

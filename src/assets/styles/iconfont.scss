@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3751176 */
-  src: url('//at.alicdn.com/t/c/font_3751176_acm2dcmfkr6.woff2?t=1667636784873') format('woff2'),
-  url('//at.alicdn.com/t/c/font_3751176_acm2dcmfkr6.woff?t=1667636784873') format('woff'),
-  url('//at.alicdn.com/t/c/font_3751176_acm2dcmfkr6.ttf?t=1667636784873') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3751176_rf1p7kxe1ek.woff2?t=1667809212992') format('woff2'),
+  url('//at.alicdn.com/t/c/font_3751176_rf1p7kxe1ek.woff?t=1667809212992') format('woff'),
+  url('//at.alicdn.com/t/c/font_3751176_rf1p7kxe1ek.ttf?t=1667809212992') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-guanbi:before {
+  content: "\e69f";
 }
 
 .icon-weibo:before {
