@@ -205,6 +205,11 @@ export default {
         img{
           width: 70px;
           height: 70px;
+          display: block;
+          transition: all .3s;
+          &:hover{
+            transform: translateY(-5px);
+          }
         }
         span{
           font-size: 13px;
