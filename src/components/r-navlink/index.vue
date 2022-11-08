@@ -181,7 +181,7 @@ export default {
     position: absolute;
     left: 0;
     bottom: 0;
-    box-shadow: 5px 5px 5px #f5f4f4;
+    z-index: 9999;
     transition: all .3s linear;
     &.show{
       opacity: 1;
