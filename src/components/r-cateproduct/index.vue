@@ -7,7 +7,7 @@
       <div class="r-cateproduct-title ellipsis-2">{{ productData.name }}</div>
       <div class="r-cateproduct-desc ellipsis">{{ productData.desc }}</div>
       <div class="r-cateproduct-price">
-        <rprice></rprice>
+        <rprice :price="productData.price" bold="500"></rprice>
       </div>
     </div>
   </div>
@@ -36,8 +36,8 @@ export default {
 .r-cateproduct-components{
   cursor: pointer;
   display: flex;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  margin-right: 26px;
+  margin-bottom: 38px;
   align-items: center;
   .r-cateproduct-img{
     img{
@@ -59,7 +59,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 190px;
+    width: 200px;
     height: 77px;
     margin-left: 20px;
     .r-cateproduct-title{

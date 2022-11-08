@@ -178,6 +178,7 @@ export default {
     width: 1240px;
     height: 100px;
     background-color: #fff;
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 10%);
     position: absolute;
     left: 0;
     bottom: 0;

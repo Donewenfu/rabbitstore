@@ -22,8 +22,8 @@
         <div class="cate-product-header">
           <span>分类推荐</span>
         </div>
-        <div class="cate-product-content" v-if="userSelectCateData.goods">
-            <template v-for="(item,index) in userSelectCateData.goods" :key="index">
+        <div class="cate-product-content" v-if="userSelectCateData">
+            <template v-for="(item,index) in userSelectCateData" :key="index">
               <rcateproduct :productData="item" ></rcateproduct>
             </template>
         </div>
@@ -77,7 +77,7 @@ export default {
           return item
         }
       })
-      return userSelect
+      return userSelect.goods.slice(0, 9)
     })
     // 用户移出分类隐藏
     const hideProductCate = () => {
@@ -102,7 +102,7 @@ export default {
 .r-category-components{
   width: 176px;
   padding: 8px;
-  height: 378px;
+  height: 426px;
   box-sizing: border-box;
   background-color: $txColor;
   border-radius: $borderRadius;
@@ -110,6 +110,8 @@ export default {
   ul {
     display: flex;
     flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
     li{
       color: #fff;
       display: flex;
@@ -152,7 +154,7 @@ export default {
 }
 .cate-product-box{
   width: 1052px;
-  height: 378px;
+  height: 426px;
   background-color: #fff;
   position: absolute;
   top: 0;

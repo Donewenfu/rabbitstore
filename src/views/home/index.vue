@@ -6,6 +6,9 @@
         <div class="cate-area">
           <rcategory></rcategory>
         </div>
+        <div class="swiper-area">
+          <rswiper></rswiper>
+        </div>
       </div>
     </div>
   </div>
@@ -14,13 +17,16 @@
 <script>
 // 分类组件
 import rcategory from './components/r-category/index'
+// 轮播图组件
+import rswiper from '@/components/r-swiper/index'
 export default {
   name: 'index',
   setup () {
 
   },
   components: {
-    rcategory
+    rcategory,
+    rswiper
   }
 }
 </script>
@@ -33,6 +39,8 @@ export default {
   .container{
     .index-cate-swiper{
       margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
     }
   }
 }

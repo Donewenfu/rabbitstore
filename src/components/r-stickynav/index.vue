@@ -31,6 +31,7 @@ export default {
     display: flex;
     align-items: center;
   }
+  border-bottom: 1px solid $txColor;
   width: 100%;
   height: 70px;
   background-color: #fff;
