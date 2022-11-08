@@ -2,7 +2,7 @@
   <div @mouseleave="hideProductCate">
     <div class="r-category-components" >
       <ul>
-        <li v-for="(item,index) in menuListData" :key="index" @mouseenter="showProductCate(item.id)">
+        <li v-for="(item,index) in menuListData" :class="userSelectId===item.id?'active':''" :key="index" @mouseenter="showProductCate(item.id)">
           <div class="left-title">
             <i class="iconfont" :class="item.iconName"></i>
             <div class="cate-title">{{ item.name }}</div>
@@ -22,7 +22,7 @@
         <div class="cate-product-header">
           <span>分类推荐</span>
         </div>
-        <div class="cate-product-content">
+        <div class="cate-product-content" v-if="userSelectCateData.goods">
             <template v-for="(item,index) in userSelectCateData.goods" :key="index">
               <rcateproduct :productData="item" ></rcateproduct>
             </template>
@@ -38,7 +38,7 @@ import { useStore } from 'vuex'
 // vue
 import { computed, ref } from 'vue'
 // 图标icon
-import { menuicon } from '../../../../jsondata/menuicon'
+import { menuicon } from '@/jsondata/menuicon'
 // 分类商品组件
 import rcateproduct from '@/components/r-cateproduct/index'
 export default {
@@ -82,8 +82,9 @@ export default {
     // 用户移出分类隐藏
     const hideProductCate = () => {
       showProduct.value = false
+      userSelectId.value = ''
     }
-    return { menuListData, showProductCate, hideProductCate, showProduct, userSelectCateData }
+    return { menuListData, showProductCate, hideProductCate, showProduct, userSelectCateData, userSelectId }
   }
 }
 </script>
@@ -116,7 +117,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      &:hover{
+      &.active{
         background-color: #fff;
         border-radius: 4px;
         color: $txColor;
