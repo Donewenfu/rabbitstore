@@ -19,13 +19,15 @@
     <!--商品分类盒子-->
     <transition>
       <div class="cate-product-box" v-if="showProduct">
-        <div class="cate-product-header">
-          <span>分类推荐</span>
-        </div>
-        <div class="cate-product-content" v-if="userSelectCateData">
+        <div class="innercate">
+          <div class="cate-product-header">
+            <span>分类推荐</span>
+          </div>
+          <div class="cate-product-content" v-if="userSelectCateData">
             <template v-for="(item,index) in userSelectCateData" :key="index">
               <rcateproduct :productData="item" ></rcateproduct>
             </template>
+          </div>
         </div>
       </div>
     </transition>
@@ -153,17 +155,20 @@ export default {
   }
 }
 .cate-product-box{
-  width: 1052px;
+  width: 1062px;
   height: 426px;
   background-color: #fff;
   position: absolute;
   top: 0;
   z-index: 999;
   left: 178px;
-  margin-left: 10px;
   padding: 16px;
   box-sizing: border-box;
   border-radius: $borderRadius;
+  .innercate{
+    margin-left: 10px;
+    background-color: #fff;
+  }
   .cate-product-header{
     span{
       font-size: 18px;

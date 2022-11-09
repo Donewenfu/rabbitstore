@@ -7,7 +7,7 @@
           <rcategory></rcategory>
         </div>
         <div class="swiper-area">
-          <rswiper></rswiper>
+          <rswiper :swiperData="indexState.bannerData" :durationTime="4000"></rswiper>
         </div>
       </div>
     </div>
@@ -15,14 +15,29 @@
 </template>
 
 <script>
+// vue
+import { onMounted, reactive } from 'vue'
 // 分类组件
 import rcategory from './components/r-category/index'
 // 轮播图组件
 import rswiper from '@/components/r-swiper/index'
+// api
+import { getBnanerData } from '@/api/home'
 export default {
   name: 'index',
   setup () {
-
+    // 轮播图数据
+    const indexState = reactive({
+      bannerData: []
+    })
+    onMounted(() => {
+      getBanner()
+    })
+    const getBanner = async () => {
+      const { result } = await getBnanerData()
+      indexState.bannerData = result
+    }
+    return { indexState }
   },
   components: {
     rcategory,

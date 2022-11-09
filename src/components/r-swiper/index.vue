@@ -1,32 +1,34 @@
 <template>
   <div class="r-swiper-components" :style="swiperStyle" @mouseenter="showNextPrevious = true" @mouseleave="showNextPrevious = false">
-    <div class="r-swiper-item">
-      <img src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg" alt="">
+    <div class="swiper-content" :style="swiperAnimatedStyle" @transitionend="endtransEnd">
+      <div class="r-swiper-item" v-for="(item,index) in swiperData" :key="index">
+        <img :src="item.imgUrl" alt="">
+      </div>
+      <div class="r-swiper-item" v-if="swiperData.length>1">
+        <img :src="swiperData[0].imgUrl" alt="">
+      </div>
     </div>
     <!--上一张下一张-->
     <div class="next-previous"  v-if="showNextPrevious">
-      <div class="previous-icon icon">
+      <div class="previous-icon icon" @click="changeSwiper('previous')">
         <i class="iconfont icon-previous-icon"></i>
       </div>
-      <div class="next-icon icon">
+      <div class="next-icon icon" @click="changeSwiper('next')">
         <i class="iconfont icon-next-icon"></i>
       </div>
     </div>
     <!--轮播点-->
     <div class="r-circle-dot">
       <ul>
-        <li></li>
-        <li></li>
-        <li class="active"></li>
-        <li></li>
+        <li v-for="(item,index) in swiperData" :key="item.id" :class="swiperCurrent === index?'active':''" @click="changeDot(index)"></li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-
+// vue
+import { computed, onMounted, ref } from 'vue'
 export default {
   name: 'rswiper',
   props: {
@@ -39,18 +41,89 @@ export default {
     height: {
       type: Number,
       default: 426
+    },
+    // 轮播图数据
+    swiperData: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    // 滚动间隔时间
+    durationTime: {
+      type: Number,
+      default: 4000
     }
   },
   setup (props) {
     // 是否显示切换上一张下一张按钮
     const showNextPrevious = ref(false)
+    // 当前的轮播图索引
+    const swiperCurrent = ref(0)
+    // 轮播图计时器
+    const timer = ref(null)
+    // 是否应用 过渡动画
+    const showTranstion = ref(true)
+    // swiper 样式
     const swiperStyle = computed(() => {
       return {
         width: props.width + 'px',
         height: props.height + 'px'
       }
     })
-    return { swiperStyle, showNextPrevious }
+    // 点击轮播点切换 轮播图
+    const changeDot = (data) => {
+      swiperCurrent.value = data
+    }
+    // 自动轮播
+    const autoSwiper = () => {
+      console.log(props.durationTime)
+      clearInterval(timer.value)
+      timer.value = setInterval(() => {
+        // 判断当前轮播图是否已经到数组最后一张
+        if (swiperCurrent.value === props.swiperData.length) {
+          swiperCurrent.value = 0
+          showTranstion.value = false
+        } else {
+          swiperCurrent.value++
+          showTranstion.value = true
+        }
+      }, props.durationTime)
+    }
+    // css3 过渡动画结束事件
+    const endtransEnd = () => {
+      // 判断当前滚动index 是否等于 轮播图数据的长度 如果等于长度 取消滚动动画
+      if (swiperCurrent.value === props.swiperData.length) {
+        swiperCurrent.value = 0
+        showTranstion.value = false
+      }
+    }
+    // 轮播图滚动样式
+    const swiperAnimatedStyle = computed(() => {
+      return {
+        transform: `translateX(-${swiperCurrent.value * props.width}px)`,
+        width: (props.swiperData.length + 1) * props.width + 'px',
+        'transition-duration': showTranstion.value ? '.3s' : ''
+      }
+    })
+    // 点击上一张下一张切换轮播图
+    const changeSwiper = (data) => {
+      console.log(data)
+      if (data === 'next') {
+        if (swiperCurrent.value < props.swiperData.length) {
+          swiperCurrent.value++
+        }
+      } else {
+        if (swiperCurrent.value > 0) {
+          swiperCurrent.value--
+        }
+      }
+    }
+    // 挂载完成
+    onMounted(() => {
+      autoSwiper()
+    })
+    return { swiperStyle, showNextPrevious, changeSwiper, swiperCurrent, swiperAnimatedStyle, changeDot, endtransEnd }
   }
 }
 </script>
@@ -61,6 +134,10 @@ export default {
   border-radius: $borderRadius;
   overflow: hidden;
   position: relative;
+  .swiper-content{
+    height: 100%;
+    display: flex;
+  }
   .r-swiper-item{
     width: 100%;
     height: 100%;
