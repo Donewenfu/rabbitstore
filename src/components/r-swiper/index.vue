@@ -2,18 +2,18 @@
   <div class="r-swiper-components" :style="swiperStyle" @mouseenter="showNextPrevious = true" @mouseleave="showNextPrevious = false">
     <div class="swiper-content" :style="swiperAnimatedStyle" @transitionend="endtransEnd">
       <div class="r-swiper-item" v-for="(item,index) in swiperData" :key="index">
-        <img :src="item.imgUrl" alt="">
+        <img :src="item.imgUrl" alt="" >
       </div>
       <div class="r-swiper-item" v-if="swiperData.length>1">
         <img :src="swiperData[0].imgUrl" alt="">
       </div>
     </div>
     <!--上一张下一张-->
-    <div class="next-previous"  v-if="showNextPrevious">
-      <div class="previous-icon icon" @click="changeSwiper('previous')">
+    <div class="next-previous"  >
+      <div class="previous-icon icon" @click="changeSwiper('previous')" >
         <i class="iconfont icon-previous-icon"></i>
       </div>
-      <div class="next-icon icon" @click="changeSwiper('next')">
+      <div class="next-icon icon" @click="changeSwiper('next')" >
         <i class="iconfont icon-next-icon"></i>
       </div>
     </div>
@@ -75,10 +75,15 @@ export default {
     const changeDot = (data) => {
       swiperCurrent.value = data
     }
+    // 用户拖动轮播图
+    const onSwiperdragStart = () => {
+      console.log('我被拖动了')
+    }
     // 自动轮播
     const autoSwiper = () => {
-      console.log(props.durationTime)
+      // 清除定时器
       clearInterval(timer.value)
+      // 每隔一段时间 轮播图片
       timer.value = setInterval(() => {
         // 判断当前轮播图是否已经到数组最后一张
         if (swiperCurrent.value === props.swiperData.length) {
@@ -108,7 +113,7 @@ export default {
     })
     // 点击上一张下一张切换轮播图
     const changeSwiper = (data) => {
-      console.log(data)
+      showTranstion.value = true
       if (data === 'next') {
         if (swiperCurrent.value < props.swiperData.length) {
           swiperCurrent.value++
@@ -122,8 +127,9 @@ export default {
     // 挂载完成
     onMounted(() => {
       autoSwiper()
+      showTranstion.value = false
     })
-    return { swiperStyle, showNextPrevious, changeSwiper, swiperCurrent, swiperAnimatedStyle, changeDot, endtransEnd }
+    return { swiperStyle, showNextPrevious, changeSwiper, swiperCurrent, swiperAnimatedStyle, changeDot, endtransEnd, onSwiperdragStart }
   }
 }
 </script>
@@ -145,19 +151,17 @@ export default {
     img{
       display: inline-block;
       cursor: pointer;
-      width: 100%;
+      width: 1052px;
       height: 100%;
     }
   }
   .next-previous{
     width: 100%;
-    display: flex;
-    justify-content: space-between;
     height: 100%;
-    align-items: center;
     position: absolute;
     z-index: 999;
-    top: 0;
+    top: 50%;
+    margin-top: -25px;
     .icon{
       cursor: pointer;
       width: 50px;
@@ -174,9 +178,15 @@ export default {
     }
     .previous-icon{
       margin-left: 19px;
+      position: absolute;
+      left: 0;
+      z-index: 9999;
     }
     .next-icon{
+      position: absolute;
+      right: 0;
       margin-right: 19px;
+      z-index: 9999;
     }
   }
   .r-circle-dot{
