@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3751176 */
-  src: url('//at.alicdn.com/t/c/font_3751176_clit5c7gnlv.woff2?t=1667872230468') format('woff2'),
-  url('//at.alicdn.com/t/c/font_3751176_clit5c7gnlv.woff?t=1667872230468') format('woff'),
-  url('//at.alicdn.com/t/c/font_3751176_clit5c7gnlv.ttf?t=1667872230468') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3751176_t4kpem5yyyd.woff2?t=1667964895817') format('woff2'),
+  url('//at.alicdn.com/t/c/font_3751176_t4kpem5yyyd.woff?t=1667964895817') format('woff'),
+  url('//at.alicdn.com/t/c/font_3751176_t4kpem5yyyd.ttf?t=1667964895817') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-previous-icon:before {
+  content: "\e63c";
+}
+
+.icon-next-icon:before {
+  content: "\e6a0";
 }
 
 .icon-31quanbushangpin:before {
