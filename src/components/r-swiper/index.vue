@@ -1,5 +1,5 @@
 <template>
-  <div class="r-swiper-components" :style="swiperStyle" @mouseenter="showNextPrevious = true" @mouseleave="showNextPrevious = false">
+  <div class="r-swiper-components" :style="swiperStyle" @mouseenter="stopSwiper" @mouseleave="startSwiper">
     <div class="swiper-content" :style="swiperAnimatedStyle" @transitionend="endtransEnd">
       <div class="r-swiper-item" v-for="(item,index) in swiperData" :key="index">
         <img :src="item.imgUrl" alt="" >
@@ -29,7 +29,7 @@
 
 <script>
 // vue
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 export default {
   name: 'rswiper',
   props: {
@@ -76,9 +76,11 @@ export default {
     const changeDot = (data) => {
       swiperCurrent.value = data
     }
-    // 用户拖动轮播图
-    const onSwiperdragStart = () => {
-      console.log('我被拖动了')
+    // 鼠标移出 轮播图开始轮播
+    const startSwiper = () => {
+      console.log('移除了')
+      showNextPrevious.value = false
+      autoSwiper()
     }
     // 自动轮播
     const autoSwiper = () => {
@@ -103,6 +105,11 @@ export default {
         swiperCurrent.value = 0
         showTranstion.value = false
       }
+    }
+    // 移入轮播图停止轮播
+    const stopSwiper = () => {
+      showNextPrevious.value = true
+      clearInterval(timer.value)
     }
     // 轮播图滚动样式
     const swiperAnimatedStyle = computed(() => {
@@ -131,7 +138,21 @@ export default {
       autoSwiper()
       showTranstion.value = false
     })
-    return { swiperStyle, showNextPrevious, changeSwiper, swiperCurrent, swiperAnimatedStyle, changeDot, endtransEnd, onSwiperdragStart }
+    // 组件销毁 清除定时器
+    onUnmounted(() => {
+      clearInterval(timer.value)
+    })
+    return {
+      swiperStyle,
+      showNextPrevious,
+      changeSwiper,
+      swiperCurrent,
+      swiperAnimatedStyle,
+      changeDot,
+      endtransEnd,
+      stopSwiper,
+      startSwiper
+    }
   }
 }
 </script>

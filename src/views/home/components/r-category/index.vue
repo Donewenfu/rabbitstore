@@ -46,6 +46,7 @@ import { computed, ref } from 'vue'
 import { menuicon } from '@/jsondata/menuicon'
 // 分类商品组件
 import rcateproduct from '@/components/r-cateproduct/index'
+
 export default {
   name: 'index',
   components: {
@@ -60,7 +61,7 @@ export default {
     const userSelectId = ref(null)
     // 获取分类数据 存储在vuex中的
     const menuListData = computed(() => {
-      const menuData = store.state.category.cateList.map((item, index) => {
+      return store.state.category.cateList.map((item, index) => {
         return {
           ...item,
           children: item.children && item.children.slice(0, 1),
@@ -68,7 +69,6 @@ export default {
           iconName: menuicon[index]
         }
       })
-      return menuData
     })
     // 用户移入分类显示
     const showProductCate = (id) => {
@@ -77,7 +77,7 @@ export default {
     }
     // 用户选中商品的数据
     const userSelectCateData = computed(() => {
-      const userSelect = menuListData.value.find((item, index) => {
+      const userSelect = menuListData.value.find((item) => {
         if (item.id === userSelectId.value) {
           return item
         }
@@ -164,7 +164,7 @@ export default {
   background-color: #fff;
   position: absolute;
   top: 0;
-  z-index: 999;
+  z-index: 9999;
   left: 178px;
   padding: 16px;
   box-sizing: border-box;
