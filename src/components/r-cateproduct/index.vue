@@ -14,8 +14,6 @@
 </template>
 
 <script>
-// 价格组件
-import rprice from '@/components/r-price/index'
 export default {
   name: 'rproduct',
   props: {
@@ -25,9 +23,6 @@ export default {
         return {}
       }
     }
-  },
-  components: {
-    rprice
   }
 }
 </script>

@@ -11,6 +11,21 @@
         </div>
       </div>
     </div>
+    <!--首页商品内容区域-->
+    <div class="index-product-area">
+      <div class="container">
+        <div class="index-innerproduct">
+          <!--新鲜好物 人气推荐-->
+          <div class="parduct-partone">
+            <rindexproduct :productInfo="indexState.newProductData" title="新鲜好物" productDesc="新鲜出炉 品质靠谱"></rindexproduct>
+          </div>
+          <!--人气推荐-->
+          <div class="product-parttwo">
+            <rpopularity title="热门品牌" desc="国际经典 品质保证" :brandData="indexState.brandData"></rpopularity>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -21,27 +36,55 @@ import { onMounted, reactive } from 'vue'
 import rcategory from './components/r-category/index'
 // 轮播图组件
 import rswiper from '@/components/r-swiper/index'
+// 首页商品组件
+import rindexproduct from '@/components/r-indexproduct/index'
+// 人气推荐组件
+import rpopularity from '@/components/r-popularity/index'
 // api
-import { getBnanerData } from '@/api/home'
+import { getBnanerData, getNewProductData, getHotBrandData } from '@/api/home'
 export default {
   name: 'index',
   setup () {
     // 轮播图数据
     const indexState = reactive({
-      bannerData: []
+      // 轮播图数据
+      bannerData: [],
+      // 新鲜好物数据
+      newProductData: [],
+      // 品牌数据
+      brandData: []
     })
     onMounted(() => {
+      // 获取banner数据
       getBanner()
+      // 获取新鲜好物数据
+      getNewproduct()
+      // 获取热门品牌数据
+      getHostbrandData()
     })
+    // 获取轮播图数据
     const getBanner = async () => {
       const { result } = await getBnanerData()
       indexState.bannerData = result
+    }
+    // 获取新鲜好物数据
+    const getNewproduct = async () => {
+      const { result } = await getNewProductData()
+      indexState.newProductData = result
+    }
+    // 获取热门好物数据
+    const getHostbrandData = async () => {
+      const { result } = await getHotBrandData()
+      console.log(result)
+      indexState.brandData = result.slice(0, 5)
     }
     return { indexState }
   },
   components: {
     rcategory,
-    rswiper
+    rswiper,
+    rindexproduct,
+    rpopularity
   }
 }
 </script>
@@ -50,12 +93,36 @@ export default {
 .index-page{
   height: 1000px;
   background-color: #f5f5f5;
-  overflow: hidden;
+  height: 100%;
   .container{
+    overflow: hidden;
     .index-cate-swiper{
-      margin-top: 15px;
+      margin-top: 40px;
       display: flex;
       justify-content: space-between;
+    }
+  }
+  .index-product-area{
+    width: 100%;
+    background-color: #f5f5f5;
+    margin-top: 48px;
+
+    .index-innerproduct{
+      padding-bottom: 100px;
+      border-radius: $borderRadius;
+      .parduct-partone{
+        padding-top: 16px;
+        background-color: #fff;
+        padding: 20px 20px 10px 20px;
+        border-radius: $borderRadius;
+        box-sizing: border-box;
+      }
+    }
+    .product-parttwo{
+      background-color: #fff;
+      margin-top: 40px;
+      padding: 20px 20px 10px 20px;
+      border-radius: $borderRadius;
     }
   }
 }

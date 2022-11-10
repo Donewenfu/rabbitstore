@@ -4,13 +4,14 @@
       <div class="r-swiper-item" v-for="(item,index) in swiperData" :key="index">
         <img :src="item.imgUrl" alt="" >
       </div>
+      <!--新增的 第一张图片-->
       <div class="r-swiper-item" v-if="swiperData.length>1">
         <img :src="swiperData[0].imgUrl" alt="">
       </div>
     </div>
     <!--上一张下一张-->
     <div class="next-previous"  >
-      <div class="previous-icon icon" @click="changeSwiper('previous')" >
+      <div class="previous-icon icon" @click="changeSwiper('previous')" v-if="swiperCurrent!=0">
         <i class="iconfont icon-previous-icon"></i>
       </div>
       <div class="next-icon icon" @click="changeSwiper('next')" >
@@ -113,6 +114,7 @@ export default {
     })
     // 点击上一张下一张切换轮播图
     const changeSwiper = (data) => {
+      console.log('切换图片')
       showTranstion.value = true
       if (data === 'next') {
         if (swiperCurrent.value < props.swiperData.length) {

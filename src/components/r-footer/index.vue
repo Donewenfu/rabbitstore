@@ -50,7 +50,7 @@
         <div class="footer-item">
           <div class="title">服务热线</div>
           <div class="hotline">
-            <p class="tel">400-0000-000</p>
+            <p class="tel">400-0000-888</p>
             <p class="workingtime">周一至周日 8:00-18:00</p>
           </div>
         </div>

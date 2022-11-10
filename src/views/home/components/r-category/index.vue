@@ -6,9 +6,12 @@
           <div class="left-title">
             <i class="iconfont" :class="item.iconName"></i>
             <div class="cate-title">{{ item.name }}</div>
-            <div class="cate-subtitle">
+            <div class="cate-subtitle" v-if="item.children&&item.children.length>0">
               <span class="ellipsis" style="display: block;width: 70px" v-for="(subitem,subindex) in item.children" :key="subindex">{{ subitem.name }}</span>
             </div>
+            <template v-else>
+              <rskeleton></rskeleton>
+            </template>
           </div>
           <div class="right-arrow">
             <i class="iconfont icon-jiantou"></i>
@@ -155,6 +158,7 @@ export default {
   }
 }
 .cate-product-box{
+  margin-top: 40px;
   width: 1062px;
   height: 426px;
   background-color: #fff;

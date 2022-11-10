@@ -9,7 +9,7 @@
 // vue
 import { computed } from 'vue'
 export default {
-  name: 'index',
+  name: 'rprice',
   props: {
     // 符号
     unit: {
