@@ -15,3 +15,8 @@ export function getNewProductData () {
 export function getHotBrandData () {
   return request('/home/brand', 'get')
 }
+
+// 获取首页产品区块数据
+export function getIndexGoods () {
+  return request('/home/goods', 'get')
+}

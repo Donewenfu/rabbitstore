@@ -26,6 +26,14 @@
         </div>
       </div>
     </div>
+    <!--首页主要内容区域-->
+    <div class="index-main-product-area">
+      <div class="container">
+        <template v-for="(item,index) in indexState.indexGoods" :key="index">
+          <indexmainproduct :productData="item"></indexmainproduct>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -40,8 +48,10 @@ import rswiper from '@/components/r-swiper/index'
 import rindexproduct from '@/components/r-indexproduct/index'
 // 人气推荐组件
 import rpopularity from '@/components/r-popularity/index'
+// 主商品组件
+import indexmainproduct from '@/components/r-indexmainproduct/index'
 // api
-import { getBnanerData, getNewProductData, getHotBrandData } from '@/api/home'
+import { getBnanerData, getNewProductData, getHotBrandData, getIndexGoods } from '@/api/home'
 export default {
   name: 'index',
   setup () {
@@ -52,7 +62,9 @@ export default {
       // 新鲜好物数据
       newProductData: [],
       // 品牌数据
-      brandData: []
+      brandData: [],
+      // 首页商品数据
+      indexGoods: []
     })
     onMounted(() => {
       // 获取banner数据
@@ -61,6 +73,8 @@ export default {
       getNewproduct()
       // 获取热门品牌数据
       getHostbrandData()
+      // 获取首页商品数据
+      getIndexgoodsproduct()
     })
     // 获取轮播图数据
     const getBanner = async () => {
@@ -75,8 +89,13 @@ export default {
     // 获取热门好物数据
     const getHostbrandData = async () => {
       const { result } = await getHotBrandData()
-      console.log(result)
       indexState.brandData = result.slice(0, 5)
+    }
+    // 获取首页商品区块数据
+    const getIndexgoodsproduct = async () => {
+      const { result } = await getIndexGoods()
+      console.log(result)
+      indexState.indexGoods = result
     }
     return { indexState }
   },
@@ -84,7 +103,8 @@ export default {
     rcategory,
     rswiper,
     rindexproduct,
-    rpopularity
+    rpopularity,
+    indexmainproduct
   }
 }
 </script>
@@ -106,9 +126,8 @@ export default {
     width: 100%;
     background-color: #f5f5f5;
     margin-top: 48px;
-
     .index-innerproduct{
-      padding-bottom: 100px;
+      padding-bottom: 43px;
       border-radius: $borderRadius;
       .parduct-partone{
         padding-top: 16px;
@@ -124,6 +143,9 @@ export default {
       padding: 20px 20px 10px 20px;
       border-radius: $borderRadius;
     }
+  }
+  .index-main-product-area{
+    background-color: #fff;
   }
 }
 </style>

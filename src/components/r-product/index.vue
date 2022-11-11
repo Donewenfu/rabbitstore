@@ -6,7 +6,7 @@
     </div>
     <div class="r-product-info">
       <h4 class="ellipsis" :title="product.name">{{product.name}}</h4>
-      <rprice size="16" ></rprice>
+      <rprice size="16" :price="product.price"></rprice>
     </div>
   </div>
 </template>

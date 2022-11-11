@@ -12,7 +12,7 @@
     </div>
     <div class="r-indexproduct-list">
       <template v-for="(item,index) in productInfo" :key="index">
-        <rproduct :product="item"></rproduct>
+        <rproduct :product="item" :price="item.price"></rproduct>
       </template>
     </div>
   </div>
