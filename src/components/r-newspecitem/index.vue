@@ -4,16 +4,17 @@
       <img :src="newspecData.cover" alt="" class="specimg">
       <div class="mask">
         <div class="mask-left">
-          <p>标题</p>
-          <p>很好，很暖和(｡･ω･｡)！</p>
+          <p class="ellipsis">{{ newspecData.title }}</p>
+          <p class="ellipsis">{{ newspecData.summary }}</p>
         </div>
         <div class="mask-price">
-          <rprice :price="100"></rprice>
-          <span>起</span>
+          <div class="inner-price">
+            <rprice :price="newspecData.lowestPrice"></rprice>
+            <span>起</span>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -36,7 +37,12 @@ export default {
   width: 400px !important;
   height: 287px;
   background-color: #fff;
+  cursor: pointer;
   position: relative;
+  transition: all .3s;
+  &:hover{
+    transform: translateY(-10px);
+  }
   .newspec-top{
     width: 100%;
     height: 100%;
@@ -53,6 +59,55 @@ export default {
       left: 0;
       bottom: 0;
       background-image: linear-gradient(0deg,rgba(0,0,0,.8),transparent 50%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .mask-left{
+        width:250px;
+        height: 70px;
+        position: absolute;
+        bottom: 0;
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        p{
+          &:first-child{
+            font-size: 18px;
+            color: #fff;
+          }
+          &:last-child{
+            font-size: 14px;
+            color: #999999;
+          }
+        }
+      }
+      .mask-price{
+        height: 70px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        //background-color: #fff;
+        border-radius: 3px;
+        //height: 27px;
+        justify-content: flex-end;
+        padding: 0 5px;
+        .inner-price{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 27px;
+          background-color: #fff;
+          border-radius: 3px;
+          padding: 0 5px;
+        }
+        span{
+          margin-left: 5px;
+          color: $priceColor;
+        }
+      }
     }
   }
 }

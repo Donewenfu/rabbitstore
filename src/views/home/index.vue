@@ -169,6 +169,7 @@ export default {
   .index-new-product{
     width: 100%;
     background-color: #f5f5f5;
+    padding-bottom: 60px;
   }
 }
 </style>
