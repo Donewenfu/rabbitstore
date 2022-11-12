@@ -62,7 +62,7 @@ export default {
   .spec-content{
     display: flex;
     justify-content: space-between;
-    padding-bottom: 40px;
+    padding-bottom: 30px;
   }
 }
 </style>
