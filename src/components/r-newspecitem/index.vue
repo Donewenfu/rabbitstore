@@ -35,13 +35,13 @@ export default {
 <style scoped lang="scss">
 .r-newspec-components{
   width: 400px !important;
-  height: 287px;
   background-color: #fff;
   cursor: pointer;
   position: relative;
   transition: all .3s;
+  height: 287px;
   &:hover{
-    transform: translateY(-10px);
+    //transform: translateY(-10px);
   }
   .newspec-top{
     width: 100%;
@@ -50,7 +50,7 @@ export default {
     .specimg{
       width: 100%;
       object-fit: cover;
-      height: 100%;
+      height: 287px;
     }
     .mask{
       width: 100%;
@@ -89,9 +89,7 @@ export default {
         margin-right: 15px;
         display: flex;
         align-items: center;
-        //background-color: #fff;
         border-radius: 3px;
-        //height: 27px;
         justify-content: flex-end;
         padding: 0 5px;
         .inner-price{
