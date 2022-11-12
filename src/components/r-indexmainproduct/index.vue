@@ -36,12 +36,18 @@
           <div class="right-box">{{ productData.saleInfo }}</div>
         </div>
       </div>
-      <div class="r-indexmainproduct-product-right">右侧内容区域</div>
+      <div class="r-indexmainproduct-product-right">
+        <template v-for="(item,index) in productData.goods" :key="index">
+          <rmainproduct :productData="item"></rmainproduct>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+// 商品组件
+import rmainproduct from '@/components/r-mainproduct/index'
 export default {
   name: 'indexmainproduct',
   props: {
@@ -52,6 +58,9 @@ export default {
         return {}
       }
     }
+  },
+  components: {
+    rmainproduct
   }
 }
 </script>
@@ -128,14 +137,10 @@ export default {
       align-items: center;
       justify-content: center;
       position: relative;
-      //img{
-      //  width: 100%;
-      //  height: 100%;
-      //  display: block;
-      //}
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
+      cursor: pointer;
       .product-tag{
         position: absolute;
         top: 270px;
@@ -167,6 +172,10 @@ export default {
       flex: 1;
       height: 610px;
       margin-left: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-left: 37px;
     }
   }
 }

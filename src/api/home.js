@@ -20,3 +20,8 @@ export function getHotBrandData () {
 export function getIndexGoods () {
   return request('/home/goods', 'get')
 }
+
+// 获取最新专题数据
+export function getNewSpecData () {
+  return request('/home/special', 'get')
+}

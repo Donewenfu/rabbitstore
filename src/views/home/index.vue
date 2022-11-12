@@ -34,6 +34,12 @@
         </template>
       </div>
     </div>
+    <!--最新专题-->
+    <div class="index-new-product">
+      <div class="container">
+        <newSpecproduct :newspec="indexState.newSpecdataspec"></newSpecproduct>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,8 +56,10 @@ import rindexproduct from '@/components/r-indexproduct/index'
 import rpopularity from '@/components/r-popularity/index'
 // 主商品组件
 import indexmainproduct from '@/components/r-indexmainproduct/index'
+// 最新专题组件
+import newSpecproduct from '@/components/r-newspec/index'
 // api
-import { getBnanerData, getNewProductData, getHotBrandData, getIndexGoods } from '@/api/home'
+import { getBnanerData, getNewProductData, getHotBrandData, getIndexGoods, getNewSpecData } from '@/api/home'
 export default {
   name: 'index',
   setup () {
@@ -64,7 +72,9 @@ export default {
       // 品牌数据
       brandData: [],
       // 首页商品数据
-      indexGoods: []
+      indexGoods: [],
+      // 最新专题数据
+      newSpecdataspec: []
     })
     onMounted(() => {
       // 获取banner数据
@@ -75,6 +85,8 @@ export default {
       getHostbrandData()
       // 获取首页商品数据
       getIndexgoodsproduct()
+      // 获取最新专题数据
+      getNewProductspec()
     })
     // 获取轮播图数据
     const getBanner = async () => {
@@ -97,6 +109,11 @@ export default {
       console.log(result)
       indexState.indexGoods = result
     }
+    // 获取最新专题
+    const getNewProductspec = async () => {
+      const { result } = await getNewSpecData()
+      indexState.newSpecdataspec = result
+    }
     return { indexState }
   },
   components: {
@@ -104,7 +121,8 @@ export default {
     rswiper,
     rindexproduct,
     rpopularity,
-    indexmainproduct
+    indexmainproduct,
+    newSpecproduct
   }
 }
 </script>
@@ -146,6 +164,11 @@ export default {
   }
   .index-main-product-area{
     background-color: #fff;
+  }
+  //最新专题
+  .index-new-product{
+    width: 100%;
+    background-color: #f5f5f5;
   }
 }
 </style>
