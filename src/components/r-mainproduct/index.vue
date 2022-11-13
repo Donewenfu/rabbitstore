@@ -55,8 +55,8 @@ export default {
   transition: all .3s;
   overflow: hidden;
   .product-img{
-    width: 180px;
-    height: 180px;
+    width: 100%;
+    height: 100%;
     img{
       display: block;
       width: 100%;
@@ -64,12 +64,12 @@ export default {
     }
   }
   .product-title{
-    width: 80%;
+    width: 90%;
     margin-top: 15px;
     color: #333;
   }
   .product-desc{
-    width: 80%;
+    width: 90%;
     color: #999;
     height: 40px;
   }
@@ -81,6 +81,8 @@ export default {
     }
   }
   .findsame{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     height: 84px;
     width: 100%;
     background-color: $txColor;

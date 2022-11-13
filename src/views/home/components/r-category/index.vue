@@ -82,7 +82,7 @@ export default {
           return item
         }
       })
-      return userSelect.goods.slice(0, 9)
+      return userSelect.goods ? userSelect.goods.slice(0, 9) : []
     })
     // 用户移出分类隐藏
     const hideProductCate = () => {

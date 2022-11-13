@@ -17,7 +17,10 @@
         <div class="index-innerproduct">
           <!--新鲜好物 人气推荐-->
           <div class="parduct-partone">
-            <rindexproduct :productInfo="indexState.newProductData" title="新鲜好物" productDesc="新鲜出炉 品质靠谱"></rindexproduct>
+            <transition name="fade">
+              <rindexproduct :productInfo="indexState.newProductData" v-if="indexState.newProductData.length>0" title="新鲜好物" productDesc="新鲜出炉 品质靠谱"></rindexproduct>
+              <mainskeleton v-else></mainskeleton>
+            </transition>
           </div>
           <!--人气推荐-->
           <div class="product-parttwo">
@@ -45,7 +48,7 @@
 
 <script>
 // vue onMounted 实例挂载完成 reactive 响应式数据
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 // 分类组件
 import rcategory from './components/r-category/index'
 // 轮播图组件
@@ -58,11 +61,14 @@ import rpopularity from '@/components/r-popularity/index'
 import indexmainproduct from '@/components/r-indexmainproduct/index'
 // 最新专题组件
 import newSpecproduct from '@/components/r-newspec/index'
+// 骨架
+import mainskeleton from '@/components/r-skeletonproduct'
 // api
 import { getBnanerData, getNewProductData, getHotBrandData, getIndexGoods, getNewSpecData } from '@/api/home'
 export default {
   name: 'index',
   setup () {
+    const showbox = ref(false)
     // 轮播图数据
     const indexState = reactive({
       // 轮播图数据
@@ -101,7 +107,7 @@ export default {
     // 获取热门好物数据
     const getHostbrandData = async () => {
       const { result } = await getHotBrandData()
-      indexState.brandData = result.slice(0, 5)
+      indexState.brandData = result ? result.slice(0, 5) : []
     }
     // 获取首页商品区块数据
     const getIndexgoodsproduct = async () => {
@@ -114,7 +120,7 @@ export default {
       const { result } = await getNewSpecData()
       indexState.newSpecdataspec = result
     }
-    return { indexState }
+    return { indexState, showbox }
   },
   components: {
     rcategory,
@@ -122,12 +128,39 @@ export default {
     rindexproduct,
     rpopularity,
     indexmainproduct,
-    newSpecproduct
+    newSpecproduct,
+    mainskeleton
   }
 }
 </script>
 
 <style scoped lang="scss">
+//组件过渡动画
+//动画之前
+.fade-enter-from{
+  opacity: 0;
+}
+//动画中
+.fade-enter-leave{
+  transition: all .3s;
+}
+//动画后
+.fade-enter-to{
+  opacity: 1;
+}
+
+//离开前
+.fade-leave-from{
+  opacity: 1;
+}
+//离开中
+.fade-leave-active{
+  transition: all .3s;
+}
+//离开后
+.fade-leave-to{
+  opacity: 0;
+}
 .index-page{
   height: 1000px;
   background-color: #f5f5f5;

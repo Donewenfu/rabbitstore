@@ -1,5 +1,5 @@
 // 请求地址
-const baseURL = 'https://pcapi-xiaotuxian-front-devtest.itheima.net'
+const baseURL = 'https://apipc-xiaotuxian-front.itheima.net'
 
 export {
   baseURL

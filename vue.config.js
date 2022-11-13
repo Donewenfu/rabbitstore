@@ -12,7 +12,7 @@ module.exports = {
   chainWebpack: config => {
     config.plugin('html').tap(args => {
       // 更改网页标题
-      args[0].title = 'store mo yu'
+      args[0].title = 'xiangMiStore'
       return args
     })
   }
