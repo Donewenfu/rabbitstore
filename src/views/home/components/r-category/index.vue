@@ -46,7 +46,6 @@ import { computed, ref } from 'vue'
 import { menuicon } from '@/jsondata/menuicon'
 // 分类商品组件
 import rcateproduct from '@/components/r-cateproduct/index'
-
 export default {
   name: 'index',
   components: {

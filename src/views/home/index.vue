@@ -14,23 +14,23 @@
     <!--首页商品内容区域-->
     <div class="index-product-area">
       <div class="container">
-        <div class="index-innerproduct">
+        <div class="index-innerproduct" >
           <!--新鲜好物 人气推荐-->
-          <div class="parduct-partone">
+          <div class="parduct-partone" ref="hotproduct">
             <transition name="fade">
               <rindexproduct :productInfo="indexState.newProductData" v-if="indexState.newProductData.length>0" title="新鲜好物" productDesc="新鲜出炉 品质靠谱"></rindexproduct>
               <mainskeleton v-else></mainskeleton>
             </transition>
           </div>
           <!--人气推荐-->
-          <div class="product-parttwo">
-            <rpopularity title="热门品牌" desc="国际经典 品质保证" :brandData="indexState.brandData"></rpopularity>
+          <div class="product-parttwo" ref="brandproduct">
+            <rpopularity title="热门品牌" desc="国际经典 品质保证" :brandData="breanDataList"></rpopularity>
           </div>
         </div>
       </div>
     </div>
     <!--首页主要内容区域-->
-    <div class="index-main-product-area">
+    <div class="index-main-product-area" ref="mainproduct">
       <div class="container">
         <template v-for="(item,index) in indexState.indexGoods" :key="index">
           <indexmainproduct :productData="item"></indexmainproduct>
@@ -38,8 +38,8 @@
       </div>
     </div>
     <!--最新专题-->
-    <div class="index-new-product">
-      <div class="container">
+    <div class="index-new-product" ref="newproduct">
+      <div class="container" >
         <newSpecproduct :newspec="indexState.newSpecdataspec"></newSpecproduct>
       </div>
     </div>
@@ -48,7 +48,7 @@
 
 <script>
 // vue onMounted 实例挂载完成 reactive 响应式数据
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 // 分类组件
 import rcategory from './components/r-category/index'
 // 轮播图组件
@@ -63,12 +63,23 @@ import indexmainproduct from '@/components/r-indexmainproduct/index'
 import newSpecproduct from '@/components/r-newspec/index'
 // 骨架
 import mainskeleton from '@/components/r-skeletonproduct'
+// 数据懒加载hook
+import useLazyData from '@/hook/useLazyData'
 // api
-import { getBnanerData, getNewProductData, getHotBrandData, getIndexGoods, getNewSpecData } from '@/api/home'
+import { getBnanerData, getHotBrandData, getIndexGoods, getNewProductData, getNewSpecData } from '@/api/home'
+
 export default {
   name: 'index',
   setup () {
     const showbox = ref(false)
+    // 人气商品 ref
+    const hotproduct = ref(null)
+    // 热门商品 ref
+    const brandproduct = ref(null)
+    // 主商品 ref
+    const mainproduct = ref(null)
+    // 新品商品 ref
+    const newproduct = ref(null)
     // 轮播图数据
     const indexState = reactive({
       // 轮播图数据
@@ -85,42 +96,26 @@ export default {
     onMounted(() => {
       // 获取banner数据
       getBanner()
-      // 获取新鲜好物数据
-      getNewproduct()
-      // 获取热门品牌数据
-      getHostbrandData()
-      // 获取首页商品数据
-      getIndexgoodsproduct()
-      // 获取最新专题数据
-      getNewProductspec()
     })
     // 获取轮播图数据
     const getBanner = async () => {
       const { result } = await getBnanerData()
       indexState.bannerData = result
     }
-    // 获取新鲜好物数据
-    const getNewproduct = async () => {
-      const { result } = await getNewProductData()
-      indexState.newProductData = result
-    }
-    // 获取热门好物数据
-    const getHostbrandData = async () => {
-      const { result } = await getHotBrandData()
-      indexState.brandData = result ? result.slice(0, 5) : []
-    }
-    // 获取首页商品区块数据
-    const getIndexgoodsproduct = async () => {
-      const { result } = await getIndexGoods()
-      console.log(result)
-      indexState.indexGoods = result
-    }
-    // 获取最新专题
-    const getNewProductspec = async () => {
-      const { result } = await getNewSpecData()
-      indexState.newSpecdataspec = result
-    }
-    return { indexState, showbox }
+    // 人气商品数据懒加载
+    indexState.newProductData = useLazyData(hotproduct, getNewProductData)
+    // 获取热门好物数据 懒加载
+    indexState.brandData = useLazyData(brandproduct, getHotBrandData)
+    // 计算属性 截取热门好物的数据 只要5条品牌数据
+    const breanDataList = computed(() => {
+      return indexState.brandData.slice(0, 5)
+    })
+    // 获取首页商品区块数据懒加载
+    indexState.indexGoods = useLazyData(mainproduct, getIndexGoods)
+    // 获取最新专题 数据懒加载
+    indexState.newSpecdataspec = useLazyData(newproduct, getNewSpecData)
+
+    return { indexState, showbox, hotproduct, brandproduct, breanDataList, mainproduct, newproduct }
   },
   components: {
     rcategory,
@@ -197,6 +192,7 @@ export default {
   }
   .index-main-product-area{
     background-color: #fff;
+    min-height: 500px;
   }
   //最新专题
   .index-new-product{
