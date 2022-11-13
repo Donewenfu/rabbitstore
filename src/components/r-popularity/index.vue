@@ -6,20 +6,26 @@
         <span>{{ desc }}</span>
       </div>
       <div class="r-popularity-more">
-        <span>查看更多</span>
-        <i class="iconfont icon-jiantou"></i>
+        <a href="javascript:;" @click="changeBrand('prev')" :class="currentIndex>0?'active':'noclass'">
+          <i class="iconfont icon-previous-icon"></i>
+        </a>
+        <a href="javascript:;" @click="changeBrand('next')" :class="currentIndex<(brandData.length/5)-1?'active':'noclass'">
+          <i class="iconfont icon-next-icon"></i>
+        </a>
       </div>
     </div>
     <!--品牌列表数据-->
-    <div class="r-poplarity-list">
-      <div class="poplarity-item" v-for="(item,index) in brandData" :key="index">
-        <img :src="item.picture" alt="">
-      </div>
+    <div class="r-poplarity-list" :style="wrapStyle">
+        <div class="poplarity-item" v-for="(item,index) in brandData" :key="index">
+          <img :src="item.picture" alt="">
+        </div>
     </div>
   </div>
 </template>
 
 <script>
+import { computed, ref } from 'vue'
+
 export default {
   name: 'rpopularity',
   props: {
@@ -42,6 +48,30 @@ export default {
         return []
       }
     }
+  },
+  setup (props) {
+    // 当前页数
+    const currentIndex = ref(0)
+    // 计算属性 计算外层盒子总体宽度
+    const wrapStyle = computed(() => {
+      return {
+        width: ((props.brandData.length / 5) * 1240) + 'px',
+        transform: `translateX(-${currentIndex.value * 1240}px)`
+      }
+    })
+    // 切换事件
+    const changeBrand = (type) => {
+      if (type === 'prev') {
+        if (currentIndex.value !== 0) {
+          currentIndex.value--
+        }
+      } else {
+        if (currentIndex.value < ((props.brandData.length) / 5) - 1) {
+          currentIndex.value++
+        }
+      }
+    }
+    return { wrapStyle, changeBrand, currentIndex }
   }
 }
 </script>
@@ -68,22 +98,39 @@ export default {
     .r-popularity-more{
       display: flex;
       align-items: center;
-      span{
-        font-size: 14px;
-        color: #999;
-      }
-      .iconfont{
-        font-size: 10px;
-        color: #999;
-        margin-left: 5px;
+      a{
+        width: 19px;
+        height: 19px;
+        background-color: #E2E2E2;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        transition: all .3s;
+        &:first-child{
+          margin-right: 5px;
+        }
+        .iconfont{
+          font-size: 14px;
+        }
+        &.active{
+          background-color: $txColor;
+        }
+        &.noclass{
+          cursor: not-allowed;
+        }
       }
     }
   }
   .r-poplarity-list{
+    overflow: hidden;
+    margin-top: 30px;
     width: 100%;
     margin-bottom: 30px;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: nowrap;
+    transition: all .3s;
     .poplarity-item{
       margin-right: 5px;
       &:last-child{
@@ -91,8 +138,7 @@ export default {
       }
       img{
         cursor: pointer;
-        width: 244px;
-        height: 306px;
+        width: 230px;
       }
     }
   }

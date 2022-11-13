@@ -12,8 +12,8 @@ export function getNewProductData () {
 }
 
 // 获取热门品牌数据
-export function getHotBrandData () {
-  return request('/home/brand', 'get')
+export function getHotBrandData (limit) {
+  return request('/home/brand', 'get', { limit })
 }
 
 // 获取首页产品区块数据

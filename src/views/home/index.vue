@@ -105,10 +105,10 @@ export default {
     // 人气商品数据懒加载
     indexState.newProductData = useLazyData(hotproduct, getNewProductData)
     // 获取热门好物数据 懒加载
-    indexState.brandData = useLazyData(brandproduct, getHotBrandData)
+    indexState.brandData = useLazyData(brandproduct, () => getHotBrandData(10))
     // 计算属性 截取热门好物的数据 只要5条品牌数据
     const breanDataList = computed(() => {
-      return indexState.brandData.slice(0, 5)
+      return indexState.brandData
     })
     // 获取首页商品区块数据懒加载
     indexState.indexGoods = useLazyData(mainproduct, getIndexGoods)
