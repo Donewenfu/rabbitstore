@@ -44,7 +44,7 @@
 </template>
 
 <script>
-// vue
+// vue onMounted 实例挂载完成 reactive 响应式数据
 import { onMounted, reactive } from 'vue'
 // 分类组件
 import rcategory from './components/r-category/index'
