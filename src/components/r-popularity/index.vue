@@ -17,7 +17,7 @@
     <!--品牌列表数据-->
     <div class="r-poplarity-list" :style="wrapStyle">
         <div class="poplarity-item" v-for="(item,index) in brandData" :key="index">
-          <img :src="item.picture" alt="">
+          <img v-lazy="item.picture" alt="">
         </div>
     </div>
   </div>

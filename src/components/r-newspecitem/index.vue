@@ -1,7 +1,7 @@
 <template>
   <div class="r-newspec-components">
     <div class="newspec-top">
-      <img :src="newspecData.cover" alt="" class="specimg">
+      <img v-lazy="newspecData.cover" alt="" class="specimg">
       <div class="mask">
         <div class="mask-left">
           <p class="ellipsis">{{ newspecData.title }}</p>

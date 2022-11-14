@@ -2,7 +2,7 @@
   <div class="r-product-components">
     <!--商品图片区域-->
     <div class="r-product-img">
-      <img :src="product.picture" alt="" >
+      <img  alt="" v-lazy="product.picture">
     </div>
     <div class="r-product-info">
       <h4 class="ellipsis" :title="product.name">{{product.name}}</h4>

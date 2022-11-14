@@ -2,7 +2,7 @@
   <div class="r-mainproduct-components">
     <!--商品图片-->
     <div class="product-img">
-      <img :src="productData.picture" alt="">
+      <img  v-lazy="productData.picture" alt="">
     </div>
     <!--商品标题-->
     <div class="product-title">
@@ -61,6 +61,7 @@ export default {
       display: block;
       width: 100%;
       height: 100%;
+      transition: all .3s;
     }
   }
   .product-title{
