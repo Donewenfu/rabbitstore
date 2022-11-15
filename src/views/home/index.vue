@@ -188,6 +188,7 @@ export default {
       margin-top: 40px;
       padding: 20px 20px 10px 20px;
       border-radius: $borderRadius;
+      min-height: 500px;
     }
   }
   .index-main-product-area{
