@@ -4,8 +4,6 @@ import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
 // 数据懒加载
 const useLayzData = function (target, apiFn) {
-  console.log(typeof apiFn)
-  console.log(target)
   const result = ref([])
   const { stop } = useIntersectionObserver(target, ([{ isIntersecting }], observerElement) => {
     if (isIntersecting) {

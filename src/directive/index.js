@@ -3,7 +3,6 @@ const globalDirective = {
   lazyImg (app) {
     app.directive('lazy', {
       mounted (el, bindings) {
-        console.log(el)
         // 创建一个观察对象 构造函数
         const observer = new IntersectionObserver(([{ isIntersecting }]) => {
           // 判断是否已经到达可视区？

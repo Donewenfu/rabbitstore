@@ -20,12 +20,16 @@
     <div class="footer-area">
       <rfooter></rfooter>
     </div>
+    <!--返回顶部组件-->
+    <rgotop></rgotop>
   </div>
 </template>
 
 <script>
 // 通用导航组件
 import rnav from '@/components/r-nav/index'
+// 返回顶部组件
+import rgotop from '@/components/r-gotop/index'
 // 菜单logo组件
 import rheader from '@/components/r-header/index'
 // 页脚组件
@@ -54,7 +58,8 @@ export default {
     rnav,
     rheader,
     rfooter,
-    stickynav
+    stickynav,
+    rgotop
   }
 }
 </script>

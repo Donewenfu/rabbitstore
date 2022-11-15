@@ -99,8 +99,6 @@ export default {
       display: flex;
       align-items: center;
       a{
-        width: 19px;
-        height: 19px;
         background-color: #E2E2E2;
         border-radius: 3px;
         display: flex;
@@ -108,11 +106,15 @@ export default {
         align-items: center;
         color: #fff;
         transition: all .3s;
+        width: 19px;
+        height: 19px;
         &:first-child{
           margin-right: 5px;
         }
         .iconfont{
-          font-size: 14px;
+          font-size: 12px;
+          position: relative;
+          top: 1px;
         }
         &.active{
           background-color: $txColor;
