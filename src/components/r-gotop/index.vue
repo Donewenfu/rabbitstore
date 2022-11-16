@@ -20,7 +20,7 @@ export default {
     const gotop = () => {
       // 获取页面的滚动高度
       let top = document.documentElement.scrollTop || document.body.scrollTop
-      // 实现滚动效果
+      // 实现滚动效果 每隔 10毫米 减去 100 返回顶部
       const timeTop = setInterval(() => {
         document.body.scrollTop = document.documentElement.scrollTop = top -= 100
         if (top <= 0) {

@@ -6,7 +6,7 @@
     <div class="fl">
       <ul class="clearfix">
         <li v-for="(item,index) in navList" :key="index" @mouseenter="showPopup(index)" >
-          <a href="#">{{ item.name }}</a>
+          <router-link :to="'/category/'+item.id" tag="a">{{ item.name }}</router-link>
         </li>
       </ul>
     </div>
