@@ -4,8 +4,8 @@
       <img v-lazy="newspecData.cover" alt="" class="specimg">
       <div class="mask">
         <div class="mask-left">
-          <p class="ellipsis">{{ newspecData.title }}</p>
-          <p class="ellipsis">{{ newspecData.summary }}</p>
+          <p class="ellipsis" :title="newspecData.title">{{ newspecData.title }}</p>
+          <p class="ellipsis" :title="newspecData.summary">{{ newspecData.summary }}</p>
         </div>
         <div class="mask-price">
           <div class="inner-price">

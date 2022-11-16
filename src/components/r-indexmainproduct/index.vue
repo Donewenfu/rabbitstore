@@ -157,7 +157,8 @@ export default {
           line-height: 66px;
         }
         .right-box{
-          //width: 112px;
+          border-top-right-radius: $borderRadius;
+          border-bottom-right-radius: $borderRadius;
           height: 66px;
           color: #fff;
           line-height: 66px;
