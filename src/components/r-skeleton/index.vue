@@ -9,9 +9,6 @@
 <script>
 export default {
   name: 'rskeleton',
-  setup () {
-
-  },
   props: {
     bg: {
       type: String,

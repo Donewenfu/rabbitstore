@@ -105,7 +105,6 @@ export default {
         justify-content: center;
         align-items: center;
         color: #fff;
-        transition: all .3s;
         width: 19px;
         height: 19px;
         &:first-child{

@@ -24,7 +24,12 @@
           </div>
           <!--人气推荐-->
           <div class="product-parttwo" ref="brandproduct">
-            <rpopularity title="热门品牌" desc="国际经典 品质保证" :brandData="breanDataList"></rpopularity>
+            <rpopularity title="热门品牌" desc="国际经典 品质保证" :brandData="breanDataList" v-if="breanDataList.length>0"></rpopularity>
+            <div class="brand-skeleton" v-else>
+              <template v-for="i in 5" :key="i">
+                <rskeleton bg="#e4e4e4" width="230px" height="306px" animated></rskeleton>
+              </template>
+            </div>
           </div>
         </div>
       </div>
@@ -167,6 +172,10 @@ export default {
       display: flex;
       justify-content: space-between;
     }
+    .brand-skeleton{
+      display: flex;
+      justify-content: space-between;
+    }
   }
   .index-product-area{
     width: 100%;
@@ -188,7 +197,6 @@ export default {
       margin-top: 40px;
       padding: 20px 20px 10px 20px;
       border-radius: $borderRadius;
-      min-height: 500px;
     }
   }
   .index-main-product-area{
