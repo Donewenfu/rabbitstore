@@ -5,7 +5,7 @@
     </div>
     <div class="fl">
       <ul class="clearfix">
-        <li v-for="(item,index) in navList" :key="index" @mouseenter="showPopup(index)" >
+        <li v-for="(item,index) in navList" :key="index" @mouseenter="showPopup(index)">
           <router-link :to="'/category/'+item.id" tag="a">{{ item.name }}</router-link>
         </li>
       </ul>
@@ -105,6 +105,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.router-link-active{
+  color: $txColor;
+  font-weight: bold;
+  transition: all .3s;
+}
 .r-navlink-components{
   height: 100%;
   display: flex;
@@ -128,6 +133,9 @@ export default {
         &:hover{
           color: $txColor;
         }
+      }
+      &.active{
+        color: $txColor;
       }
     }
   }
