@@ -109,6 +109,17 @@ export default {
   color: $txColor;
   font-weight: bold;
   transition: all .3s;
+  position: relative;
+  &:after{
+    content: '';
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: $txColor;
+    position: absolute;
+    bottom: -4px;
+    border-radius: 10px;
+  }
 }
 .r-navlink-components{
   height: 100%;

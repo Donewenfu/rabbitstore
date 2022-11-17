@@ -47,6 +47,10 @@ export default {
 <style scoped lang="scss">
 .logo{
   cursor: pointer;
+  transition: all .3s;
+  &:hover{
+    opacity: 0.9;
+  }
   img{
     display: block;
     width: 90%;
