@@ -6,11 +6,10 @@
         <rbread>
           <rbreaditem :to="{path:'/'}">首页</rbreaditem>
           <rbreaditem to="/category/10005">空调</rbreaditem>
-          <rbreaditem>电器</rbreaditem>
         </rbread>
       </div>
       <!--轮播图组件-->
-      <div class="category-swiper">轮播图 template template sghow time  </div>
+      <div class="category-swiper">轮播图 template </div>
       <!--分类商品数据-->
       <div class="category-product">分类数据</div>
     </div>
@@ -19,7 +18,10 @@
 
 <script>
 export default {
-  name: 'category'
+  name: 'category',
+  setup () {
+
+  }
 }
 </script>
 
