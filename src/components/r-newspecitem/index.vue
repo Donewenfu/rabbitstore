@@ -9,7 +9,7 @@
         </div>
         <div class="mask-price">
           <div class="inner-price">
-            <rprice :price="newspecData.lowestPrice"></rprice>
+            <rprice :price="newspecData.lowestPrice" autofix></rprice>
             <span>起</span>
           </div>
         </div>

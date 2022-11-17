@@ -1,7 +1,7 @@
 <template>
   <div class="r-price-components">
     <span class="priceunit" :style="priceStyle">{{ unit }}</span>
-    <span class="pricenum" :style="priceStyle">{{ price }}</span>
+    <span class="pricenum" :style="priceStyle">{{ priceNum }}</span>
   </div>
 </template>
 
@@ -29,16 +29,30 @@ export default {
     price: {
       type: [Number, String],
       default: 100
+    },
+    // 是否自动填写
+    autofix: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props) {
+    // 计算属性 生成价格样式
     const priceStyle = computed(() => {
       return {
         'font-size': `${props.size}px`,
         'font-weight': props.bold
       }
     })
-    return { priceStyle }
+    // 是否自动tofixed
+    const priceNum = computed(() => {
+      if (props.autofix) {
+        return props.price.toFixed(2)
+      } else {
+        return props.price
+      }
+    })
+    return { priceStyle, priceNum }
   }
 }
 </script>
