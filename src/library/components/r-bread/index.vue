@@ -1,11 +1,3 @@
-<!--<template>-->
-<!--  <div class="r-bread-components">-->
-<!--    <div class="r-bread-item">-->
-<!--      <slot></slot>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
-
 <script>
 import { h } from 'vue'
 export default {
