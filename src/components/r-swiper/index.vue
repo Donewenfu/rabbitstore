@@ -40,8 +40,8 @@ export default {
     },
     // 轮播图高度
     height: {
-      type: Number,
-      default: 426
+      type: [Number, String],
+      default: '426px'
     },
     // 轮播图数据
     swiperData: {
@@ -69,7 +69,7 @@ export default {
     const swiperStyle = computed(() => {
       return {
         width: props.width + 'px',
-        height: props.height + 'px'
+        height: props.height
       }
     })
     // 点击轮播点切换 轮播图
@@ -174,7 +174,7 @@ export default {
     img{
       display: inline-block;
       cursor: pointer;
-      width: 1052px;
+      width: 100%;
       height: 100%;
     }
   }

@@ -5,3 +5,8 @@ import request from '@/utils/request'
 export function getNavListData () {
   return request('/home/category/head', 'get')
 }
+
+// 获取分类轮播图数据
+export function getCategoryBannerData () {
+  return request('/')
+}
