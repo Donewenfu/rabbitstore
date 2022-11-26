@@ -6,7 +6,7 @@
     <div class="fl">
       <ul class="clearfix">
         <li v-for="(item,index) in navList" :key="index" @mouseenter="showPopup(index)">
-          <router-link :to="'/category/'+item.id" tag="a">{{ item.name }}</router-link>
+          <router-link :to="'/category/'+item.id" tag="a" target="_blank">{{ item.name }}</router-link>
         </li>
       </ul>
     </div>
@@ -41,7 +41,8 @@ import rlogo from '@/components/r-logo'
 // 动画库
 import Velocity from 'velocity-animate'
 // vue
-import { computed, inject, ref } from 'vue'
+import { computed, inject, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 export default {
   name: 'navlink',
   props: {
@@ -59,6 +60,8 @@ export default {
     const cateChildrenData = ref([])
     // 搜索输入字段
     const searchKey = ref('')
+    // 路由
+    const route = useRoute()
     // 根据组件类型进行样式的编写
     const bottomStyle = computed(() => {
       return {
@@ -71,9 +74,7 @@ export default {
     })
     // 当鼠标移入文字时显示商品弹窗
     const showPopup = (index) => {
-      console.log(index)
       cateChildrenData.value = navList.value[index].children ? navList.value[index].children : []
-      console.log(cateChildrenData.value)
       isShowPopup.value = true
     }
     // 当鼠标移出文字隐藏弹窗
@@ -96,6 +97,9 @@ export default {
     const delinputText = () => {
       searchKey.value = ''
     }
+    watch(() => route.params.id, () => {
+      isShowPopup.value = false
+    })
     return { navList, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon }
   },
   components: {

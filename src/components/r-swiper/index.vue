@@ -78,7 +78,6 @@ export default {
     }
     // 鼠标移出 轮播图开始轮播
     const startSwiper = () => {
-      console.log('移除了')
       showNextPrevious.value = false
       autoSwiper()
     }
@@ -121,7 +120,6 @@ export default {
     })
     // 点击上一张下一张切换轮播图
     const changeSwiper = (data) => {
-      console.log('切换图片')
       showTranstion.value = true
       if (data === 'next') {
         if (swiperCurrent.value < props.swiperData.length) {

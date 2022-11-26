@@ -21,6 +21,6 @@ export default createStore({
     // 本地存储的键名
     key: 'rb',
     // 那些模块数据要存储
-    paths: ['user', 'cart']
+    paths: ['user', 'cart', 'category']
   })]
 })

@@ -6,6 +6,7 @@
         <div class="cate-area">
           <rcategory></rcategory>
         </div>
+        <!--轮播图区域-->
         <div class="swiper-area">
           <rswiper :swiperData="indexState.bannerData" :durationTime="4000"></rswiper>
         </div>
