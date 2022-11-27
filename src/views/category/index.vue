@@ -34,7 +34,15 @@
                 <p>象米商城，您的贴心生活助手</p>
               </div>
               <div class="cate-list">
-                <rmainproduct :productData="product" v-for="(product,indx) in item.goods" :key="indx"></rmainproduct>
+                <template v-if="item.goods.length>0">
+                  <rmainproduct :productData="product" v-for="(product,indx) in item.goods" :key="indx"></rmainproduct>
+                </template>
+                <template v-else>
+                  <div class="empty">
+                    <img src="../../assets/images/empty.png" alt="">
+                    <p>暂无数据</p>
+                  </div>
+                </template>
               </div>
             </div>
           </template>
@@ -46,7 +54,7 @@
 
 <script>
 // vue
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 // vue route
 import { useRoute } from 'vue-router'
 // vuex
@@ -87,7 +95,12 @@ export default {
       const { result } = await getCategoryData(route.params.id)
       catelist.value = result
     }
-    getCateListData()
+
+    watch(() => route.params.id, (newval) => {
+      if (newval && `/category/${newval}` === route.path) getCateListData()
+    }, {
+      immediate: true
+    })
 
     return { bannerList, categoryData, catelist }
   },
@@ -172,6 +185,21 @@ export default {
           margin-top: 20px;
           display: flex;
           align-items: center;
+          .empty{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            img{
+              width: 150px;
+            }
+            p{
+              color: #ccc;
+            }
+          }
         }
       }
     }
