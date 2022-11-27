@@ -6,7 +6,7 @@ export function getNavListData () {
   return request('/home/category/head', 'get')
 }
 
-// 获取分类轮播图数据
-export function getCategoryBannerData () {
-  return request('/')
+// 获取-二级分类列表
+export function getCategoryData (id) {
+  return request('/category', 'get', { id })
 }

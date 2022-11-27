@@ -10,7 +10,8 @@
       </div>
       <!--轮播图组件-->
       <div class="category-swiper">
-        <rswiper :swiperData="bannerList" :width="1240" height="100%"></rswiper>
+        <rswiper :swiperData="bannerList" :width="1240" height="100%" v-if="bannerList.length>0"></rswiper>
+        <rskeleton bg="#e4e4e4" width="1240px" height="400px" v-else></rskeleton>
       </div>
       <!--分类商品数据-->
       <div class="category-product">
@@ -24,6 +25,20 @@
             </div>
           </div>
         </div>
+        <!--分类数据-->
+        <div class="catelist">
+          <template v-for="(item,index) in catelist.children" :key="index">
+            <div class="catelist-item">
+              <div class="catelist-title">
+                <h4>{{ item.name }}</h4>
+                <p>象米商城，您的贴心生活助手</p>
+              </div>
+              <div class="cate-list">
+                <rmainproduct :productData="product" v-for="(product,indx) in item.goods" :key="indx"></rmainproduct>
+              </div>
+            </div>
+          </template>
+        </div>
       </div>
     </div>
   </div>
@@ -31,15 +46,18 @@
 
 <script>
 // vue
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 // vue route
 import { useRoute } from 'vue-router'
 // vuex
 import { useStore } from 'vuex'
 // 轮播图组件
 import rswiper from '@/components/r-swiper/index'
+// 商品组件
+import rmainproduct from '@/components/r-mainproduct/index'
 // api
 import { getBnanerData } from '@/api/home'
+import { getCategoryData } from '@/api/category'
 export default {
   name: 'category',
   setup () {
@@ -62,10 +80,20 @@ export default {
       if (item) cate = item
       return cate
     })
-    return { bannerList, categoryData }
+
+    // 获取分类数据
+    const catelist = ref([])
+    const getCateListData = async () => {
+      const { result } = await getCategoryData(route.params.id)
+      catelist.value = result
+    }
+    getCateListData()
+
+    return { bannerList, categoryData, catelist }
   },
   components: {
-    rswiper
+    rswiper,
+    rmainproduct
   }
 }
 </script>
@@ -81,10 +109,12 @@ export default {
     margin-bottom: 20px;
   }
   .category-product{
+    overflow: hidden;
     .all-category{
       padding: 20px;
       background-color: #fff;
-      border-radius: $borderColor;
+      border-radius: $borderRadius;
+      margin-bottom: 30px;
       .category-all-title{
         font-size: 20px;
         color: #333;
@@ -114,6 +144,34 @@ export default {
             }
             transform: translateY(-7px);
           }
+        }
+      }
+    }
+    .catelist{
+      width: 100%;
+      margin-bottom: 40px;
+      .catelist-item{
+        background-color: #fff;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: $borderRadius;
+        margin-bottom: 20px;
+        .catelist-title{
+          text-align: center;
+          h4{
+            font-size: 20px;
+            font-weight: normal;
+          }
+          p{
+            font-size: 14px;
+            color: #999;
+            margin-top: 5px;
+          }
+        }
+        .cate-list{
+          margin-top: 20px;
+          display: flex;
+          align-items: center;
         }
       }
     }
