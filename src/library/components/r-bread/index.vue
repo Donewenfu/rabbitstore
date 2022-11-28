@@ -26,7 +26,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style  lang="scss">
 .r-bread-components{
   display: flex;
   align-items: center;
@@ -38,8 +38,19 @@ export default {
       color: #666;
     }
     a{
-      font-size: 13px;
+      font-size: 14px;
       color: #333;
+      display: block;
+      &:hover{
+        color: $txColor;
+      }
+    }
+    &:last-child{
+      a{
+        &:hover{
+          color: #333;
+        }
+      }
     }
   }
   .icon-next-icon{
