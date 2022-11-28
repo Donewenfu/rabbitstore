@@ -25,7 +25,7 @@
     <transition name="nav" tag="div">
       <div class="product-popup"  v-show="isShowPopup"  :style="bottomStyle" @mouseleave="hidePopup">
         <transition-group tag="ul" @enter="enter">
-          <li v-for="(item,index) in cateChildrenData" :key="item.picture" :data-index="index" class="product-item">
+          <li v-for="(item,index) in cateChildrenData" :key="item.picture" :data-index="index" class="product-item" @click="goSubcategory(item)">
             <img :src="item.picture" alt="">
             <span>{{ item.name }}</span>
           </li>
@@ -42,7 +42,7 @@ import rlogo from '@/components/r-logo'
 import Velocity from 'velocity-animate'
 // vue
 import { computed, inject, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 export default {
   name: 'navlink',
   props: {
@@ -60,8 +60,10 @@ export default {
     const cateChildrenData = ref([])
     // 搜索输入字段
     const searchKey = ref('')
-    // 路由
+    // 当前路由
     const route = useRoute()
+    // 路由对象
+    const router = useRouter()
     // 根据组件类型进行样式的编写
     const bottomStyle = computed(() => {
       return {
@@ -100,7 +102,13 @@ export default {
     watch(() => route.params.id, () => {
       isShowPopup.value = false
     })
-    return { navList, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon }
+    // 点击二级商品 跳转页面
+    const goSubcategory = (item) => {
+      router.push({
+        path: `/category/sub/${item.id}`
+      })
+    }
+    return { navList, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon, goSubcategory }
   },
   components: {
     rlogo
