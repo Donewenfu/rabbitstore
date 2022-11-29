@@ -10,3 +10,8 @@ export function getNavListData () {
 export function getCategoryData (id) {
   return request('/category', 'get', { id })
 }
+
+// 获取分类筛选条件
+export function getFilterproductData (id) {
+  return request('category/sub/filter', 'get', { id })
+}
