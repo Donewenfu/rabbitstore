@@ -20,7 +20,7 @@
           <!--右侧规格值-->
           <div class="right-specvalue">
             <ul>
-              <li v-for="(spec,inx) in item.properties" :key="inx" >{{spec.name}}</li>
+              <li v-for="(spec,inx) in item.properties" :key="inx" :title="spec.name">{{spec.name}}</li>
             </ul>
           </div>
         </div>
