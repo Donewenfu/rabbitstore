@@ -10,7 +10,21 @@
         </rbread>
       </div>
       <!--商品筛选区域-->
-      <div class="product-filter-area container"></div>
+      <div class="product-filter-area container">
+        <!--品牌区域-->
+        <div class="filter-item" v-for="(item,index) in filterListData" :key='index'>
+          <!--左侧规格名字-->
+          <div class="left-spectitle">
+            <p class="ellipsis">{{ item.name }}:</p>
+          </div>
+          <!--右侧规格值-->
+          <div class="right-specvalue">
+            <ul>
+              <li v-for="(spec,inx) in item.properties" :key="inx" >{{spec.name}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <!--商品区域-->
       <div class="product-list-area">商品列表区域</div>
     </div>
@@ -23,7 +37,7 @@ import { useRoute } from 'vue-router'
 // vuex
 import { useStore } from 'vuex'
 // vue
-import { computed, reactive, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 // api
 import { getFilterproductData } from '@/api/category'
 export default {
@@ -53,23 +67,31 @@ export default {
       return obj
     })
 
-    // 品牌数据
-    const brandList = reactive([])
+    // 筛选数据列表
+    const filterListData = ref([])
     const getFilterData = () => {
       // 获取分类筛选数据
       getFilterproductData(route.params.id).then(res => {
-        const { result } = res
-        console.log(result)
-        console.log(brandList)
+        const { result: { saleProperties } } = res
+        // 往筛选列表数据中添加品牌数据
+        // 往每个规格前面添加 全部选项
+        saleProperties.forEach(item => {
+          item.properties.unshift({ id: null, name: '全部' })
+        })
+        filterListData.value = saleProperties
+        filterListData.value.unshift({ name: '品牌', properties: [{ id: null, name: '全部' }, ...res.result.brands] })
       })
     }
     watch(() => route.params.id, (newval) => {
       // 判断当前val是否有值，并且路由的路径 是 /category/sub/ /category/sub/109243018
-      if (newval && route.path === `/category/sub/${newval}`) {
+      if (newval && `/category/sub/${newval}` === route.path) {
         getFilterData()
       }
+    }, {
+      // 初始化执行
+      immediate: true
     })
-    return { breadData }
+    return { breadData, filterListData }
   }
 }
 </script>
@@ -88,6 +110,37 @@ export default {
       background-color: #fff;
       margin-top: 30px;
       border-radius: $borderRadius;
+      .filter-item{
+        display: flex;
+        line-height: 40px;
+        .left-spectitle{
+          width: 80px;
+          p{
+            overflow: hidden;
+            color: $txColor;
+          }
+        }
+        .right-specvalue{
+          margin-left: 20px;
+          flex: 1;
+          ul{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            li{
+              cursor: pointer;
+              margin-right: 20px;
+              transition: all .3s;
+              &.on{
+                color: $txColor;
+              }
+              &:hover{
+                color: $txColor ;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
