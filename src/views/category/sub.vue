@@ -12,15 +12,28 @@
       <!--商品筛选区域-->
       <div class="product-filter-area container">
         <!--品牌区域-->
-        <div class="filter-item" v-for="(item,index) in filterListData" :key='index'>
+        <div class="filter-item">
+          <!--左侧规格名字-->
+          <div class="left-spectitle">
+            <p class="ellipsis">品牌:</p>
+          </div>
+          <!--右侧规格值-->
+          <div class="right-specvalue filtervalarea">
+            <ul>
+              <li v-for="(item,inx) in filterListData.brands" :key="inx" :title="item.name" :class="{'active':filterListData.brands.selectId == item.id}">{{item.name}}</li>
+            </ul>
+          </div>
+        </div>
+        <!--品牌区域-->
+        <div class="filter-item" v-for="(item,index) in filterListData.saleProperties" :key="index">
           <!--左侧规格名字-->
           <div class="left-spectitle">
             <p class="ellipsis">{{ item.name }}:</p>
           </div>
           <!--右侧规格值-->
-          <div class="right-specvalue">
+          <div class="right-specvalue filtervalarea">
             <ul>
-              <li v-for="(spec,inx) in item.properties" :key="inx" :title="spec.name">{{spec.name}}</li>
+              <li v-for="(spec,inx) in item.properties" :key="inx" :title="spec.name" :class="{'active':item.selectId == spec.id}">{{spec.name}}</li>
             </ul>
           </div>
         </div>
@@ -68,18 +81,23 @@ export default {
     })
 
     // 筛选数据列表
-    const filterListData = ref([])
+    const filterListData = ref({})
     const getFilterData = () => {
       // 获取分类筛选数据
       getFilterproductData(route.params.id).then(res => {
-        const { result: { saleProperties } } = res
-        // 往筛选列表数据中添加品牌数据
-        // 往每个规格前面添加 全部选项
+        const { result: { saleProperties, brands } } = res
+        // 选中id
+        brands.selectId = null
+        // 品牌 前面加全部数据
+        brands.unshift({ id: null, name: '全部' })
+        // 每个规格添加全部数据
         saleProperties.forEach(item => {
+          // 选中id
+          item.selectId = null
           item.properties.unshift({ id: null, name: '全部' })
         })
-        filterListData.value = saleProperties
-        filterListData.value.unshift({ name: '品牌', properties: [{ id: null, name: '全部' }, ...res.result.brands] })
+        // 设置数据
+        filterListData.value = res.result
       })
     }
     watch(() => route.params.id, (newval) => {
@@ -113,6 +131,15 @@ export default {
       .filter-item{
         display: flex;
         line-height: 40px;
+        .filtervalarea{
+          ul{
+            li{
+              &.active{
+                color: $txColor;
+              }
+            }
+          }
+        }
         .left-spectitle{
           width: 80px;
           p{
