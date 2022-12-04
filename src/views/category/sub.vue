@@ -20,7 +20,7 @@
           <!--右侧规格值-->
           <div class="right-specvalue filtervalarea">
             <ul>
-              <li v-for="(item,inx) in filterListData.brands" :key="inx" :title="item.name" :class="{'active':filterListData.brands.selectId == item.id}">{{item.name}}</li>
+              <li v-for="(item,inx) in filterListData.brands" :key="inx" :title="item.name"  :class="{'active':filterListData.brands.selectId == item.id}">{{item.name}}</li>
             </ul>
           </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="filter-item" v-for="(item,index) in filterListData.saleProperties" :key="index">
           <!--左侧规格名字-->
           <div class="left-spectitle">
-            <p class="ellipsis">{{ item.name }}:</p>
+            <p class="ellipsis" :title="item.name">{{ item.name }}:</p>
           </div>
           <!--右侧规格值-->
           <div class="right-specvalue filtervalarea">
@@ -39,7 +39,28 @@
         </div>
       </div>
       <!--商品区域-->
-      <div class="product-list-area">商品列表区域</div>
+      <div class="product-list-area">
+        <!--条件筛选区域-->
+        <div class="producct-filter-area">
+          <div class="left-area">
+            <a href="javascript:" :class="{active:cateProductFilter.sortField === null}" @click="selectFilter(null)">默认排序</a>
+            <a href="javascript:" :class="{active:cateProductFilter.sortField === 'publishTime'}" @click="selectFilter('publishTime')">最新商品</a>
+            <a href="javascript:" :class="{active:cateProductFilter.sortField === 'orderNum'}" @click="selectFilter('orderNum')">最高人气</a>
+            <a href="javascript:" :class="{active:cateProductFilter.sortField === 'evaluateNum'}" @click="selectFilter('evaluateNum')">评论最多</a>
+            <a href="javascript:" class="pricearea" @click="selectFilter('price')">
+              <span>价格排序</span>
+              <div class="sorticon">
+                <i class="iconfont icon-shangjiantou" :class="{on:cateProductFilter.sortMethod === 'asc'}"></i>
+                <i class="iconfont icon-xiajiantou" :class="{on:cateProductFilter.sortMethod === 'desc'}"></i>
+              </div>
+            </a>
+          </div>
+          <div class="right-area">
+            <rcheckbox v-model="cateProductFilter.inventory">仅显示有货商品</rcheckbox>
+            <rcheckbox v-model="cateProductFilter.onlyDiscount">仅显示特惠商品</rcheckbox>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -50,7 +71,7 @@ import { useRoute } from 'vue-router'
 // vuex
 import { useStore } from 'vuex'
 // vue
-import { computed, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 // api
 import { getFilterproductData } from '@/api/category'
 export default {
@@ -109,7 +130,33 @@ export default {
       // 初始化执行
       immediate: true
     })
-    return { breadData, filterListData }
+
+    // 商品区域筛选条件
+    const cateProductFilter = reactive({
+      // 是否有库存
+      inventory: false,
+      // 只显示特惠
+      onlyDiscount: false,
+      // 排序字段 按钮区域筛选条件 排序条件 默认值为null
+      sortField: null,
+      // 价格排序规则
+      sortMethod: null
+    })
+    // 点击选中
+    const selectFilter = (filterName) => {
+      if (filterName !== 'price') {
+        if (cateProductFilter.sortField === filterName) return
+        cateProductFilter.sortField = filterName
+      } else {
+        // 次选是证明第一次点击
+        if (cateProductFilter.sortMethod === null) {
+          cateProductFilter.sortMethod = 'desc'
+        } else {
+          cateProductFilter.sortMethod = cateProductFilter.sortMethod === 'desc' ? 'asc' : 'desc'
+        }
+      }
+    }
+    return { breadData, filterListData, cateProductFilter, selectFilter }
   }
 }
 </script>
@@ -165,6 +212,76 @@ export default {
                 color: $txColor ;
               }
             }
+          }
+        }
+      }
+    }
+    .product-list-area{
+      background-color: #fff;
+      border-radius: $borderRadius;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 20px;
+      box-sizing: border-box;
+      .producct-filter-area{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .left-area{
+          display: flex;
+          align-items: center;
+          a{
+            background: #fff;
+            display: inline-block;
+            border: 1px solid #e4e4e4;
+            line-height: 30px;
+            padding: 3px 20px;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-right: 20px;
+            transition: all .3s;
+            &:not(:last-child){
+              &:hover{
+                background-color: $txColor;
+                color: #fff;
+                border-color: $txColor;
+              }
+            }
+            &.active{
+              background-color: $txColor;
+              color: #fff;
+              border-color: $txColor;
+            }
+          }
+          .pricearea{
+            display: flex;
+            align-items: center;
+            span{
+              font-size: 13px;
+              color: #999;
+            }
+            .sorticon{
+              display: flex;
+              flex-direction: column;
+              margin-left: 5px;
+              //position: absolute;
+              .iconfont{
+                font-size: 10px;
+                line-height: 8px;
+                transform: scale(.8);
+                color: #999;
+                &.on{
+                  color: $txColor;
+                }
+              }
+            }
+          }
+        }
+        .right-area{
+          display: flex;
+          align-items: center;
+          div{
+            margin: 0 5px;
           }
         }
       }
