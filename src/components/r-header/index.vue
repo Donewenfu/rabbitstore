@@ -2,7 +2,7 @@
   <div class="r-header-components clearfix">
     <div class="r-header-inner container clearfix">
       <!--链接导航组件-->
-      <rnavlink comType="header"></rnavlink>
+      <rnavlink comType="header" :userActive="userActive"></rnavlink>
     </div>
   </div>
 </template>
@@ -13,6 +13,12 @@ export default {
   name: 'rheader',
   components: {
     rnavlink
+  },
+  props: {
+    userActive: {
+      type: String,
+      default: ''
+    }
   }
 }
 </script>

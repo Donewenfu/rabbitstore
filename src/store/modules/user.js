@@ -19,12 +19,18 @@ const user = {
         mobile: '',
         // token
         token: ''
-      }
+      },
+      // 用户当前访问的类目
+      userActive: '居家'
     }
   },
   mutations: {
     setProfile (state, profile) {
       state.profile = profile
+    },
+    // 设置用户当前的栏目
+    setUserActive (state, name) {
+      state.userActive = name
     }
   }
 }

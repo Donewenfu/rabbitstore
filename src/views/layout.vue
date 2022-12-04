@@ -6,11 +6,11 @@
     </div>
     <!--顶部导航组件-->
     <div class="header-area">
-      <rheader></rheader>
+      <rheader :userActive="userActive"></rheader>
     </div>
     <!--顶部吸顶组件-->
     <div class="header-sticky">
-      <stickynav></stickynav>
+      <stickynav :userActive="userActive"></stickynav>
     </div>
     <!--网站内容区域-->
     <div class="content-main">
@@ -40,19 +40,33 @@ import stickynav from '@/components/r-stickynav'
 import { useStore } from 'vuex'
 // vue
 import { computed, provide } from 'vue'
+// vuerouter
+import { useRoute } from 'vue-router'
+
 export default {
   name: 'layout',
   setup () {
     // vuex数据
     const store = useStore()
+    // vueroute
+    const route = useRoute()
     // 计算属性
     const navListData = computed(() => {
       return store.state.category.cateList
     })
+    // userRouterActive
+    const userActive = computed(() => {
+      console.log(store.state.user.userActive)
+      return store.state.user.userActive
+    })
     // 使用vuex 发送dispatch actions 异步提交 mutations
     store.dispatch('category/setListData')
+    // 更新首页选中
+    store.commit('user/setUserActive', store.state.category.cateList[0].name)
     // 将数据提供给后代组件 provide
     provide('navList', navListData)
+    console.log(route.path)
+    return { userActive }
   },
   components: {
     rnav,

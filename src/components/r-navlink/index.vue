@@ -6,7 +6,7 @@
     <div class="fl">
       <ul class="clearfix">
         <li v-for="(item,index) in navList" :key="index" @mouseenter="showPopup(index)">
-          <router-link :to="'/category/'+item.id" tag="a">{{ item.name }}</router-link>
+          <router-link :to="'/category/'+item.id" tag="a" :class="{'routeractive':userActive===item.name}" @click="changeRoute(item)">{{ item.name }}</router-link>
         </li>
       </ul>
     </div>
@@ -42,13 +42,22 @@ import rlogo from '@/components/r-logo'
 import Velocity from 'velocity-animate'
 // vue
 import { computed, inject, ref, watch } from 'vue'
+// vuerouter
 import { useRoute, useRouter } from 'vue-router'
+// vuex
+import { useStore } from 'vuex'
+
 export default {
   name: 'navlink',
   props: {
     comType: {
       type: String,
       default: 'header'
+    },
+    // 用户当前选中
+    userActive: {
+      type: String,
+      default: ''
     }
   },
   setup (props) {
@@ -64,6 +73,8 @@ export default {
     const route = useRoute()
     // 路由对象
     const router = useRouter()
+    // store
+    const store = useStore()
     // 根据组件类型进行样式的编写
     const bottomStyle = computed(() => {
       return {
@@ -104,11 +115,29 @@ export default {
     })
     // 点击二级商品 跳转页面
     const goSubcategory = (item) => {
+      let activeMenuName = ''
+      store.state.category.cateList.forEach((cate, index) => {
+        console.log(cate.children)
+        for (let i = 0; i < cate.children.length; i++) {
+          console.log()
+          if (cate.children[i].id === item.id) {
+            activeMenuName = cate.name
+          }
+        }
+      })
       router.push({
         path: `/category/sub/${item.id}`
       })
+      // 更新vuex中的当前菜单名字
+      store.commit('user/setUserActive', activeMenuName)
     }
-    return { navList, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon, goSubcategory }
+    // 点击跳转路由
+    const changeRoute = (data) => {
+      const { name } = data
+      store.commit('user/setUserActive', name)
+    }
+
+    return { navList, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon, goSubcategory, changeRoute }
   },
   components: {
     rlogo
@@ -117,7 +146,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.router-link-active{
+.routeractive{
   color: $txColor;
   font-weight: bold;
   transition: all .3s;

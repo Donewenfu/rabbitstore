@@ -2,7 +2,7 @@
   <div class="c-stickynav-components" :class="{'show':y>75}" >
     <div class="container clearfix innercontent">
       <!--导航区域-->
-      <rnavlink class="fl" comType="sticky" v-show="y>75"></rnavlink>
+      <rnavlink class="fl" comType="sticky" v-show="y>75" :userActive="userActive"></rnavlink>
     </div>
   </div>
 </template>
@@ -21,6 +21,12 @@ export default {
     // 获取滚动的高度
     const { y } = useWindowScroll()
     return { y }
+  },
+  props: {
+    userActive: {
+      type: String,
+      default: ''
+    }
   }
 }
 </script>

@@ -50,7 +50,9 @@ export default {
         &:hover{
           color: #333;
         }
+        color: $txColor;
       }
+
     }
   }
   .icon-next-icon{

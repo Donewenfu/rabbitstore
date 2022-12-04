@@ -19,7 +19,7 @@
         <div class="all-category">
           <div class="category-all-title">全部分类</div>
           <div class="category-all-product">
-            <div class="all-product-item" v-for="(item,index) in categoryData.children" :key="index">
+            <div class="all-product-item" v-for="(item,index) in categoryData.children" :key="index" @click="gosubCategory(item)">
               <img :src="item.picture" alt="">
               <p>{{ item.name }}</p>
             </div>
@@ -56,7 +56,7 @@
 // vue
 import { computed, reactive, ref, watch } from 'vue'
 // vue route
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 // vuex
 import { useStore } from 'vuex'
 // 轮播图组件
@@ -73,6 +73,7 @@ export default {
     const bannerList = reactive([])
     // vue route
     const route = useRoute()
+    const router = useRouter()
     // vuex
     const store = useStore()
     getBnanerData().then((res) => {
@@ -102,7 +103,15 @@ export default {
       immediate: true
     })
 
-    return { bannerList, categoryData, catelist }
+    // 跳转到二级分类页面
+    const gosubCategory = function (data) {
+      const { id } = data
+      router.push({
+        path: `/category/sub/${id}`
+      })
+    }
+
+    return { bannerList, categoryData, catelist, gosubCategory }
   },
   components: {
     rswiper,
@@ -136,6 +145,7 @@ export default {
       .category-all-product{
         display: flex;
         align-items: center;
+        margin-top: 20px;
         .all-product-item{
           cursor: pointer;
           display: flex;

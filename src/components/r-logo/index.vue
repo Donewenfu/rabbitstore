@@ -10,6 +10,9 @@
 import { computed } from 'vue'
 // vue-router
 import { useRouter } from 'vue-router'
+// vuex
+import { useStore } from 'vuex'
+
 export default {
   name: 'index',
   props: {
@@ -26,6 +29,8 @@ export default {
   setup (props) {
     // router
     const router = useRouter()
+    // vuex
+    const store = useStore()
     // logo样式
     const logoWidthStyle = computed(() => {
       return {
@@ -34,6 +39,9 @@ export default {
     })
     // 跳转到首页
     const goindex = () => {
+      // 菜单第一项
+      const firstCateName = store.state.category.cateList[0].name
+      store.commit('user/setUserActive', firstCateName)
       router.push({ path: '/' })
     }
     return {
