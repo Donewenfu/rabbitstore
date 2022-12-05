@@ -9,8 +9,12 @@
           <rbreaditem :to="`/category/sub/${breadData.sub.id}`">{{ breadData.sub.name }}</rbreaditem>
         </rbread>
       </div>
+      <!--过滤区域加载-->
+      <div class="catefilter-loading" v-if="!firstLoading">
+        <rcatefilteskeleton></rcatefilteskeleton>
+      </div>
       <!--商品筛选区域-->
-      <div class="product-filter-area container">
+      <div class="product-filter-area container" v-else>
         <!--品牌区域-->
         <div class="filter-item">
           <!--左侧规格名字-->
@@ -38,6 +42,7 @@
           </div>
         </div>
       </div>
+
       <!--商品区域-->
       <div class="product-list-area">
         <!--条件筛选区域-->
@@ -74,9 +79,13 @@ import { useStore } from 'vuex'
 import { computed, reactive, ref, watch } from 'vue'
 // api
 import { getFilterproductData } from '@/api/category'
+// 加载组件
+import rcatefilteskeleton from './components/r-catefilterskeleton/index'
 export default {
   name: 'subcategory',
   setup () {
+    // 首次是否加载完毕
+    const firstLoading = ref(false)
     // route
     const route = useRoute()
     // vuex
@@ -119,6 +128,8 @@ export default {
         })
         // 设置数据
         filterListData.value = res.result
+        // 首次加载完毕
+        firstLoading.value = true
       })
     }
     watch(() => route.params.id, (newval) => {
@@ -156,7 +167,10 @@ export default {
         }
       }
     }
-    return { breadData, filterListData, cateProductFilter, selectFilter }
+    return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading }
+  },
+  components: {
+    rcatefilteskeleton
   }
 }
 </script>

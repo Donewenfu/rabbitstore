@@ -1,7 +1,7 @@
 <template>
   <div class="r-checkbox-components" @click="changeCheck">
     <!--选中样式-->
-    <i class="iconfont icon-fangxingxuanzhong" v-if="ischeck"></i>
+    <i class="iconfont icon-duoxuan_xuanzhong" v-if="ischeck"></i>
     <!--未选中样式-->
     <i class="iconfont icon-fangxingweixuanzhong" v-else></i>
     <!--checkbox内容-->
@@ -40,7 +40,7 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
-  .icon-fangxingxuanzhong{
+  .icon-duoxuan_xuanzhong{
     color: $txColor;
     cursor: pointer;
   }
