@@ -135,6 +135,7 @@ export default {
     watch(() => route.params.id, (newval) => {
       // 判断当前val是否有值，并且路由的路径 是 /category/sub/ /category/sub/109243018
       if (newval && `/category/sub/${newval}` === route.path) {
+        firstLoading.value = false
         getFilterData()
       }
     }, {
@@ -233,7 +234,7 @@ export default {
     .product-list-area{
       background-color: #fff;
       border-radius: $borderRadius;
-      margin-top: 40px;
+      margin-top: 30px;
       margin-bottom: 40px;
       padding: 20px;
       box-sizing: border-box;
