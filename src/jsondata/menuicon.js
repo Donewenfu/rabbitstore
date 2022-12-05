@@ -1,3 +1,4 @@
+// 首页菜单图标
 const menuicon = [
   'icon-jujia',
   'icon-meishi',
