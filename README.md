@@ -1,16 +1,16 @@
-# rabbitstore
+# xianmiStore 象米商城练习项目
 
-## Project setup
+## Project setup 项目安装依赖
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development 运行项目
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compiles and minifies for production 构建项目
 ```
 npm run build
 ```
