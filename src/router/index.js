@@ -7,6 +7,8 @@ const index = () => import('@/views/home/index')
 const category = () => import('@/views/category/index')
 // 二级分类页面
 const subcategory = () => import('@/views/category/sub')
+// 商品详情页面
+const goodsDetail = () => import('@/views/goods/index')
 // 路由规则
 const routes = [
   {
@@ -16,8 +18,12 @@ const routes = [
     children: [
       // 首页
       { path: '/', name: 'index', component: index },
+      // 分类页面
       { path: '/category/:id', name: 'category', component: category },
-      { path: '/category/sub/:id', name: 'subcategory', component: subcategory }
+      // 二级分类页面
+      { path: '/category/sub/:id', name: 'subcategory', component: subcategory },
+      // 商品详情页面
+      { path: '/goodsdetail/:id', name: 'goodsdetail', component: goodsDetail }
     ]
   }
 ]

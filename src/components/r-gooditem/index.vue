@@ -1,5 +1,5 @@
 <template>
-  <div class="r-goodsitem-component">
+  <div class="r-goodsitem-component" @click="godetail">
     <img class="goods-img" src="https://yanxuan-item.nosdn.127.net/4c4ca084886c4f9eaf4cdbf9d7380b5c.jpg" alt="">
     <!--商品标题-->
     <div class="goodsitem-name">智能宠物喂食器mini</div>
@@ -13,8 +13,21 @@
 </template>
 
 <script>
+// vue-router
+import { useRouter } from 'vue-router'
 export default {
-  name: 'rgooditem'
+  name: 'rgooditem',
+  setup () {
+    // vue-route
+    const router = useRouter()
+    // 跳转页面
+    const godetail = () => {
+      router.push({
+        path: '/goodsdetail/100101'
+      })
+    }
+    return { godetail }
+  }
 }
 </script>
 
