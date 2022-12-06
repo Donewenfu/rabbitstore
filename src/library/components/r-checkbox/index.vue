@@ -12,7 +12,7 @@
 </template>
 
 <script>
-// vueuse
+// vueuse v-model
 import { useVModel } from '@vueuse/core'
 export default {
   name: 'rcheckbox',
@@ -36,6 +36,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+//自定义组件 复选框组件 样式
 .r-checkbox-components{
   display: flex;
   align-items: center;

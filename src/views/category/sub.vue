@@ -9,12 +9,17 @@
           <rbreaditem :to="`/category/sub/${breadData.sub.id}`">{{ breadData.sub.name }}</rbreaditem>
         </rbread>
       </div>
+
+      <!--当没有筛选数据的时候显示提示-->
+      <div class="empty-filter" v-if="firstLoading && filterListData.saleProperties.length === 0">
+        <rempty></rempty>
+      </div>
       <!--过滤区域加载-->
       <div class="catefilter-loading" v-if="!firstLoading">
         <rcatefilteskeleton></rcatefilteskeleton>
       </div>
       <!--商品筛选区域-->
-      <div class="product-filter-area container" v-else>
+      <div class="product-filter-area container" v-if="firstLoading && filterListData.saleProperties.length>0">
         <!--品牌区域-->
         <div class="filter-item">
           <!--左侧规格名字-->
@@ -44,7 +49,7 @@
       </div>
 
       <!--商品区域-->
-      <div class="product-list-area">
+      <div class="product-list-area" v-if="filterListData.saleProperties.length>0">
         <!--条件筛选区域-->
         <div class="producct-filter-area">
           <div class="left-area">
@@ -65,6 +70,14 @@
             <rcheckbox v-model="cateProductFilter.onlyDiscount">仅显示特惠商品</rcheckbox>
           </div>
         </div>
+        <!--商品区域-->
+        <div class="product-area">
+          <ul>
+            <li v-for="(item,index) in 20" :key="index">
+              <rgooditem></rgooditem>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -81,6 +94,10 @@ import { computed, reactive, ref, watch } from 'vue'
 import { getFilterproductData } from '@/api/category'
 // 加载组件
 import rcatefilteskeleton from './components/r-catefilterskeleton/index'
+// 商品组件
+import rgooditem from '@/components/r-gooditem/index'
+// 缺省页组件
+import rempty from '@/components/r-empty/index'
 export default {
   name: 'subcategory',
   setup () {
@@ -171,7 +188,9 @@ export default {
     return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading }
   },
   components: {
-    rcatefilteskeleton
+    rcatefilteskeleton,
+    rgooditem,
+    rempty
   }
 }
 </script>
@@ -301,6 +320,25 @@ export default {
         }
       }
     }
+    .product-area{
+      margin-top: 30px;
+      ul{
+        display: flex;
+        flex-wrap: wrap;
+        li{
+          margin-right: 20px;
+          margin-bottom: 30px;
+        }
+      }
+    }
+  }
+  .empty-filter{
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    margin-bottom: 40px;
+    border-radius: $borderRadius;
   }
 }
 </style>
