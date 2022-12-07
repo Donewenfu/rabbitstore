@@ -1,13 +1,14 @@
 <template>
   <div class="r-goodsitem-component" @click="godetail">
-    <img class="goods-img" src="https://yanxuan-item.nosdn.127.net/4c4ca084886c4f9eaf4cdbf9d7380b5c.jpg" alt="">
+    <img class="goods-img" :src="goodsData.picture" alt="">
     <!--商品标题-->
-    <div class="goodsitem-name">智能宠物喂食器mini</div>
+    <div class="goodsitem-name">{{ goodsData.name }}</div>
     <!--商品描述-->
-    <div class="goodsitem-desc ellipsis">双重锁鲜，科学喂养，远程操控</div>
+    <div class="goodsitem-desc ellipsis">{{ goodsData.desc }}</div>
     <!--商品价格-->
     <div class="goodsitem-price">
-      <rprice price="200" size="18"></rprice>
+      <!--价格组件-->
+      <rprice :price="goodsData.price" size="18"></rprice>
     </div>
   </div>
 </template>
@@ -72,6 +73,7 @@ export default {
     font-size: 12px;
     color: #999;
     width: 100%;
+    text-align: center;
   }
   .goodsitem-price{
     margin: 5px 0;

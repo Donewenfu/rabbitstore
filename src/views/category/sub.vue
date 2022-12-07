@@ -73,10 +73,12 @@
         <!--商品区域-->
         <div class="product-area">
           <ul>
-            <li v-for="(item,index) in 20" :key="index" :style="{'margin':(index+1)%5==0?'0px':'0px 12px 40px 12px'}">
-              <rgooditem></rgooditem>
+            <li v-for="(item,index) in subProductList" :key="index" :style="{'margin':(index+1)%5==0?'0px':'0px 12px 40px 12px'}">
+              <rgooditem :goodsData="item"></rgooditem>
             </li>
           </ul>
+          <!--底部loading加载 子组件在自定义事件-->
+          <rloadingbottom :loading="loading" :finished="finished" @infiniteloadData="loadSubData"></rloadingbottom>
         </div>
       </div>
     </div>
@@ -98,9 +100,26 @@ import rcatefilteskeleton from './components/r-catefilterskeleton/index'
 import rgooditem from '@/components/r-gooditem/index'
 // 缺省页组件
 import rempty from '@/components/r-empty/index'
+// api
+import { finSubgoodsData } from '@/api/goods'
 export default {
   name: 'subcategory',
   setup () {
+    // 商品列表数据
+    const subProductList = ref([])
+    // 商品列表请求参数
+    const reqParams = reactive({
+      // 当前页码
+      page: 1,
+      // 每一页的数据大小
+      pageSize: 20,
+      // 分类id
+      categoryId: ''
+    })
+    // 商品列表加载
+    const loading = ref(false)
+    // 是否加载完毕
+    const finished = ref(false)
     // 首次是否加载完毕
     const firstLoading = ref(false)
     // route
@@ -152,8 +171,19 @@ export default {
     watch(() => route.params.id, (newval) => {
       // 判断当前val是否有值，并且路由的路径 是 /category/sub/ /category/sub/109243018
       if (newval && `/category/sub/${newval}` === route.path) {
+        // 是否初始化加载完毕
         firstLoading.value = false
         getFilterData()
+        // 重置当前页码 和 一页请求的数量
+        reqParams.page = 1
+        // 每一页的数量
+        reqParams.pageSize = 20
+        // 重置列表数据
+        subProductList.value = []
+        // 默认设置加载的初始值
+        loading.value = false
+        // 是否加载完毕
+        finished.value = false
       }
     }, {
       // 初始化执行 立即执行
@@ -185,7 +215,30 @@ export default {
         }
       }
     }
-    return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading }
+
+    // 到底部加载更多商品数据
+    const loadSubData = () => {
+      // 更改组件加载状态
+      loading.value = true
+      // 分类id
+      reqParams.categoryId = route.params.id
+      // 请求参数
+      finSubgoodsData(reqParams).then((res) => {
+        const { result: { items } } = res
+        // 查看后端是否返回了列表数据
+        if (items.length) {
+          subProductList.value.push(...items)
+          // 请求的页数+1
+          reqParams.page++
+        } else {
+          // 如果后端返回的列表数据为0 那么证明已经没有数据了 把finshed 设置为加载完成
+          finished.value = true
+        }
+        // 请求结束
+        loading.value = false
+      })
+    }
+    return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading, loading, finished, loadSubData, subProductList }
   },
   components: {
     rcatefilteskeleton,
