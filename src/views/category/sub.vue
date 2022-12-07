@@ -112,9 +112,13 @@ export default {
       // 当前页码
       page: 1,
       // 每一页的数据大小
-      pageSize: 20,
+      pageSize: 18,
       // 分类id
-      categoryId: ''
+      categoryId: '',
+      // 用户选择的分类数据
+      attrs: [],
+      // 品牌id
+      brandId: ''
     })
     // 商品列表加载
     const loading = ref(false)
