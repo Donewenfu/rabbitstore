@@ -73,7 +73,7 @@
         <!--商品区域-->
         <div class="product-area">
           <ul>
-            <li v-for="(item,index) in 20" :key="index">
+            <li v-for="(item,index) in 20" :key="index" :style="{'margin':(index+1)%5==0?'0px':'0px 12px 40px 12px'}">
               <rgooditem></rgooditem>
             </li>
           </ul>
@@ -156,7 +156,7 @@ export default {
         getFilterData()
       }
     }, {
-      // 初始化执行
+      // 初始化执行 立即执行
       immediate: true
     })
 
@@ -326,7 +326,6 @@ export default {
         display: flex;
         flex-wrap: wrap;
         li{
-          margin-right: 20px;
           margin-bottom: 30px;
         }
       }

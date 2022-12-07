@@ -17,6 +17,15 @@
 import { useRouter } from 'vue-router'
 export default {
   name: 'rgooditem',
+  props: {
+    // 商品数据
+    goodsData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
   setup () {
     // vue-route
     const router = useRouter()
