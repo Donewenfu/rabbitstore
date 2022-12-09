@@ -29,7 +29,7 @@
           <!--右侧规格值-->
           <div class="right-specvalue filtervalarea">
             <ul>
-              <li v-for="(item,inx) in filterListData.brands" :key="inx" :title="item.name"  :class="{'active':filterListData.brands.selectId == item.id}">{{item.name}}</li>
+              <li v-for="(item,inx) in filterListData.brands" @click="userSelectBrand(item)" :key="inx" :title="item.name"  :class="{'active':filterListData.brands.selectId == item.id}">{{item.name}}</li>
             </ul>
           </div>
         </div>
@@ -42,14 +42,14 @@
           <!--右侧规格值-->
           <div class="right-specvalue filtervalarea">
             <ul>
-              <li v-for="(spec,inx) in item.properties" :key="inx" :title="spec.name" :class="{'active':item.selectId == spec.id}">{{spec.name}}</li>
+              <li v-for="(spec,inx) in item.properties" :key="inx" :title="spec.name" @click="selectSpec(item,spec)" :class="{'active':item.selectId == spec.id}">{{spec.name}}</li>
             </ul>
           </div>
         </div>
       </div>
 
       <!--商品区域-->
-      <div class="product-list-area" v-if="filterListData.saleProperties.length>0">
+      <div class="product-list-area" v-if="firstLoading&&filterListData.saleProperties.length>0">
         <!--条件筛选区域-->
         <div class="producct-filter-area">
           <div class="left-area">
@@ -66,8 +66,8 @@
             </a>
           </div>
           <div class="right-area">
-            <rcheckbox v-model="cateProductFilter.inventory">仅显示有货商品</rcheckbox>
-            <rcheckbox v-model="cateProductFilter.onlyDiscount">仅显示特惠商品</rcheckbox>
+            <rcheckbox v-model="cateProductFilter.inventory" @change="changeRightselect">仅显示有货商品</rcheckbox>
+            <rcheckbox v-model="cateProductFilter.onlyDiscount" @change="changeRightselect">仅显示特惠商品</rcheckbox>
           </div>
         </div>
         <!--商品区域-->
@@ -108,7 +108,7 @@ export default {
     // 商品列表数据
     const subProductList = ref([])
     // 商品列表请求参数
-    const reqParams = reactive({
+    let reqParams = reactive({
       // 当前页码
       page: 1,
       // 每一页的数据大小
@@ -175,19 +175,13 @@ export default {
     watch(() => route.params.id, (newval) => {
       // 判断当前val是否有值，并且路由的路径 是 /category/sub/ /category/sub/109243018
       if (newval && `/category/sub/${newval}` === route.path) {
+        subProductList.value = []
+        finished.value = false
         // 是否初始化加载完毕
         firstLoading.value = false
+        // 获取筛选条件
         getFilterData()
-        // 重置当前页码 和 一页请求的数量
-        reqParams.page = 1
-        // 每一页的数量
-        reqParams.pageSize = 20
-        // 重置列表数据
-        subProductList.value = []
-        // 默认设置加载的初始值
-        loading.value = false
-        // 是否加载完毕
-        finished.value = false
+        // 商品列表清空
       }
     }, {
       // 初始化执行 立即执行
@@ -207,6 +201,7 @@ export default {
     })
     // 点击选中
     const selectFilter = (filterName) => {
+      console.log(filterName)
       if (filterName !== 'price') {
         if (cateProductFilter.sortField === filterName) return
         cateProductFilter.sortField = filterName
@@ -218,6 +213,18 @@ export default {
           cateProductFilter.sortMethod = cateProductFilter.sortMethod === 'desc' ? 'asc' : 'desc'
         }
       }
+      console.log('*/***')
+      console.log(cateProductFilter)
+      console.log('****')
+      finished.value = true
+      // 合并参数 请求
+      reqParams = { ...cateProductFilter, ...reqParams }
+      // 初始页面为第一页
+      reqParams.page = 1
+      // 清空商品列表数据
+      subProductList.value = []
+      // 请求数据
+      loadSubData()
     }
 
     // 到底部加载更多商品数据
@@ -242,7 +249,69 @@ export default {
         loading.value = false
       })
     }
-    return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading, loading, finished, loadSubData, subProductList }
+
+    // 用户选择右侧单选框事件
+    const changeRightselect = () => {
+      finished.value = true
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...cateProductFilter }
+      // 初始化为第一页
+      reqParams.page = 1
+      // 清空数据列表
+      subProductList.value = []
+      loadSubData()
+    }
+    // 用户选择筛选条件
+    const selectSpec = (parent, spec) => {
+      // 用户选中的规格id
+      const userSelectId = spec.id
+      // 父级规格数据
+      parent.selectId = userSelectId
+      // 条件筛选条件
+      addFilterParmams(parent, spec)
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...cateProductFilter }
+      // 初始化为第一页
+      reqParams.page = 1
+      // 清空数据列表
+      subProductList.value = []
+      // 请求数据
+      loadSubData()
+    }
+
+    // 添加筛选条件
+    const addFilterParmams = (parent, spec) => {
+      // {groupName: "颜色", propertyName: "西瓜红"}
+      // 需要判断 是否选中的是统一规格 只是规格值不一样 循环数组 进行查找 查找出用户选中的 下标 如果返回 -1 证明没有选中 如果有值就删除 再进行push
+      const userSelectIndex = reqParams.attrs.findIndex(item => {
+        return item.groupName === parent.name
+      })
+      if (userSelectIndex !== -1) { // 没找到情况
+        reqParams.attrs.splice(userSelectIndex, 1)
+      }
+      reqParams.attrs.push({
+        groupName: parent.name,
+        propertyName: spec.name
+      })
+    }
+
+    // 用户选中品牌
+    const userSelectBrand = (data) => {
+      console.log(data)
+      const { id } = data
+      reqParams.brandId = id
+      // 发送请求
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...cateProductFilter }
+      // 初始化为第一页
+      reqParams.page = 1
+      // 清空数据列表
+      subProductList.value = []
+      // 请求数据
+      loadSubData()
+    }
+
+    return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading, loading, finished, loadSubData, subProductList, changeRightselect, selectSpec, userSelectBrand }
   },
   components: {
     rcatefilteskeleton,
