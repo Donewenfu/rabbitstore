@@ -49,7 +49,7 @@
       </div>
 
       <!--商品区域-->
-      <div class="product-list-area" v-if="filterListData.saleProperties.length>0">
+      <div class="product-list-area" v-if="firstLoading&&filterListData.saleProperties.length>0">
         <!--条件筛选区域-->
         <div class="producct-filter-area">
           <div class="left-area">
@@ -66,8 +66,8 @@
             </a>
           </div>
           <div class="right-area">
-            <rcheckbox v-model="cateProductFilter.inventory">仅显示有货商品</rcheckbox>
-            <rcheckbox v-model="cateProductFilter.onlyDiscount">仅显示特惠商品</rcheckbox>
+            <rcheckbox v-model="cateProductFilter.inventory" @change="changeRightselect">仅显示有货商品</rcheckbox>
+            <rcheckbox v-model="cateProductFilter.onlyDiscount" @change="changeRightselect">仅显示特惠商品</rcheckbox>
           </div>
         </div>
         <!--商品区域-->
@@ -108,7 +108,7 @@ export default {
     // 商品列表数据
     const subProductList = ref([])
     // 商品列表请求参数
-    const reqParams = reactive({
+    let reqParams = reactive({
       // 当前页码
       page: 1,
       // 每一页的数据大小
@@ -175,19 +175,13 @@ export default {
     watch(() => route.params.id, (newval) => {
       // 判断当前val是否有值，并且路由的路径 是 /category/sub/ /category/sub/109243018
       if (newval && `/category/sub/${newval}` === route.path) {
+        subProductList.value = []
+        finished.value = false
         // 是否初始化加载完毕
         firstLoading.value = false
+        // 获取筛选条件
         getFilterData()
-        // 重置当前页码 和 一页请求的数量
-        reqParams.page = 1
-        // 每一页的数量
-        reqParams.pageSize = 20
-        // 重置列表数据
-        subProductList.value = []
-        // 默认设置加载的初始值
-        loading.value = false
-        // 是否加载完毕
-        finished.value = false
+        // 商品列表清空
       }
     }, {
       // 初始化执行 立即执行
@@ -218,6 +212,15 @@ export default {
           cateProductFilter.sortMethod = cateProductFilter.sortMethod === 'desc' ? 'asc' : 'desc'
         }
       }
+      finished.value = true
+      // 合并参数 请求
+      reqParams = { ...cateProductFilter, ...reqParams }
+      // 初始页面为第一页
+      reqParams.page = 1
+      // 清空商品列表数据
+      subProductList.value = []
+      // 请求数据
+      loadSubData()
     }
 
     // 到底部加载更多商品数据
@@ -242,7 +245,19 @@ export default {
         loading.value = false
       })
     }
-    return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading, loading, finished, loadSubData, subProductList }
+
+    // 用户选择右侧单选框事件
+    const changeRightselect = () => {
+      finished.value = true
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...cateProductFilter }
+      // 初始化为第一页
+      reqParams.page = 1
+      // 清空数据列表
+      subProductList.value = []
+      loadSubData()
+    }
+    return { breadData, filterListData, cateProductFilter, selectFilter, firstLoading, loading, finished, loadSubData, subProductList, changeRightselect }
   },
   components: {
     rcatefilteskeleton,

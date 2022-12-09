@@ -1,5 +1,5 @@
 <template>
-  <div class="r-goodsitem-component" @click="godetail">
+  <div class="r-goodsitem-component" @click="godetail(goodsData)">
     <img class="goods-img" :src="goodsData.picture" alt="">
     <!--商品标题-->
     <div class="goodsitem-name">{{ goodsData.name }}</div>
@@ -31,9 +31,9 @@ export default {
     // vue-route
     const router = useRouter()
     // 跳转页面
-    const godetail = () => {
+    const godetail = (data) => {
       router.push({
-        path: '/goodsdetail/100101'
+        path: `/goodsdetail/${data.id}`
       })
     }
     return { godetail }

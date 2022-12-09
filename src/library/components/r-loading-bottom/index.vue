@@ -1,5 +1,5 @@
 <template>
-  <div class="r-loading-bottom-components" ref="container">
+  <div class="r-loading-bottom-components" ref="target">
     <!--正在加载效果-->
     <div class="loading-area" v-if="loading">
       <img src="../../../assets/images/loading.gif" alt="" class="loadingimg" title="loading">
@@ -7,6 +7,7 @@
     </div>
     <!--加载完成没有更多数据-->
     <div class="loading-finished" v-if="finished">
+      <img src="../../../assets/images/emptygoods.png" alt="">
       <span>亲没有更多数据了！</span>
     </div>
   </div>
@@ -33,18 +34,18 @@ export default {
   },
   setup (props, { emit }) {
     // 到达元素
-    const container = ref(null)
+    const target = ref(null)
     // 使用vue use插件
-    const { stop } = useIntersectionObserver(container, ([isIntersecting], observer) => {
+    useIntersectionObserver(target, ([isIntersecting]) => {
       if (isIntersecting) {
         // 需要进行判断 是否正在加 获取 要求为false 并且需要加载完毕
         if (!props.loading && !props.finished) {
+          console.log('我执行一次666')
           emit('infiniteloadData')
-          console.log(stop)
         }
       }
     })
-    return { container }
+    return { target }
   }
 }
 </script>
@@ -58,6 +59,7 @@ export default {
   .loading-area{
     display: flex;
     align-items: center;
+    height: 200px;
     .loadingimg{
       width: 50px;
       height: 50px;
@@ -71,6 +73,9 @@ export default {
     align-items: center;
     span{
       color: #999;
+    }
+    img{
+      width: 120px;
     }
   }
 }
