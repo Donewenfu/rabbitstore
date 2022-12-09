@@ -330,6 +330,9 @@ export default {
 
 <style scoped lang="scss">
 .subcategory-page{
+  .catefilter-loading{
+    margin: 20px;
+  }
   background-color: #f5f5f5;
   .container{
     overflow: hidden;
