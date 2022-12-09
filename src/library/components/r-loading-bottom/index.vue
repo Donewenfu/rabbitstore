@@ -44,6 +44,9 @@ export default {
           emit('infiniteloadData')
         }
       }
+    }, {
+      // 交差比例
+      threshold: 0
     })
     return { target }
   }
@@ -56,6 +59,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 30px;
   .loading-area{
     display: flex;
     align-items: center;
