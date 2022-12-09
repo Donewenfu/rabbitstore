@@ -213,14 +213,13 @@ export default {
           cateProductFilter.sortMethod = cateProductFilter.sortMethod === 'desc' ? 'asc' : 'desc'
         }
       }
-      console.log('*/***')
-      console.log(cateProductFilter)
-      console.log('****')
       finished.value = true
       // 合并参数 请求
       reqParams = { ...cateProductFilter, ...reqParams }
       // 初始页面为第一页
       reqParams.page = 1
+      // 是否加载完毕
+      finished.value = false
       // 清空商品列表数据
       subProductList.value = []
       // 请求数据
@@ -257,6 +256,8 @@ export default {
       reqParams = { ...reqParams, ...cateProductFilter }
       // 初始化为第一页
       reqParams.page = 1
+      // 是否加载完毕
+      finished.value = false
       // 清空数据列表
       subProductList.value = []
       loadSubData()
@@ -273,6 +274,8 @@ export default {
       reqParams = { ...reqParams, ...cateProductFilter }
       // 初始化为第一页
       reqParams.page = 1
+      // 是否加载完毕
+      finished.value = false
       // 清空数据列表
       subProductList.value = []
       // 请求数据
@@ -296,9 +299,11 @@ export default {
     }
 
     // 用户选中品牌
-    const userSelectBrand = (data) => {
-      console.log(data)
-      const { id } = data
+    const userSelectBrand = (brand) => {
+      const { id } = brand
+      // 用户选中的品牌id
+      filterListData.value.brands.selectId = id
+      // 选中品牌id
       reqParams.brandId = id
       // 发送请求
       // 合并请求参数，保留之前参数
@@ -307,6 +312,8 @@ export default {
       reqParams.page = 1
       // 清空数据列表
       subProductList.value = []
+      // 是否加载完毕
+      finished.value = false
       // 请求数据
       loadSubData()
     }
