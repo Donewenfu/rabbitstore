@@ -71,6 +71,7 @@ export default {
   .loading-finished{
     display: flex;
     align-items: center;
+    margin: 20px 0;
     span{
       color: #999;
     }
