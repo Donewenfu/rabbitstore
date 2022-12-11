@@ -275,6 +275,11 @@ export default {
         span{
           font-size: 13px;
         }
+        &:hover{
+          span{
+            color: $txColor;
+          }
+        }
       }
     }
   }
