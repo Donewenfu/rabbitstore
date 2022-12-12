@@ -62,7 +62,7 @@ export default {
     // 使用vuex 发送dispatch actions 异步提交 mutations
     store.dispatch('category/setListData')
     // 更新首页选中
-    store.commit('user/setUserActive', store.state.category.cateList[0].name)
+    store.commit('user/setUserActive', store.state.user.userActive || store.state.category.cateList[0].name)
     // 将数据提供给后代组件 provide
     provide('navList', navListData)
     console.log(route.path)

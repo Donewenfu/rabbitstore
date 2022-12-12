@@ -21,7 +21,7 @@ const user = {
         token: ''
       },
       // 用户当前访问的类目
-      userActive: '居家'
+      userActive: ''
     }
   },
   mutations: {
