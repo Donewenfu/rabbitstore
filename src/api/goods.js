@@ -8,5 +8,5 @@ export function finSubgoodsData (params) {
 
 // 获取商品详情页数据
 export function getGoodsDetail (id) {
-  return request('/goods', 'post', { id })
+  return request('/goods', 'get', { id })
 }

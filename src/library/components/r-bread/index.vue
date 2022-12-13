@@ -48,7 +48,7 @@ export default {
     &:last-child{
       a{
         &:hover{
-          color: #333;
+          //color: #333;
         }
         color: $txColor;
       }
