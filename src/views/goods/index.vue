@@ -3,7 +3,7 @@
     <div class="container">
       <!--面包屑导航-->
       <div class="product-bread">
-        <!--商品详情面包屑导航组件-->
+        <!--商品详情面包屑导航组件 -->
         <rgoodsdetailbread :goodsData="goods"></rgoodsdetailbread>
       </div>
       <!--商品介绍区域-->
