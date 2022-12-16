@@ -11,7 +11,6 @@ const globalDirective = {
             observer.unobserve(el)
             // 判断图片是否加载失败
             el.onerror = () => {
-              console.log('图片加载失败')
             }
             // 设置img的src属性
             el.src = bindings.value
