@@ -11,6 +11,8 @@
         <!--左侧图片-->
         <div class="left-image">
           <rgoodsimage :images="goods.mainPictures"></rgoodsimage>
+          <!--品牌介绍-->
+          <rgoodsintroduce></rgoodsintroduce>
         </div>
         <!--右侧spec规格-->
         <div class="right-spec">右侧spec</div>
@@ -26,6 +28,8 @@
 <script>
 // 面包屑导航组件
 import rgoodsdetailbread from './component/r-goodsdetailbread/index'
+// 品牌介绍
+import rgoodsintroduce from './component/r-goodsintroduce'
 // 详情图片
 import rgoodsimage from './component/r-goodsimage'
 // api
@@ -43,7 +47,8 @@ export default {
   },
   components: {
     rgoodsdetailbread,
-    rgoodsimage
+    rgoodsimage,
+    rgoodsintroduce
   }
 }
 
@@ -85,9 +90,12 @@ const useGoods = () => {
     .left-image{
       width: 480px;
       margin-right: 48px;
+      .brand-list{
+        margin-top: 30px;
+      }
     }
     .right-spec{
-      width: 500px;
+      flex: 1;
       background-color: skyblue;
     }
   }
