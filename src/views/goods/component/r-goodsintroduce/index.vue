@@ -10,27 +10,27 @@
         </div>
       </li>
       <li>
-        <h2>销量人气</h2>
+        <h2>商品评价</h2>
         <p>200+</p>
         <div class="bottom-desc">
-          <i class="iconfont icon-xiaoliang"></i>
-          <span>销量人气</span>
+          <i class="iconfont icon-pingjiax"></i>
+          <span>查看评价</span>
         </div>
       </li>
       <li>
-        <h2>销量人气</h2>
+        <h2>收藏人气</h2>
         <p>200+</p>
         <div class="bottom-desc">
-          <i class="iconfont icon-xiaoliang"></i>
-          <span>销量人气</span>
+          <i class="iconfont icon-pinpaitemai-tianchong"></i>
+          <span>收藏商品</span>
         </div>
       </li>
       <li>
-        <h2>销量人气</h2>
+        <h2>品牌信息</h2>
         <p>200+</p>
         <div class="bottom-desc">
           <i class="iconfont icon-xiaoliang"></i>
-          <span>销量人气</span>
+          <span>品牌主页</span>
         </div>
       </li>
     </ul>

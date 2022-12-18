@@ -1,5 +1,5 @@
 <template>
-  <div class="r-price-components">
+  <div class="r-price-components" :class="isLine?'lineclass':''">
     <span class="priceunit" :style="priceStyle">{{ unit }}</span>
     <span class="pricenum" :style="priceStyle">{{ priceNum }}</span>
   </div>
@@ -34,6 +34,11 @@ export default {
     autofix: {
       type: Boolean,
       default: false
+    },
+    // 是否微划线价格
+    isLine: {
+      type: Boolean,
+      default: false
     }
   },
   setup (props) {
@@ -60,5 +65,9 @@ export default {
 <style scoped lang="scss">
 .r-price-components{
   color: $priceColor;
+}
+.lineclass{
+  text-decoration: line-through;
+  color: #999;
 }
 </style>

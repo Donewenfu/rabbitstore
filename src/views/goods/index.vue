@@ -14,8 +14,22 @@
           <!--品牌介绍-->
           <rgoodsintroduce></rgoodsintroduce>
         </div>
-        <!--右侧spec规格-->
-        <div class="right-spec">右侧spec</div>
+        <!--右侧spec规格 商品详情-->
+        <div class="right-spec">
+          <!--标题价格-->
+          <div class="product-name">{{ goods.name }}</div>
+          <!--标题简介-->
+          <div class="product-desc">{{ goods.desc }}</div>
+          <!--商品价格区域-->
+          <div class="product-price-area">
+            <rprice :price="goods.price" size="26"></rprice>
+            <rprice :price="goods.oldPrice" is-line size="16"></rprice>
+          </div>
+          <!--商品的服务-->
+          <div class="product-server">
+            商品服务区域
+          </div>
+        </div>
       </div>
       <!--同类商品介绍区域-->
       <div class="product-same box">相同商品介绍</div>
@@ -96,7 +110,32 @@ const useGoods = () => {
     }
     .right-spec{
       flex: 1;
-      background-color: skyblue;
+      background-color: #fff;
+      .product-name{
+        font-size: 22px;
+        color: #333;
+        margin: 0 0 10px 0;
+      }
+      .product-desc{
+        font-size: 13px;
+        color: #666;
+      }
+      .product-price-area{
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        .r-price-components{
+          &:last-child {
+            margin-left: 10px;
+          }
+        }
+      }
+      .product-server{
+        background-color: #f5f5f5;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: $borderRadius;
+      }
     }
   }
   .product-same{

@@ -1,5 +1,5 @@
 <template>
-  <div class="r-cateproduct-components">
+  <div class="r-cateproduct-components" @click="goUrl(productData)">
     <div class="r-cateproduct-img">
       <img :src="productData.picture" alt="">
     </div>
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
+
 export default {
   name: 'rproduct',
   props: {
@@ -22,6 +24,17 @@ export default {
       default () {
         return {}
       }
+    }
+  },
+  setup () {
+    const router = useRouter()
+    const goUrl = ({ id }) => {
+      router.push({
+        path: `/goodsDetail/${id}`
+      })
+    }
+    return {
+      goUrl
     }
   }
 }
