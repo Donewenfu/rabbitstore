@@ -27,7 +27,25 @@
           </div>
           <!--商品的服务-->
           <div class="product-server">
-            商品服务区域
+            <ul>
+              <li>
+                <p>促销</p>
+                <span>12月好物放送，App领券购买直降120元</span>
+              </li>
+              <li>
+                <p>配送</p>
+                <span>12月好物放送，App领券购买直降120元</span>
+              </li>
+              <li>
+                <p>促销</p>
+                <div class="server-list">
+                  <span>无忧退货</span>
+                  <span>多块好省</span>
+                  <span>快速发货</span>
+                  <a href="javascript:;">查看详情</a>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -135,6 +153,39 @@ const useGoods = () => {
         padding: 20px;
         box-sizing: border-box;
         border-radius: $borderRadius;
+        ul{
+          li{
+            &:nth-child(2){
+              margin: 10px 0;
+            }
+            display: flex;
+            align-items: center;
+            p{
+              margin-right: 15px;
+            }
+            .server-list{
+              display: flex;
+              align-items: center;
+              a{
+                color: $txColor;
+              }
+              span{
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                &:before{
+                  content: '';
+                  display: inline-block;
+                  width: 5px;
+                  height: 5px;
+                  border-radius: 50%;
+                  background-color: $txColor;
+                  margin-right: 4px;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
