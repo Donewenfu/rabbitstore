@@ -34,10 +34,12 @@
               </li>
               <li>
                 <p>配送</p>
-                <span>12月好物放送，App领券购买直降120元</span>
+                <span>配送至</span>
+                <!--地区选择组件-->
+                <rselectcity :goods="goods" @change="selectCity" :fullLocation="fullLocation"></rselectcity>
               </li>
               <li>
-                <p>促销</p>
+                <p>服务</p>
                 <div class="server-list">
                   <span>无忧退货</span>
                   <span>多块好省</span>
@@ -73,8 +75,16 @@ export default {
   name: 'goodsDetail',
   setup () {
     const goods = useGoods()
+    // 地区信息
+    const fullLocation = ref('北京市 北京 东城区')
+    // 地区选中事件
+    const selectCity = (data) => {
+      fullLocation.value = data.fullLocation
+    }
     return {
-      goods
+      goods,
+      selectCity,
+      fullLocation
     }
   },
   components: {
