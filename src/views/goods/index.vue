@@ -71,6 +71,7 @@ import { getGoodsDetail } from '@/api/goods'
 // vueroute
 import { useRoute } from 'vue-router'
 import { nextTick, ref } from 'vue'
+import { useStore } from 'vuex'
 export default {
   name: 'goodsDetail',
   setup () {
@@ -97,6 +98,7 @@ export default {
 const useGoods = () => {
   // vueroute
   const route = useRoute()
+  const store = useStore()
   const goods = ref(null)
   getGoodsDetail(route.params.id).then(async data => {
     // 当id发生变化的时候 重置goods数据
@@ -104,7 +106,10 @@ const useGoods = () => {
     // nextTick 下一次dom更新循环结束的回调函数 返回的是一个promise
     await nextTick()
     goods.value = data.result
-    console.log(goods)
+    // 设置当前菜单的 选中项目
+    if (goods.value.categories[0] && goods.value.categories[0].parent.name) {
+      store.commit('user/setUserActive', goods.value.categories[0].parent.name)
+    }
   })
   return goods
 }
