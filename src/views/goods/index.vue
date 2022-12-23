@@ -76,11 +76,31 @@ export default {
   name: 'goodsDetail',
   setup () {
     const goods = useGoods()
-    // 地区信息
-    const fullLocation = ref('北京市 北京 东城区')
+    // 设置省市区的默认值
+    const provinceCode = ref('110000')
+    // 设置默认的区
+    const cityAreaCode = ref('119900')
+    // 设置默认的地区code
+    const countyCode = ref('110101')
+    // 设置默认的填充文字
+    const fullLocation = ref('')
     // 地区选中事件
     const selectCity = (data) => {
       fullLocation.value = data.fullLocation
+    }
+    // 判断是否有默认的地址数据
+    if (goods.userAddresses) {
+      const defaultAddr = goods.userAddresses.find(addr => addr.isDefault === 1)
+      if (defaultAddr) {
+        // 省
+        provinceCode.value = defaultAddr.provinceCode
+        // 市
+        cityAreaCode.value = defaultAddr.cityCode
+        // 地区
+        countyCode.value = defaultAddr.countyCode
+        // 完全地址
+        fullLocation.value = defaultAddr.fullLocation
+      }
     }
     return {
       goods,

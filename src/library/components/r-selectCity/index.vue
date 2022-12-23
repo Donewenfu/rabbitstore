@@ -1,7 +1,8 @@
 <template>
   <div class="r-selectcity-components" ref="target">
     <div class="selectcity-box" :class="showCitybox?'on':''" @click="toggle">
-      <p>{{ fullLocation }}</p>
+      <p v-if="!fullLocation">{{placeholder}}</p>
+      <p v-else>{{ fullLocation }}</p>
       <i class="iconfont icon-next-icon-copy"></i>
     </div>
     <!--城市数据盒子-->
@@ -26,14 +27,6 @@ import { onClickOutside } from '@vueuse/core'
 export default {
   name: 'rselectcity',
   setup (props, { emit }) {
-    // 设置省市区的默认值
-    const provinceCode = ref('110000')
-    // 设置默认的区
-    const cityAreaCode = ref('119900')
-    // 设置默认的地区code
-    const countyCode = ref('110101')
-    // 设置默认的填充文字
-    const fullLocationText = ref('北京市 市辖区 东城区')
     // 盒子
     const target = ref(null)
     // 定义城市数据数组形式
@@ -70,21 +63,7 @@ export default {
         }
       })
     }
-    // 判断是否有默认的地址数据
-    console.log(props.goods.userAddresses)
-    if (props.goods.userAddresses) {
-      const defaultAddr = props.goods.userAddresses.find(addr => addr.isDefault === 1)
-      if (defaultAddr) {
-        // 省
-        provinceCode.value = defaultAddr.provinceCode
-        // 市
-        cityAreaCode.value = defaultAddr.cityCode
-        // 地区
-        countyCode.value = defaultAddr.countyCode
-        // 完全地址
-        fullLocationText.value = defaultAddr.fullLocation
-      }
-    }
+
     // 获取地区数据
     getCityData().then((res) => {
       cityData.value.push(...res)
@@ -161,14 +140,15 @@ export default {
     }
   },
   props: {
-    goods: {
-      type: Object,
-      default: () => {}
-    },
     // 显示框显示的地区信息
     fullLocation: {
       type: String,
       default: ''
+    },
+    // 地址选择提示
+    placeholder: {
+      type: String,
+      default: '请选择配送地址'
     }
   }
 }
