@@ -36,7 +36,7 @@
                 <p>配送</p>
                 <span>配送至</span>
                 <!--地区选择组件-->
-                <rselectcity :goods="goods" @change="selectCity" :fullLocation="fullLocation"></rselectcity>
+                <rselectcity  @change="selectCity" :fullLocation="fullLocation"></rselectcity>
               </li>
               <li>
                 <p>服务</p>
@@ -48,6 +48,10 @@
                 </div>
               </li>
             </ul>
+          </div>
+          <!--商品sku区域-->
+          <div class="product-sku-area">
+            <rgoodssku :goods="goods"></rgoodssku>
           </div>
         </div>
       </div>
@@ -66,6 +70,8 @@ import rgoodsdetailbread from './component/r-goodsdetailbread/index'
 import rgoodsintroduce from './component/r-goodsintroduce'
 // 详情图片
 import rgoodsimage from './component/r-goodsimage'
+// 商品sku组件
+import rgoodssku from './component/r-goodssku'
 // api
 import { getGoodsDetail } from '@/api/goods'
 // vueroute
@@ -111,7 +117,8 @@ export default {
   components: {
     rgoodsdetailbread,
     rgoodsimage,
-    rgoodsintroduce
+    rgoodsintroduce,
+    rgoodssku
   }
 }
 

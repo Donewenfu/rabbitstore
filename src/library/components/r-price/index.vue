@@ -16,7 +16,7 @@ export default {
       type: String,
       default: '￥'
     },
-    // 大小
+    // 字体大小
     size: {
       type: String,
       value: '28'
