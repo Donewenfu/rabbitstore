@@ -36,7 +36,7 @@ export default {
     const fullLocationText = ref('北京市 市辖区 东城区')
     // 盒子
     const target = ref(null)
-    // 定义城市数据
+    // 定义城市数据数组形式
     const cityData = ref([])
     // 是否显示地区盒子
     const showCitybox = ref(false)
@@ -51,7 +51,7 @@ export default {
       // 区的数据
       countyCode: '',
       countyName: '',
-      // 组合的名字
+      // 组合的名字 省名称 城市名称 区域名称
       fullLocation: ''
     })
     // 获取城市数据
