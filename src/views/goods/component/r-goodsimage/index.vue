@@ -69,8 +69,6 @@ export default {
         // 设置遮罩容器的定位
         position.left = position.left + 'px'
         position.top = position.top + 'px'
-
-        console.log(zoomstyle)
       } else {
         showbigimg.value = false
       }
@@ -106,6 +104,7 @@ export default {
     position: absolute;
     right: -310px;
     border-radius: $borderRadius;
+    z-index: 99;
   }
   .left-bigimg{
     width: 390px;

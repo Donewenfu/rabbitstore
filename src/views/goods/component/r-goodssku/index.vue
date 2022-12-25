@@ -4,6 +4,7 @@
     <div class="product-spec" v-for="(item,index) in goods.specs" :key="index">
       <div class="title">{{ item.name }}</div>
       <ul>
+        <!--sku数据-->
         <li
           class="default"
           :class="{'imgclass':val.picture,'selected':val.selected}"
@@ -18,6 +19,8 @@
 </template>
 
 <script>
+// sku方法模块
+import { Skufun } from '@/views/goods/component/r-goodssku/model/skufun'
 export default {
   name: 'rgoodssku',
   props: {
@@ -26,7 +29,8 @@ export default {
       default: () => {}
     }
   },
-  setup () {
+  setup (props) {
+    Skufun.getSkupath(props.goods)
     const selectedSku = (item, val) => {
       // 判断当前元素是否选中
       if (!val.selected) {
