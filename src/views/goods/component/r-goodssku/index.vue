@@ -7,7 +7,7 @@
         <!--sku数据-->
         <li
           class="default"
-          :class="{'imgclass':val.picture,'selected':val.selected}"
+          :class="{'imgclass':val.picture,'selected':val.selected, 'disabled': val.disabled}"
           @click="selectedSku(item,val)"
           v-for="(val,idx) in item.values" :key="idx">
           <img v-if="val.picture" :src="val.picture" :title="val.name">
@@ -30,8 +30,14 @@ export default {
     }
   },
   setup (props) {
-    Skufun.getSkupath(props.goods)
+    // sku字典
+    const pathMap = Skufun.getSkupath(props.goods)
+    // sku初始化判断规格
+    Skufun.updateDisabledStatus(props.goods.specs, pathMap)
+    // 改变用户选中的
     const selectedSku = (item, val) => {
+      // 判断当前规格是否能点击 根据对象上的disabled 进行判断
+      if (val.disabled) return
       // 判断当前元素是否选中
       if (!val.selected) {
         // 拍他思想
@@ -43,6 +49,8 @@ export default {
       } else {
         val.selected = false
       }
+      // 当用户点击按钮的时候 需要去查看每个单元格规格是否需要禁用
+      Skufun.updateDisabledStatus(props.goods.specs, pathMap)
     }
     return {
       selectedSku
@@ -65,7 +73,12 @@ export default {
   }
   .disabled{
     cursor: not-allowed;
-    border: 1px dashed #f5f5f5;
+    border: 1px dashed #eaeaea !important;
+    color: #eaeaea !important;
+    img{
+      opacity: .5;
+      cursor: not-allowed;
+    }
   }
   .product-spec{
     ul{
