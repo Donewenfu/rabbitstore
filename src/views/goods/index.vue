@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-detail-page" v-if="goods">
-    <div class="container">
+  <div class="goods-detail-page">
+    <div class="container" v-if="goods">
       <!--面包屑导航-->
       <div class="product-bread">
         <!--商品详情面包屑导航组件 -->
@@ -51,7 +51,7 @@
           </div>
           <!--商品sku区域-->
           <div class="product-sku-area">
-            <rgoodssku :goods="goods"></rgoodssku>
+            <rgoodssku :goods="goods" @change="changeSku"></rgoodssku>
           </div>
         </div>
       </div>
@@ -59,6 +59,11 @@
       <div class="product-same box">相同商品介绍</div>
       <!--商品详情介绍-->
       <div class="product-detail-info box">商品详情信息</div>
+    </div>
+    <div v-else class="loading-area container">
+      <div class="container inner-logo">
+        <rloadinglogo></rloadinglogo>
+      </div>
     </div>
   </div>
 </template>
@@ -108,10 +113,19 @@ export default {
         fullLocation.value = defaultAddr.fullLocation
       }
     }
+    // 用户选择完毕sku
+    const changeSku = (data) => {
+      if (data.price) {
+        // 更新详情页上的数据
+        goods.value.price = data.price
+        goods.value.oldPrice = data.oldPrice
+      }
+    }
     return {
       goods,
       selectCity,
-      fullLocation
+      fullLocation,
+      changeSku
     }
   },
   components: {
@@ -144,6 +158,22 @@ const useGoods = () => {
 </script>
 
 <style scoped lang="scss">
+.loading-area{
+  width: 100%;
+  height: 500px;
+  position: relative;
+  .inner-logo{
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: $borderRadius;
+    min-height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 .goods-detail-page{
   width: 100%;
   height: 100%;

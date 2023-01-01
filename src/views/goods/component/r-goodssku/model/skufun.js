@@ -66,6 +66,27 @@ class Skufun {
       })
     })
   }
+
+  // 根据skuid 选中规格
+  static initDefaultsku(goods, skuid) {
+    // 根据skuid 在skus 集合中找到sku单品
+    // 判断skuid是否存在
+    if (skuid) {
+      const currentSku = goods.skus.find(sku => sku.id === skuid)
+      // 如果早skus中找到
+      if (currentSku) {
+        goods.specs.forEach((spec, index) => {
+          // 当前规格 找到sku 的规格
+          const skuName = currentSku.specs[index].valueName
+          // 循环商品规格
+          spec.values.forEach(val => {
+            // 如果找到的规格名字等于 specs 中的name 那么给这个规格设置一个选中状态
+            val.selected = val.name === skuName
+          })
+        })
+      }
+    }
+  }
 }
 
 export {
