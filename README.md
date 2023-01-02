@@ -1,4 +1,4 @@
-# xianmiStore 象米商城练习项目
+# xianmiStore 象米商城练
 
 ## Project setup 项目安装依赖
 ```
