@@ -51,7 +51,12 @@
           </div>
           <!--商品sku区域-->
           <div class="product-sku-area">
+            <!--sku选择组件-->
             <rgoodssku :goods="goods" @change="changeSku"></rgoodssku>
+            <!--计算组件-->
+            <rcounter v-model="count" :max="goods.inventory"></rcounter>
+            <!--按钮组件-->
+            <rbutton>加入购物车</rbutton>
           </div>
         </div>
       </div>
@@ -83,9 +88,13 @@ import { getGoodsDetail } from '@/api/goods'
 import { useRoute } from 'vue-router'
 import { nextTick, ref } from 'vue'
 import { useStore } from 'vuex'
+import Rbutton from "@/library/components/r-button/index.vue";
 export default {
   name: 'goodsDetail',
   setup () {
+    // 用户选中的数量
+    const count = ref(1)
+    // 商品数据
     const goods = useGoods()
     // 设置省市区的默认值
     const provinceCode = ref('110000')
@@ -119,16 +128,23 @@ export default {
         // 更新详情页上的数据
         goods.value.price = data.price
         goods.value.oldPrice = data.oldPrice
+        goods.value.inventory = data.inventory
+        // 更改计算器显示
+        count.value = 1
+      } else {
+        count.value = 1
       }
     }
     return {
       goods,
       selectCity,
       fullLocation,
-      changeSku
+      changeSku,
+      count
     }
   },
   components: {
+    Rbutton,
     rgoodsdetailbread,
     rgoodsimage,
     rgoodsintroduce,

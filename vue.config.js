@@ -1,5 +1,6 @@
 const path = require('path')
 module.exports = {
+  lintOnSave: false,
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
@@ -17,10 +18,10 @@ module.exports = {
     })
   },
   devServer: {
-    // 自动打开
-    open: true,
-    port: 9528,
-    hotOnly: false,
-    public: '0.0.0.0:9528'
+    port: 3033,
+　　host: "0.0.0.0",
+　　https: false, // https:{type:Boolean}
+　　open: true, // 配置自动启动浏览器
+　　disableHostCheck: true, //webpack4.0 开启热更新  主要代码
   }
 }
