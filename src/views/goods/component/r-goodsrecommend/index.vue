@@ -1,7 +1,7 @@
 <template>
   <div class="c-goodscommend-component">
     <!--标题区域-->
-    <div class="c-goodsrecommend-title">推荐商品</div>
+    <div class="c-goodsrecommend-title">同类商品推荐</div>
     <!--数据轮播区域-->
     <div class="c-recommend-swiper">
       <rswiper :swiperData="swiperData" :width="1200" :is-animated="false" :height="340" :showPageicon="false"></rswiper>
@@ -49,6 +49,24 @@ export default {
 <style scoped lang="scss">
 .c-goodscommend-component{
   height: 350px;
+  .c-goodsrecommend-title{
+    font-size: 20px;
+    position: relative;
+    margin-left: 0px;
+    font-weight: bold;
+    color: #333;
+    &:after{
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 20px;
+      border-radius: 5px;
+      position: absolute;
+      left: -8px;
+      top: 4px;
+      background-color: $txColor;
+    }
+  }
 }
 ::v-deep{
   .r-circle-dot{
