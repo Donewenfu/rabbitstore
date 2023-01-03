@@ -1,5 +1,5 @@
 <template>
-  <div class="r-mainproduct-components">
+  <div class="r-mainproduct-components" @click="goUrl">
     <!--商品图片-->
     <div class="product-img">
       <img  v-lazy="productData.picture" alt="">
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+// vue
+import { useRouter } from 'vue-router'
 export default {
   name: 'rmainproduct',
   props: {
@@ -33,6 +35,17 @@ export default {
       default: () => {
         return {}
       }
+    }
+  },
+  setup (props) {
+    const router = useRouter()
+    const goUrl = () => {
+      router.push({
+        path: `/goodsDetail/${props.productData.id}`
+      })
+    }
+    return {
+      goUrl
     }
   }
 }

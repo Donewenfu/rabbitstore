@@ -1,6 +1,6 @@
 <template>
   <div class="goods-detail-page">
-    <div class="container" v-if="goods">
+    <div class="container" v-if="loading">
       <!--面包屑导航-->
       <div class="product-bread">
         <!--商品详情面包屑导航组件 -->
@@ -61,7 +61,9 @@
         </div>
       </div>
       <!--同类商品介绍区域-->
-      <div class="product-same box">相同商品介绍</div>
+      <div class="product-same box">
+        <goodsrecommend></goodsrecommend>
+      </div>
       <!--商品详情介绍-->
       <div class="product-detail-info box">商品详情信息</div>
     </div>
@@ -82,20 +84,25 @@ import rgoodsintroduce from './component/r-goodsintroduce'
 import rgoodsimage from './component/r-goodsimage'
 // 商品sku组件
 import rgoodssku from './component/r-goodssku'
+// 商品推荐组件
+import goodsrecommend from './component/r-goodsrecommend'
 // api
 import { getGoodsDetail } from '@/api/goods'
 // vueroute
 import { useRoute } from 'vue-router'
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import Rbutton from "@/library/components/r-button/index.vue";
+import router from "@/router";
 export default {
   name: 'goodsDetail',
   setup () {
     // 用户选中的数量
     const count = ref(1)
     // 商品数据
-    const goods = useGoods()
+    const { goods, loading } = useGoods()
+    console.log('***')
+    console.log(goods)
+    console.log(loading)
     // 设置省市区的默认值
     const provinceCode = ref('110000')
     // 设置默认的区
@@ -140,15 +147,16 @@ export default {
       selectCity,
       fullLocation,
       changeSku,
-      count
+      count,
+      loading
     }
   },
   components: {
-    Rbutton,
     rgoodsdetailbread,
     rgoodsimage,
     rgoodsintroduce,
-    rgoodssku
+    rgoodssku,
+    goodsrecommend
   }
 }
 
@@ -157,18 +165,28 @@ const useGoods = () => {
   const route = useRoute()
   const store = useStore()
   const goods = ref(null)
-  getGoodsDetail(route.params.id).then(async data => {
-    // 当id发生变化的时候 重置goods数据
-    goods.value = null
-    // nextTick 下一次dom更新循环结束的回调函数 返回的是一个promise
-    await nextTick()
-    goods.value = data.result
-    // 设置当前菜单的 选中项目
-    if (goods.value.categories[0] && goods.value.categories[0].parent.name) {
-      store.commit('user/setUserActive', goods.value.categories[0].parent.name)
-    }
+  // loading加载
+  const loading = ref(false)
+  // 监听路由的变化
+  watch(() => route.params.id, () => {
+    loading.value = false
+    getGoodsDetail(route.params.id).then(async data => {
+      // 当id发生变化的时候 重置goods数据
+      goods.value = null
+      // nextTick 下一次dom更新循环结束的回调函数 返回的是一个promise
+      await nextTick()
+      goods.value = data.result
+      // loading加载
+      loading.value = true
+      // 设置当前菜单的 选中项目
+      if (goods.value.categories[0] && goods.value.categories[0].parent.name) {
+        store.commit('user/setUserActive', goods.value.categories[0].parent.name)
+      }
+    })
+  }, {
+    immediate: true
   })
-  return goods
+  return { goods, loading }
 }
 
 </script>

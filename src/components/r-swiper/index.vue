@@ -2,15 +2,21 @@
   <div class="r-swiper-components" :style="swiperStyle" @mouseenter="stopSwiper" @mouseleave="startSwiper">
     <div class="swiper-content" :style="swiperAnimatedStyle" @transitionend="endtransEnd">
       <div class="r-swiper-item" v-for="(item,index) in swiperData" :key="index">
-        <img :src="item.imgUrl" alt="" >
+        <img :src="item.imgUrl" alt="" v-if="item.imgUrl">
+        <!--推荐商品数据-->
+        <div class="recommend-product-list" v-else>
+          <template v-for="(p,i) in item" :key="i">
+            <rmainproduct :productData="p"></rmainproduct>
+          </template>
+        </div>
       </div>
       <!--新增的 第一张图片-->
-      <div class="r-swiper-item" v-if="swiperData.length>1">
+      <div class="r-swiper-item" v-if="swiperData.length>1 && swiperData[0].imgUrl">
         <img :src="swiperData[0].imgUrl" alt="">
       </div>
     </div>
     <!--上一张下一张-->
-    <div class="next-previous"  >
+    <div class="next-previous" v-if="showPageicon">
       <div class="previous-icon icon" @click="changeSwiper('previous')" v-if="swiperCurrent!=0">
         <i class="iconfont icon-previous-icon"></i>
       </div>
@@ -30,6 +36,8 @@
 <script>
 // vue
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+// 商品组件
+import rmainproduct from '@/components/r-mainproduct/index'
 export default {
   name: 'rswiper',
   props: {
@@ -53,7 +61,17 @@ export default {
     // 滚动间隔时间
     durationTime: {
       type: Number,
-      default: 4000
+      default: 2000
+    },
+    // 是否开启动画
+    isAnimated: {
+      type: Boolean,
+      default: true
+    },
+    // 是否显示按钮图标
+    showPageicon: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props) {
@@ -69,7 +87,7 @@ export default {
     const swiperStyle = computed(() => {
       return {
         width: props.width + 'px',
-        height: props.height
+        height: props.height + 'px'
       }
     })
     // 点击轮播点切换 轮播图
@@ -87,8 +105,9 @@ export default {
       clearInterval(timer.value)
       // 每隔一段时间 轮播图片
       timer.value = setInterval(() => {
+        const len = props.isAnimated ? props.swiperData.length : props.swiperData.length - 1
         // 判断当前轮播图是否已经到数组最后一张
-        if (swiperCurrent.value === props.swiperData.length) {
+        if (swiperCurrent.value === len) {
           swiperCurrent.value = 0
           showTranstion.value = false
         } else {
@@ -114,15 +133,16 @@ export default {
     const swiperAnimatedStyle = computed(() => {
       return {
         transform: `translateX(-${swiperCurrent.value * props.width}px)`,
-        width: (props.swiperData.length + 1) * props.width + 'px',
-        'transition-duration': showTranstion.value ? '.3s' : ''
+        width: (props.swiperData.length + (props.isAnimated ? 1 : 0)) * props.width + 'px',
+        'transition-duration': showTranstion.value && props.isAnimated ? '.3s' : ''
       }
     })
     // 点击上一张下一张切换轮播图
     const changeSwiper = (data) => {
       showTranstion.value = true
+      const len = props.isAnimated ? props.swiperData.length : props.swiperData.length - 1
       if (data === 'next') {
-        if (swiperCurrent.value < props.swiperData.length) {
+        if (swiperCurrent.value < len) {
           swiperCurrent.value++
         }
       } else {
@@ -151,6 +171,9 @@ export default {
       stopSwiper,
       startSwiper
     }
+  },
+  components: {
+    rmainproduct
   }
 }
 </script>
@@ -164,6 +187,12 @@ export default {
   .swiper-content{
     height: 100%;
     display: flex;
+    .recommend-product-list{
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
   .r-swiper-item{
     width: 100%;
