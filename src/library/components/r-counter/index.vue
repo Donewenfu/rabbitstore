@@ -79,6 +79,18 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    &:hover{
+      border: 1px solid #e4e4e4;
+      opacity: .8;
+    }
+    &:first-child{
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+    &:last-child{
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
   }
   input{
     width: 70px;

@@ -3,12 +3,14 @@
     <!--头像-->
     <div class="left-avatar">
       <img src="http://zhoushugang.gitee.io/erabbit-client-pc-static/uploads/avatar_1.png" alt="">
-      <span>用户名</span>
+      <span>张**问</span>
     </div>
     <!--右侧用户评价信息-->
     <div class="right-comment">
       <!--顶部评分区域-->
-      <div class="right-comment-top"></div>
+      <div class="right-comment-top">
+        <rstart :score="3"></rstart>
+      </div>
       <!--用户评价-->
       <div class="right-comment-content"></div>
       <!--用户评价图片-->
@@ -25,8 +27,12 @@
 </template>
 
 <script>
+import rstart from '@/components/r-start'
 export default {
-  name: "rcomment"
+  name: "rcomment",
+  components: {
+    rstart
+  }
 }
 </script>
 
@@ -45,6 +51,7 @@ export default {
     span{
       font-size: 13px;
       margin-left: 10px;
+      color: #999;
     }
   }
   .right-comment{

@@ -102,8 +102,8 @@ export default {
           display: flex;
           li{
             cursor: pointer;
-            width: 132px;
-            height: 42px;
+            width: 130px;
+            height: 38px;
             margin-left: 20px;
             margin-bottom: 20px;
             border-radius: 4px;
@@ -111,7 +111,7 @@ export default {
             background: #f5f5f5;
             color: #999;
             text-align: center;
-            line-height: 40px;
+            line-height: 38px;
           }
         }
       }
@@ -125,6 +125,7 @@ export default {
     padding-top: 20px;
     padding-bottom: 20px;
     p{
+      margin-left: 40px;
       margin-right: 20px;
       font-weight: bold;
     }
@@ -142,6 +143,8 @@ export default {
   }
   .comment-list{
     margin-top: 30px;
+    padding: 20px;
+    box-sizing: border-box;
   }
 }
 </style>

@@ -15,3 +15,8 @@ export function getGoodsDetail (id) {
 export function getRecommendList (id, limit) {
   return request('/goods/relevant', 'get', { id, limit })
 }
+
+// 获取商品24小时热门商品数据 goods/hot?id=1085019&limit=3&type=1
+export function getHourListData (params) {
+  return request('/goods/hot', 'get', params)
+}

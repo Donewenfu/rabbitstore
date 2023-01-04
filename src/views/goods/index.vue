@@ -73,7 +73,16 @@
         </div>
         <!--右侧推荐商品-->
         <div class="right-product">
-          <div class="title">24小时热榜</div>
+          <div class="title">
+            <p>24小时热榜</p>
+            <i class="iconfont icon-remenhot"></i>
+          </div>
+          <!--热门榜单数据-->
+          <div class="hotlist">
+            <template v-for="(item,index) in hotproductData" :key="index">
+              <rmainproduct :productData="item"></rmainproduct>
+            </template>
+          </div>
         </div>
       </div>
     </div>
@@ -96,10 +105,12 @@ import rgoodsimage from './component/r-goodsimage'
 import rgoodssku from './component/r-goodssku'
 // 商品推荐组件
 import goodsrecommend from './component/r-goodsrecommend'
+// 商品组件
+import rmainproduct from '@/components/r-mainproduct/index'
 // 商品切换组件
 import goodstabs from './component/r-goodstabs'
 // api
-import { getGoodsDetail } from '@/api/goods'
+import { getGoodsDetail, getHourListData } from '@/api/goods'
 // vueroute
 import { useRoute } from 'vue-router'
 // vue
@@ -112,7 +123,7 @@ export default {
     // 用户选中的数量
     const count = ref(1)
     // 商品数据
-    const { goods, loading } = useGoods()
+    const { goods, loading, hotproductData } = useGoods()
     //  父子组件
     provide('goods', goods)
     // 设置省市区的默认值
@@ -160,7 +171,8 @@ export default {
       fullLocation,
       changeSku,
       count,
-      loading
+      loading,
+      hotproductData
     }
   },
   components: {
@@ -169,37 +181,45 @@ export default {
     rgoodsintroduce,
     rgoodssku,
     goodsrecommend,
-    goodstabs
+    goodstabs,
+    rmainproduct
   }
 }
 
 const useGoods = () => {
-  // vueroute
   const route = useRoute()
   const store = useStore()
   const goods = ref(null)
   // loading加载
   const loading = ref(false)
+  // 24小时热门商品数据
+  const hotproductData = ref([])
   // 监听路由的变化
   watch(() => route.params.id, () => {
+    // loading 加载效果
     loading.value = false
+    // 获取详情页数据
     getGoodsDetail(route.params.id).then(async data => {
       // 当id发生变化的时候 重置goods数据
       goods.value = null
       // nextTick 下一次dom更新循环结束的回调函数 返回的是一个promise
       await nextTick()
       goods.value = data.result
-      // loading加载
-      loading.value = true
       // 设置当前菜单的 选中项目
       if (goods.value.categories[0] && goods.value.categories[0].parent.name) {
         store.commit('user/setUserActive', goods.value.categories[0].parent.name)
       }
+      // loading加载
+      loading.value = true
+    })
+    // 获取24小时热卖数据
+    getHourListData({ id: route.params.id, limit: 3, type: 1 }).then(data => {
+      hotproductData.value = data.result
     })
   }, {
     immediate: true
   })
-  return { goods, loading }
+  return { goods, loading, hotproductData }
 }
 
 </script>
@@ -300,7 +320,6 @@ const useGoods = () => {
                   border-radius: 50%;
                   background-color: $txColor;
                   margin-right: 4px;
-                  //coastalworld.com
                 }
               }
             }
@@ -324,14 +343,21 @@ const useGoods = () => {
     }
     .right-product{
       width: 260px;
-      height: 500px;
+      height: 1020px;
       background-color: #fff;
       border-radius: $borderRadius;
       padding: 15px;
       box-sizing: border-box;
+      margin-bottom: 40px;
+      .hotlist{
+        margin-top: 20px;
+      }
       .title{
         width: 100%;
         height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background-color: $txColor;
         text-align: center;
         line-height: 50px;
@@ -339,6 +365,9 @@ const useGoods = () => {
         font-weight: bold;
         font-size: 14px;
         border-radius: $borderRadius;
+        i{
+          margin-left: 5px;
+        }
       }
     }
   }

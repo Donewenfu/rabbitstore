@@ -4,13 +4,15 @@ const layout = () => import('@/views/layout')
 // home组件
 const index = () => import('@/views/home/index')
 // category组件
-const category = () => import('@/views/category/index')
+const category = () => import('@/views/category')
 // 二级分类页面
 const subcategory = () => import('@/views/category/sub')
 // 商品详情页面
-const goodsDetail = () => import('@/views/goods/index')
+const goodsDetail = () => import('@/views/goods')
 // 购物车页面
-const cartpage = () => import('@/views/cart/index')
+const cartpage = () => import('@/views/cart')
+// 测试页面
+const testpage =  () => import('@/views/testpage')
 // 路由规则
 const routes = [
   {
@@ -29,8 +31,9 @@ const routes = [
       // 购物车界面
       { path: '/cart', name: 'cartpage', component: cartpage }
     ]
-  }
-
+  },
+  // 测试页面
+  { path: '/testpage', name: 'testpage', component: testpage }
 ]
 
 const router = createRouter({
