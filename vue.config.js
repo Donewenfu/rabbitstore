@@ -23,5 +23,7 @@ module.exports = {
 　　https: false, // https:{type:Boolean}
 　　open: true, // 配置自动启动浏览器
 　　disableHostCheck: true, //webpack4.0 开启热更新  主要代码
-  }
+  },
+  // 配置打包路径
+  publicPath: './'
 }
