@@ -11,7 +11,7 @@ export function getGoodsDetail (id) {
   return request('/goods', 'get', { id })
 }
 
-// 获取推荐商品数据
+// 获取推荐商品数据 商品详情页
 export function getRecommendList (id, limit) {
   return request('/goods/relevant', 'get', { id, limit })
 }

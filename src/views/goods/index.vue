@@ -62,10 +62,20 @@
       </div>
       <!--同类商品介绍区域-->
       <div class="product-same box">
+        <!--商品推荐组件-->
         <goodsrecommend></goodsrecommend>
       </div>
       <!--商品详情介绍-->
-      <div class="product-detail-info box">商品详情信息</div>
+      <div class="product-detail-info">
+        <div class="left-detail">
+          <!--商品切换组件-->
+          <goodstabs></goodstabs>
+        </div>
+        <!--右侧推荐商品-->
+        <div class="right-product">
+          <div class="title">24小时热榜</div>
+        </div>
+      </div>
     </div>
     <div v-else class="loading-area container">
       <div class="container inner-logo">
@@ -86,13 +96,16 @@ import rgoodsimage from './component/r-goodsimage'
 import rgoodssku from './component/r-goodssku'
 // 商品推荐组件
 import goodsrecommend from './component/r-goodsrecommend'
+// 商品切换组件
+import goodstabs from './component/r-goodstabs'
 // api
 import { getGoodsDetail } from '@/api/goods'
 // vueroute
 import { useRoute } from 'vue-router'
-import { nextTick, ref, watch } from 'vue'
+// vue
+import { nextTick, provide, ref, watch } from 'vue'
+// vuex
 import { useStore } from 'vuex'
-import router from "@/router";
 export default {
   name: 'goodsDetail',
   setup () {
@@ -100,9 +113,8 @@ export default {
     const count = ref(1)
     // 商品数据
     const { goods, loading } = useGoods()
-    console.log('***')
-    console.log(goods)
-    console.log(loading)
+    //  父子组件
+    provide('goods', goods)
     // 设置省市区的默认值
     const provinceCode = ref('110000')
     // 设置默认的区
@@ -156,7 +168,8 @@ export default {
     rgoodsimage,
     rgoodsintroduce,
     rgoodssku,
-    goodsrecommend
+    goodsrecommend,
+    goodstabs
   }
 }
 
@@ -287,6 +300,7 @@ const useGoods = () => {
                   border-radius: 50%;
                   background-color: $txColor;
                   margin-right: 4px;
+                  //coastalworld.com
                 }
               }
             }
@@ -299,7 +313,34 @@ const useGoods = () => {
     background-color: #fff;
   }
   .product-detail-info{
-    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    .left-detail{
+      width: 940px;
+      background-color: #fff;
+      border-radius: $borderRadius;
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+    }
+    .right-product{
+      width: 260px;
+      height: 500px;
+      background-color: #fff;
+      border-radius: $borderRadius;
+      padding: 15px;
+      box-sizing: border-box;
+      .title{
+        width: 100%;
+        height: 50px;
+        background-color: $txColor;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 14px;
+        border-radius: $borderRadius;
+      }
+    }
   }
 }
 </style>
