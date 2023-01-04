@@ -19,10 +19,17 @@
       <!--用户评价图片-->
       <div class="right-comment-list-img">
         <ul>
-          <li>
+          <li @click="preview">
             <img src="https://yanxuan.nosdn.127.net/0f19c7edf5b78f4e94503bf74bc425e7.jpg?type=webp&imageView&quality=95&thumbnail=603x438" alt="">
           </li>
         </ul>
+      </div>
+      <!--评论图片显示-->
+      <div class="comment-imgview" v-if="show">
+        <div class="closeicon" @click="closeimg">
+          <i class="iconfont icon-guanbi"></i>
+        </div>
+        <img src="" alt="">
       </div>
       <!--评价时间-->
       <div class="right-comment-date">
@@ -40,8 +47,26 @@
 
 <script>
 import rstart from '@/components/r-start'
+import { ref } from 'vue'
 export default {
   name: "rcomment",
+  setup () {
+    // 是否显示预览方框
+    const show = ref(false)
+    // 点击显示商品
+    const preview = () => {
+      show.value = true
+    }
+    // 关闭图片
+    const closeimg = () => {
+      show.value = false
+    }
+    return {
+      show,
+      preview,
+      closeimg
+    }
+  },
   components: {
     rstart
   }
@@ -93,6 +118,31 @@ export default {
           justify-content: center;
           align-items: center;
         }
+      }
+    }
+    .comment-imgview{
+      width: 300px;
+      height: 400px;
+      background-color: #fff;
+      border: 1px solid #e4e4e4;
+      position: relative;
+      margin-bottom: 20px;
+      .closeicon{
+        background-color: #fff;
+        width: 20px;
+        height: 20px;
+        right: -5px;
+        top: -10px;
+        position: absolute;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      i{
+        font-size: 20px;
+        color: #d5d5d5;
+
       }
     }
     .right-comment-date{
