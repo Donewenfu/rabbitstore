@@ -46,7 +46,9 @@
 </template>
 
 <script>
+// 评分组件
 import rstart from '@/components/r-start'
+// vue
 import { ref } from 'vue'
 export default {
   name: "rcomment",
