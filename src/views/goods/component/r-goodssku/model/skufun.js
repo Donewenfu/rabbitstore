@@ -11,6 +11,7 @@ class Skufun {
     const skus = goods.skus
     // 过滤出有库存的sku商品
     skus.forEach((item, index) => {
+      // 判断库存是否大于0
       if (item.inventory > 0) {
         // 得到sku属性数组
         const specs = item.specs.map(val => val.valueName)
