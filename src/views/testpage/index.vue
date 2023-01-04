@@ -1,16 +1,15 @@
 <template>
   <div class="testpage">
-    <rstart score="3"></rstart>
+    <rcomment></rcomment>
   </div>
 </template>
 
 <script>
-// 评分组件
-import rstart from '@/components/r-start'
+import rcomment from '@/components/r-comment'
 export default {
   name: "testpage",
   components: {
-    rstart
+    rcomment
   }
 }
 </script>
