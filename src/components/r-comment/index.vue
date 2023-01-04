@@ -151,6 +151,14 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      .like-num{
+        cursor:pointer;
+        display: flex;
+        align-items: center;
+        i{
+          margin-right: 3px;
+        }
+      }
     }
   }
 }

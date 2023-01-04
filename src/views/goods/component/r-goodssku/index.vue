@@ -116,6 +116,9 @@ export default {
         border-radius: 3px;
         padding: 5px 10px;
         margin-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         &.imgclass{
           width: 60px;
           height: 60px;

@@ -20,3 +20,8 @@ export function getRecommendList (id, limit) {
 export function getHourListData (params) {
   return request('/goods/hot', 'get', params)
 }
+
+// 获取评价信息
+export function getEvaluate (id) {
+  return request(`https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate`, 'get')
+}

@@ -6,11 +6,11 @@
       <div class="comment-top-left">
         <ul>
           <li>
-            <h2>1360人</h2>
+            <h2>{{ evaluateData.salesCount }}人</h2>
             <p>人购买</p>
           </li>
           <li>
-            <h2>94.56%</h2>
+            <h2>{{ evaluateData.praisePercent }}</h2>
             <p>好评率</p>
           </li>
         </ul>
@@ -20,7 +20,11 @@
         <div class="left-text">大家都在说：</div>
         <div class="right-list">
           <ul>
-            <li>全部评价</li>
+            <li
+              v-for="(item, index) in evaluateData.tags" :key="index"
+              :class="{'active':tagCurrent === index}"
+              @click="clickTag(index)"
+            >{{ item.title }}({{item.tagCount}})</li>
           </ul>
         </div>
       </div>
@@ -45,9 +49,28 @@
 <script>
 // 评价组件
 import rcomment from '@/components/r-comment'
+import { ref } from 'vue'
+
 export default {
   name: "rgoodscomment",
-  setup () {},
+  setup () {
+    // 当前评价选中下标
+    const tagCurrent = ref(0)
+    // 点击标签
+    const clickTag = (index) => {
+      tagCurrent.value = index
+    }
+    return {
+      tagCurrent,
+      clickTag
+    }
+  },
+  props: {
+    evaluateData: {
+      type: Object,
+      default: () => {}
+    }
+  },
   components: {
     rcomment
   }
@@ -61,9 +84,10 @@ export default {
     align-items: center;
     height: 150px;
     .comment-top-left{
-      width: 30%;
+      width: 60%;
       display: flex;
       justify-content: center;
+      height: 100px;
       ul{
         border-right: 1px solid #f5f5f5;
         display: flex;
@@ -96,10 +120,13 @@ export default {
         color: #333;
         font-size: 14px;
         font-weight: bold;
+        width: 200px;
+        margin-left: 10px;
       }
       .right-list{
         ul{
           display: flex;
+          flex-wrap: wrap;
           li{
             cursor: pointer;
             width: 130px;
@@ -112,6 +139,11 @@ export default {
             color: #999;
             text-align: center;
             line-height: 38px;
+            &.active{
+              background-color: $txColor;
+              color: #fff;
+              border: 1px solid $txColor;
+            }
           }
         }
       }

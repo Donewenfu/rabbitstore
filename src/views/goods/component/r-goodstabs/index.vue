@@ -5,19 +5,23 @@
       <a href="javascript:;" :class="current === 'detail' ? 'active':''" @click="changeTabs('detail')">商品详情</a>
       <a href="javascript:;" class="comment" :class="current === 'comment' ? 'active':''" @click="changeTabs('comment')">
         <p>商品评价</p>
-        <span class="comment-num">(500+)</span>
+        <span class="comment-num">({{ evaluatedata.evaluateCount }}+)</span>
       </a>
     </nav>
     <!--切换内容-->
     <div class="tabs-content">
-      <component :is="`rgoods${current}`"></component>
+      <component :is="`rgoods${current}`" :evaluateData="evaluatedata"></component>
     </div>
   </div>
 </template>
 
 <script>
+// api
+import { getEvaluate } from '@/api/goods'
+// vue-route
+import { useRoute } from 'vue-router'
 // vue
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 // 详情组件
 import rgoodsdetail from '../r-goodsdetail'
 // 评价组件
@@ -25,15 +29,30 @@ import rgoodscomment from '../r-goodscomment'
 export default {
   name: "rgoodstabs",
   setup () {
+    const route = useRoute()
     // tabs 当前 选中 初始化选中
     const current = ref('detail')
+    // 评价数据
+    const evaluatedata = ref({})
     // 切换事件
     const changeTabs = (data) => {
       current.value = data
     }
+    // 获取评价数据
+    const getEvaluateData = async () => {
+      const { result } = await getEvaluate(route.params.id)
+      result.tags.unshift({ 'title': '有图', tagCount: result.hasPictureCount })
+      result.tags.unshift({ 'title': '全部评价', tagCount: result.evaluateCount })
+      evaluatedata.value = result
+    }
+    // 组件挂载执行
+    onMounted(() => {
+      getEvaluateData()
+    })
     return {
       current,
-      changeTabs
+      changeTabs,
+      evaluatedata
     }
   },
   components: {
