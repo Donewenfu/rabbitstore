@@ -51,6 +51,9 @@
         <template v-for="(item,index) in commentList" :key="index">
           <rcomment :commentData="item"></rcomment>
         </template>
+        <div class="comment-pagination">
+          <rpagination></rpagination>
+        </div>
       </div>
       <!--loading 加载效果-->
       <div class="comment-loading" v-else>
@@ -101,6 +104,7 @@ export default {
       commentListloading.value = true
       // 当前选中
       tagCurrent.value = index
+      // 判断是否为图片或者全部评价
       if (props.evaluateData.tags[index].type === 'img') {
         reqparmas.hasPicture = true
       } else if (props.evaluateData.tags[index].type === 'all') {
@@ -232,6 +236,7 @@ export default {
           }
         }
       }
+
     }
   }
   .sort-area{
@@ -262,6 +267,12 @@ export default {
     margin-top: 30px;
     padding: 20px;
     box-sizing: border-box;
+    .comment-pagination{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
   }
 }
 </style>

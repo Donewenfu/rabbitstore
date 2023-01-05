@@ -60,7 +60,7 @@ export default {
     align-items: center;
     margin-top: 20px;
     .detail-img{
-      width: 600px;
+      width: 90%;
     }
   }
 }
