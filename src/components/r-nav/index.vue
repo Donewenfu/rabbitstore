@@ -6,36 +6,36 @@
           <!--已登录-->
           <template v-if="profile.account">
             <li>
-              <a href="#">张三</a>
+              <a href="javascript:;">张三</a>
             </li>
             <li>
-              <a href="#">退出登录</a>
+              <a href="javascript:;">退出登录</a>
             </li>
           </template>
           <!--未登录-->
           <template v-else>
             <li>
-              <a href="#">请先登录</a>
+              <a href="javascript:;">请先登录</a>
             </li>
             <li>
-              <a href="#">免费注册</a>
+              <a href="javascript:;">免费注册</a>
             </li>
           </template>
           <li>
-            <a href="#">我的订单</a>
+            <a href="javascript:;">我的订单</a>
           </li>
           <li>
-            <a href="#">会员中心</a>
+            <a href="javascript:;">会员中心</a>
           </li>
           <li>
-            <a href="#">帮助中心</a>
+            <a href="javascript:;">帮助中心</a>
           </li>
           <li>
-            <a href="#">在线客服</a>
+            <a href="javascript:;">在线客服</a>
           </li>
           <li>
             <i class="iconfont icon-shouji"></i>
-            <a href="#">手机版</a>
+            <a href="javascript:;">手机版</a>
           </li>
         </ul>
       </div>
@@ -68,9 +68,12 @@ export default {
   background-color: #19ce60;
   padding-top: 14px;
   padding-bottom: 14px;
+  position: relative;
+  z-index: 99999;
   .r-nav-inner{
     ul{
       li{
+        cursor: pointer;
         float: left;
         a{
           color: #fff;

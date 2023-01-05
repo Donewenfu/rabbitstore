@@ -106,7 +106,6 @@ export default {
     })
     // 用户选择地址
     const selectCity = (item) => {
-      console.log(item)
       // 判断是否选中了省
       if (item.level === 0) {
         userChangeData.provinceCode = item.code

@@ -10,14 +10,8 @@
 </template>
 
 <script>
-// vuerouter
-import { useRoute } from 'vue-router'
 export default {
   name: 'rgoodsdetailbread',
-  setup () {
-    const route = useRoute()
-    console.log(route)
-  },
   props: {
     goodsData: {
       type: Object,

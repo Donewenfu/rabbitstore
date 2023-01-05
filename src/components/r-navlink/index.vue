@@ -117,9 +117,7 @@ export default {
     const goSubcategory = (item) => {
       let activeMenuName = ''
       store.state.category.cateList.forEach((cate, index) => {
-        console.log(cate.children)
         for (let i = 0; i < cate.children.length; i++) {
-          console.log()
           if (cate.children[i].id === item.id) {
             activeMenuName = cate.name
           }

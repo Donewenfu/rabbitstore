@@ -56,7 +56,6 @@ export default {
     })
     // userRouterActive
     const userActive = computed(() => {
-      console.log(store.state.user.userActive)
       return store.state.user.userActive
     })
     // 使用vuex 发送dispatch actions 异步提交 mutations
@@ -65,7 +64,6 @@ export default {
     store.commit('user/setUserActive', store.state.user.userActive || store.state.category.cateList[0].name)
     // 将数据提供给后代组件 provide
     provide('navList', navListData)
-    console.log(route.path)
     return { userActive }
   },
   components: {

@@ -201,7 +201,6 @@ export default {
     })
     // 点击选中
     const selectFilter = (filterName) => {
-      console.log(filterName)
       if (filterName !== 'price') {
         if (cateProductFilter.sortField === filterName) return
         cateProductFilter.sortField = filterName

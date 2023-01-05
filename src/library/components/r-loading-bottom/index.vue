@@ -40,7 +40,6 @@ export default {
       if (isIntersecting) {
         // 需要进行判断 是否正在加 获取 要求为false 并且需要加载完毕
         if (!props.loading && !props.finished) {
-          console.log('我执行一次666')
           emit('infiniteloadData')
         }
       }
