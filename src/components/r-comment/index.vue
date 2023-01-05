@@ -10,7 +10,7 @@
       <!--顶部评分区域-->
       <div class="right-comment-top">
         <rstart :score="commentData.score"></rstart>
-        <div class="comment-title">颜色：白色 尺寸：10cm 产地：美国</div>
+        <div class="comment-title">{{filterSpecs(commentData.orderInfo.specs)}}</div>
       </div>
       <!--用户评价-->
       <div class="right-comment-content">
@@ -73,6 +73,10 @@ export default {
     const closeimg = () => {
       show.value = false
     }
+    // 处理规格数据
+    const filterSpecs = (data) => {
+      return data.reduce((p,c) => `${p} ${c.name}:${c.nameValue}`, '')
+    }
     // 处理用户名称
     const filterNickname = (name) => {
       if (!name) return
@@ -83,7 +87,8 @@ export default {
       preview,
       closeimg,
       filterNickname,
-      commentPreviewImg
+      commentPreviewImg,
+      filterSpecs
     }
   },
   components: {
