@@ -25,3 +25,8 @@ export function getHourListData (params) {
 export function getEvaluate (id) {
   return request(`https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate`, 'get')
 }
+
+// 获取评价列表
+export function getCommentListdata (id, params) {
+  return request(`https://mock.boxuegu.com/mock/1175/goods/${id}/evaluate/page`, 'get', params)
+}

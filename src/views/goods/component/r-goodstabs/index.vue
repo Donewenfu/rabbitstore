@@ -41,8 +41,8 @@ export default {
     // 获取评价数据
     const getEvaluateData = async () => {
       const { result } = await getEvaluate(route.params.id)
-      result.tags.unshift({ 'title': '有图', tagCount: result.hasPictureCount })
-      result.tags.unshift({ 'title': '全部评价', tagCount: result.evaluateCount })
+      result.tags.unshift({ 'title': '有图', tagCount: result.hasPictureCount, type: 'ipmg' })
+      result.tags.unshift({ 'title': '全部评价', tagCount: result.evaluateCount, type: 'all' })
       evaluatedata.value = result
     }
     // 组件挂载执行

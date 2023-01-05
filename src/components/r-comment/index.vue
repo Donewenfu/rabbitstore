@@ -2,25 +2,25 @@
   <div class="r-comment-component">
     <!--头像-->
     <div class="left-avatar">
-      <img src="http://zhoushugang.gitee.io/erabbit-client-pc-static/uploads/avatar_1.png" alt="">
-      <span>张**问</span>
+      <img :src="commentData.member.avatar" alt="">
+      <span>{{ filterNickname(commentData.member.nickname) }}</span>
     </div>
     <!--右侧用户评价信息-->
     <div class="right-comment">
       <!--顶部评分区域-->
       <div class="right-comment-top">
-        <rstart :score="3"></rstart>
+        <rstart :score="commentData.score"></rstart>
         <div class="comment-title">颜色：白色 尺寸：10cm 产地：美国</div>
       </div>
       <!--用户评价-->
       <div class="right-comment-content">
-        <p>昨天下单，今天中午开锅就试着烧了五花肉，耗时30分钟，一切都刚刚好，比以前的锅烧出来口感汤汁都好多了，目价格实惠!建议购买!</p>
+        <p>{{ commentData.content }}</p>
       </div>
       <!--用户评价图片-->
-      <div class="right-comment-list-img">
+      <div class="right-comment-list-img" v-if="commentData.pictures.length>0">
         <ul>
-          <li @click="preview">
-            <img src="https://yanxuan.nosdn.127.net/0f19c7edf5b78f4e94503bf74bc425e7.jpg?type=webp&imageView&quality=95&thumbnail=603x438" alt="">
+          <li @click="preview(item)" v-for="(item,index) in commentData.pictures">
+            <img :src="item" alt="">
           </li>
         </ul>
       </div>
@@ -29,16 +29,16 @@
         <div class="closeicon" @click="closeimg">
           <i class="iconfont icon-guanbi"></i>
         </div>
-        <img src="" alt="">
+        <img :src="commentPreviewImg" alt="">
       </div>
       <!--评价时间-->
       <div class="right-comment-date">
         <!--时间-->
-        <div class="date-text">2019-06-09 13:20:32</div>
+        <div class="date-text">{{ commentData.createTime }}</div>
         <!--点赞数量-->
         <div class="like-num">
           <i class="iconfont icon-dianzan"></i>
-          <span>35</span>
+          <span>{{ commentData.praiseCount }}</span>
         </div>
       </div>
     </div>
@@ -52,21 +52,38 @@ import rstart from '@/components/r-start'
 import { ref } from 'vue'
 export default {
   name: "rcomment",
+  props: {
+    // 评价数据
+    commentData: {
+      type: Object,
+      default: () => {}
+    }
+  },
   setup () {
     // 是否显示预览方框
     const show = ref(false)
+    // 评价图片显示
+    const commentPreviewImg = ref('')
     // 点击显示商品
-    const preview = () => {
+    const preview = (data) => {
+      commentPreviewImg.value = data
       show.value = true
     }
     // 关闭图片
     const closeimg = () => {
       show.value = false
     }
+    // 处理用户名称
+    const filterNickname = (name) => {
+      if (!name) return
+      return `${name.substr(0, 1)}***${name.substr(-1)}`
+    }
     return {
       show,
       preview,
-      closeimg
+      closeimg,
+      filterNickname,
+      commentPreviewImg
     }
   },
   components: {
@@ -79,6 +96,9 @@ export default {
 .r-comment-component{
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #f5f5f5;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
   .left-avatar{
     display: flex;
     align-items: center;
@@ -111,7 +131,10 @@ export default {
     .right-comment-list-img{
       margin-bottom: 15px;
       ul{
+        display: flex;
+        flex-wrap: wrap;
         li{
+          margin-right: 10px;
           cursor: pointer;
           width: 120px;
           height: 120px;
@@ -129,6 +152,9 @@ export default {
       border: 1px solid #e4e4e4;
       position: relative;
       margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .closeicon{
         background-color: #fff;
         width: 20px;
@@ -144,7 +170,6 @@ export default {
       i{
         font-size: 20px;
         color: #d5d5d5;
-
       }
     }
     .right-comment-date{

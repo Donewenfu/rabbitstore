@@ -26,7 +26,7 @@
 </template>
 
 <script>
-// 通用导航组件
+// 通用导航组件 评价
 import rnav from '@/components/r-nav/index'
 // 返回顶部组件
 import rgotop from '@/components/r-gotop/index'

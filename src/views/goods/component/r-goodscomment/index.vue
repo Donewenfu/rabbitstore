@@ -34,14 +34,18 @@
     <div class="sort-area">
       <p>排序:</p>
       <ul>
-        <li>默认</li>
-        <li>最新</li>
-        <li class="active">最热</li>
+        <li :class="{'active': reqparmas.sortField === null}" @click="changeSort(null)">默认</li>
+        <!--createTime-->
+        <li :class="{'active': reqparmas.sortField === 'createTime'}" @click="changeSort('createTime')">最新</li>
+        <!--praiseCount-->
+        <li :class="{'active': reqparmas.sortField === 'praiseCount'}" @click="changeSort('praiseCount')">最热</li>
       </ul>
     </div>
-    <!--评论列表-->
+    <!--评论列表 还修护肤                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                -->
     <div class="comment-list">
-      <rcomment></rcomment>
+      <template v-for="(item,index) in commentList" :key="index">
+        <rcomment :commentData="item"></rcomment>
+      </template>
     </div>
   </div>
 </template>
@@ -49,20 +53,68 @@
 <script>
 // 评价组件
 import rcomment from '@/components/r-comment'
-import { ref } from 'vue'
-
+// vue
+import { reactive, ref, watch } from 'vue'
+// api
+import { getCommentListdata } from '@/api/goods'
+// vue-router
+import { useRoute } from 'vue-router'
 export default {
   name: "rgoodscomment",
-  setup () {
+  setup (props) {
     // 当前评价选中下标
     const tagCurrent = ref(0)
+    // route
+    const route = useRoute()
+    // 评价请求参数
+    const reqparmas = reactive({
+      // 当前页码
+      page: 1,
+      // 每页数量
+      pageSize: 10,
+      // 是否选择图片
+      hasPicture: null,
+      // 选择的标签
+      tag: null,
+      // 排序
+      sortField: null
+    })
+    // 评价列表数据
+    const commentList = ref([])
     // 点击标签
     const clickTag = (index) => {
       tagCurrent.value = index
+      console.log(props.evaluateData.tags)
+      if (props.evaluateData.tags[index].type === 'img') {
+        reqparmas.hasPicture = true
+      } else if (props.evaluateData.tags[index].type === 'all') {
+        console.log('全部')
+        reqparmas.tag = null
+      } else {
+        reqparmas.tag = props.evaluateData.tags[index].title
+      }
+    }
+    // 获取评价列表数据
+    const getCommentdata = async () => {
+      const { result: { items } } = await getCommentListdata(route.params.id, reqparmas)
+      commentList.value = items
+    }
+    // 监听请求参数的改变 如果有改变就重新请求 初始化执行一次
+    watch(reqparmas, () => {
+      getCommentdata()
+    },{
+      immediate: true
+    })
+    // 切换排序
+    const changeSort = (data) => {
+      reqparmas.sortField = data
     }
     return {
       tagCurrent,
-      clickTag
+      clickTag,
+      reqparmas,
+      changeSort,
+      commentList
     }
   },
   props: {
