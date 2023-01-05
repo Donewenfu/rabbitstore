@@ -1,12 +1,10 @@
 <template>
-  <div class="testpage">
-    <rpagination :total="230"></rpagination>
-  </div>
+  <div class="notpage">未找到该页面</div>
 </template>
 
 <script>
 export default {
-  name: "testpage"
+  name: 'notpage'
 }
 </script>
 

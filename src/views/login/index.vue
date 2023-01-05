@@ -1,12 +1,12 @@
 <template>
-  <div class="testpage">
-    <rpagination :total="230"></rpagination>
+  <div class="login-page">
+    <img src="../../assets/images/login.png" alt="">
   </div>
 </template>
 
 <script>
 export default {
-  name: "testpage"
+  name: 'login'
 }
 </script>
 

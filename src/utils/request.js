@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(config => {
   // 如果本地token需要在请求头添加token校验信息
   const { token } = store.state.user.profile
-  // 判断token是否存在
+  // 判断token是否存在 如果存在token 发送请求携带token
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }

@@ -11,6 +11,10 @@ const subcategory = () => import('@/views/category/sub')
 const goodsDetail = () => import('@/views/goods')
 // 购物车页面
 const cartpage = () => import('@/views/cart')
+// 登录页面
+const loginpage = () => import('@/views/login')
+// 404页面 没有找到该页面
+const notpage = () => import('@/views/notpage')
 // 测试页面
 const testpage =  () => import('@/views/testpage')
 // 路由规则
@@ -32,11 +36,16 @@ const routes = [
       { path: '/cart', name: 'cartpage', component: cartpage }
     ]
   },
+  // 登录界面
+  { path: '/login', name: 'loginpage', component: loginpage },
   // 测试页面
-  { path: '/testpage', name: 'testpage', component: testpage }
+  { path: '/testpage', name: 'testpage', component: testpage },
+  // 404页面
+  { path: '/:pathMatch(.*)*', name: 'notpage', component: notpage }
 ]
 
 const router = createRouter({
+  // 路由模式
   history: createWebHashHistory(),
   routes,
   scrollBehavior () {
