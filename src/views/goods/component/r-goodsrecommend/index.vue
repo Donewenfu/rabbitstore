@@ -68,7 +68,7 @@ export default {
     }
   }
 }
-::v-deep{
+:deep{
   .r-circle-dot{
     bottom: 8px !important;
     ul{

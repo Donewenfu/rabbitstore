@@ -51,8 +51,9 @@
         <template v-for="(item,index) in commentList" :key="index">
           <rcomment :commentData="item"></rcomment>
         </template>
+        <!--分页组件区域-->
         <div class="comment-pagination">
-          <rpagination></rpagination>
+          <rpagination :total="total"></rpagination>
         </div>
       </div>
       <!--loading 加载效果-->
@@ -75,6 +76,8 @@ import { useRoute } from 'vue-router'
 export default {
   name: "rgoodscomment",
   setup (props) {
+    // 评价总数
+    const total = ref(0)
     // 当前评价选中下标
     const tagCurrent = ref(0)
     // route
@@ -115,8 +118,12 @@ export default {
     }
     // 获取评价列表数据
     const getCommentdata = async () => {
-      const { result: { items } } = await getCommentListdata(route.params.id, reqparmas)
+      const { result: { items, counts } } = await getCommentListdata(route.params.id, reqparmas)
+      // 评价数量
+      total.value = counts
+      // 评价列表
       commentList.value = items
+      // 隐藏loading加载
       commentListloading.value = false
     }
     // 监听请求参数的改变 如果有改变就重新请求 初始化执行一次
@@ -144,7 +151,8 @@ export default {
       changeSort,
       commentList,
       loadingshow,
-      commentListloading
+      commentListloading,
+      total
     }
   },
   props: {

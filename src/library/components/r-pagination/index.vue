@@ -7,14 +7,8 @@
     </span>
     <!--页码区域-->
     <ul>
-      <li>
-        <a href="javascript:;">1</a>
-      </li>
-      <li>
-        <a href="javascript:;">1</a>
-      </li>
-      <li>
-        <a href="javascript:;">1</a>
+      <li v-for="(item, index) in pager.pageCount" :key="index">
+        <a href="javascript:;">{{item}}</a>
       </li>
     </ul>
     <span class="symbol">
@@ -27,7 +21,7 @@
 
 <script>
 // vue
-import { watch, ref } from 'vue'
+import { watch, ref, computed } from 'vue'
 export default {
   name: 'rpagination',
   props: {
@@ -54,6 +48,14 @@ export default {
     const mycurrent = ref(1)
     // 每页的数据
     const mypagesize = ref(10)
+    // 通过计算属性动态计算页码数据
+    const pager = computed(() => {
+      // 计算总页数 向上取整
+      const pageCount = Math.ceil(mytotal.value / mypagesize.value)
+      return {
+        pageCount
+      }
+    })
     // 监听props的数据变化
     watch(props, () => {
       // 总页数
@@ -62,9 +64,12 @@ export default {
       mycurrent.value = props.currentPage
       // 每页条数
       mypagesize.value = props.pageSize
+    }, {
+      // 初始化就执行 立刻执行
+      immediate: true
     })
     return {
-      mytotal
+      pager
     }
   }
 }
@@ -106,7 +111,7 @@ export default {
     align-items: center;
     li{
       margin: 0 5px;
-      height: 26px;
+      height: 27px;
       display: flex;
       justify-content: center;
       align-items: center;
