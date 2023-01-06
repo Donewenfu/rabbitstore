@@ -53,7 +53,7 @@
         </template>
         <!--分页组件区域-->
         <div class="comment-pagination">
-          <rpagination :total="total"></rpagination>
+          <rpagination :total="total" @currentpage="changepage" :currentPage="reqparmas.page"></rpagination>
         </div>
       </div>
       <!--loading 加载效果-->
@@ -142,8 +142,14 @@ export default {
       // 加载效果
       setTimeout(() => {
         loadingshow.value = false
-      },1000)
+      }, 1000)
     })
+    // 获取用户点击的分页数据
+    const changepage = (data) => {
+      console.log(data)
+      reqparmas.page = data
+      console.log(reqparmas)
+    }
     return {
       tagCurrent,
       clickTag,
@@ -152,7 +158,8 @@ export default {
       commentList,
       loadingshow,
       commentListloading,
-      total
+      total,
+      changepage
     }
   },
   props: {
