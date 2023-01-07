@@ -27,7 +27,7 @@ export default {
       default: 5
     }
   },
-  setup (props) {
+  setup (props, { emit }) {
     const radiusStyle = computed(() => {
       return {
         'border-radius': props.radius + 'px'

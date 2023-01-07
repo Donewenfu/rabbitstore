@@ -19,8 +19,6 @@
     <div class="next" v-if="mycurrent<pager.pageCount" @click="changePager(mycurrent+1)">下一页</div>
 
     <div class="disable" v-else>下一页</div>
-    <p>{{mycurrent}}</p>
-    <p>{{pager.pageCount}}</p>
   </div>
 </template>
 
@@ -75,11 +73,11 @@ export default {
       // 如果结束页码大于总页数需要处理
       if (end > pageCount) {
         end = pageCount
-        start = (end - count - 1) > pageCount ? pageCount : (end - count - 1)
+        start = (end - count + 1) < 1 ? 1 : (end - count + 1)
       }
       // 生成按钮
       let paginnationBtn = []
-      for (let i = start; i < end; i++) {
+      for (let i = start; i <= end; i++) {
         paginnationBtn.push(i)
       }
       return {

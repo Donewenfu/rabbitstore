@@ -7,8 +7,10 @@
       </div>
       <!--标语区域-->
       <div class="login-slogan-area">
-        <div class="line-one">{{sloganLanguage}}</div>
-        <div class="line-two">象米商城你身边的生活小帮手！</div>
+        <div class="inner-slogan">
+          <div class="line-one">{{sloganLanguage}}</div>
+          <div class="line-two">象米商城你身边的赚钱机器！</div>
+        </div>
       </div>
     </div>
     <!--右侧区域-->
@@ -23,15 +25,23 @@
         <div class="form-area">
           <!--用户名-->
           <div class="username-area">
-            <input type="text" placeholder="请输入用户名">
+            <input type="text" placeholder="请输入用户名" @blur="inputblur('username')" v-model="formdata.username">
+            <div class="error" v-if="showUsernameError && !formdata.username">
+              <i class="iconfont icon-cuowu"></i>
+              <span class="error-text">请输入用户名</span>
+            </div>
           </div>
           <!--密码-->
           <div class="password-area">
-            <input type="password" placeholder="请输入密码">
+            <input type="password" placeholder="请输入密码" @blur="inputblur('password')" v-model="formdata.password">
+            <div class="error" v-if="showPasswordError && !formdata.password">
+              <i class="iconfont icon-cuowu"></i>
+              <span class="error-text">请输入密码</span>
+            </div>
           </div>
           <!--登录按钮-->
           <div class="login-button">
-            <rbutton :radius="40">登录</rbutton>
+            <rbutton :radius="40" @click="login">登录</rbutton>
           </div>
           <!--是否同意协议-->
           <div class="agreement">
@@ -61,7 +71,7 @@
 
 <script>
 // vue
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 // vue-router
 import { useRouter } from 'vue-router'
 // 工具函数
@@ -73,6 +83,15 @@ export default {
     const router = useRouter()
     // 用户是否同意协议
     const isagreement =  ref(false)
+    // 是否显示用户名错误
+    const showUsernameError = ref(false)
+    // 是否显示密码错误
+    const showPasswordError = ref(false)
+    // 表单数据
+    const formdata = reactive({
+      username: '',
+      password: ''
+    })
     // 语言language
     const sloganLanguage = ref('您好！')
     const languageList = ['您好！', '안녕하세요！', 'こんにちは!', 'Hola!', 'Hello!']
@@ -89,10 +108,27 @@ export default {
     onMounted(() => {
       changeLangguage()
     })
+    // 点击登录
+    const login = () => {
+
+    }
+    // 输入框失去焦点
+    const inputblur = (name) => {
+      if (name === 'username' && !formdata.username) {
+        showUsernameError.value = true
+      } else if (name === 'password' && !formdata.password) {
+        showPasswordError.value = true
+      }
+    }
     return {
       isagreement,
       sloganLanguage,
-      goHome
+      goHome,
+      login,
+      inputblur,
+      showUsernameError,
+      showPasswordError,
+      formdata
     }
   }
 }
@@ -105,8 +141,8 @@ export default {
   display: flex;
   align-items: center;
   .login-left{
-    width: 730px;
-    height: 100%;
+    width: 30%;
+    height: 100vh;
     background-color: $txColor;
     .logo-area{
       cursor: pointer;
@@ -123,16 +159,19 @@ export default {
       flex-direction: column;
       text-align: left;
       color: #fff;
-      margin-left: 150px;
-      margin-top: 240px;
+      //margin-left: 150px;
+      margin-top: 280px;
       height: 40px;
+      .inner-slogan{
+        margin: 0 auto;
+      }
       .line-one{
         font-size: 28px;
         font-weight: bold;
         transition: all .3s;
       }
       .line-two{
-        width: 350px;
+        width: 300px;
         font-size: 35px;
         font-weight: bold;
         margin: 8px 0;
@@ -144,7 +183,7 @@ export default {
     height: 100%;
     .login-inner-form{
       margin-top: 200px;
-      margin-left: 200px;
+      margin-left: 150px;
       .weclome-slogan{
         display: flex;
         h3{
@@ -166,6 +205,10 @@ export default {
           font-size: 15px;
           &::placeholder{
             color: #484848;
+          }
+          &:focus{
+            color: $txColor;
+            border-bottom: 1px solid $txColor;
           }
         }
         .password-area{
@@ -204,6 +247,15 @@ export default {
                 height: 30px;
               }
             }
+          }
+        }
+        .error{
+          display: flex;
+          align-items: center;
+          margin: 10px 0;
+          .iconfont{
+            color: $warnColor;
+            margin-right: 5px;
           }
         }
       }
