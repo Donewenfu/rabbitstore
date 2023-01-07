@@ -13,3 +13,8 @@ export function sliceArr (arr, size) {
     return []
   }
 }
+
+// 获取随机数 max-min
+export function getRandom (min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}

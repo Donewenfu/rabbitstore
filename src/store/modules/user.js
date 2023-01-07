@@ -30,6 +30,7 @@ const user = {
     },
     // 设置用户当前的栏目
     setUserActive (state, name) {
+      console.log('触发')
       state.userActive = name
     }
   }

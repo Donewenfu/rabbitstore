@@ -1,14 +1,13 @@
 <template>
   <div class="r-button-components">
-    <button class="r-button" :class="[type,size]">
+    <button class="r-button" :class="[type,size]" :style="[radiusStyle]">
       <slot></slot>
     </button>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
-
+import { computed } from 'vue'
 export default {
   name: "rbutton",
   props: {
@@ -21,9 +20,22 @@ export default {
     size: {
       type: String,
       default: 'large'
+    },
+    // 按钮圆角
+    radius: {
+      type: [Number, String],
+      default: 5
     }
   },
-  setup () {
+  setup (props) {
+    const radiusStyle = computed(() => {
+      return {
+        'border-radius': props.radius + 'px'
+      }
+    })
+    return {
+      radiusStyle
+    }
   }
 }
 </script>
@@ -33,7 +45,6 @@ export default {
   .r-button{
     border: none;
     outline: none;
-    border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
     &:hover{

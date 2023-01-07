@@ -91,7 +91,6 @@ export default {
     })
     // 监听props的数据变化
     watch(props, () => {
-      console.log('页码改变了')
       // 总页数
       mytotal.value = props.total
       // 当前页
@@ -102,9 +101,8 @@ export default {
       // 初始化就执行 立刻执行
       immediate: true
     })
-    // 点击页码 向父组件传递用户点击的页码数
+    // 点击页码 向父组件传递用户点击的页码数 传递分页组件页码数
     const changePager = (data) => {
-      console.log(data)
       // 相同页码不做处理
       if (mycurrent.value !== data) {
         mycurrent.value = data
