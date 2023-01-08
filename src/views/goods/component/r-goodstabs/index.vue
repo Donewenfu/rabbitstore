@@ -1,5 +1,5 @@
 <template>
-  <div class="c-goodstabs-components">
+  <div class="c-goodstabs-components" id="tabs">
     <!--切换区域-->
     <nav>
       <a href="javascript:;" :class="current === 'detail' ? 'active':''" @click="changeTabs('detail')">商品详情</a>

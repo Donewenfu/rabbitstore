@@ -70,6 +70,7 @@ export default {
 }
 :deep{
   .r-circle-dot{
+    z-index: 99!important;
     bottom: 8px !important;
     ul{
       li{

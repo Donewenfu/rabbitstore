@@ -53,7 +53,11 @@
         </template>
         <!--分页组件区域-->
         <div class="comment-pagination">
-          <rpagination :total="total" @currentpage="changepage" :currentPage="reqparmas.page"></rpagination>
+          <rpagination
+            :total="total"
+            @currentpage="changepage"
+            :currentPage="reqparmas.page"
+          ></rpagination>
         </div>
       </div>
       <!--loading 加载效果-->
@@ -146,9 +150,10 @@ export default {
     })
     // 获取用户点击的分页数据
     const changepage = (data) => {
-      console.log(data)
       reqparmas.page = data
-      console.log(reqparmas)
+      // 获取tabs距离顶部高度 点击页码返回
+      const offsetTop = document.getElementById('tabs').offsetTop
+      document.documentElement.scrollTop = offsetTop + 100
     }
     return {
       tagCurrent,

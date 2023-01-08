@@ -144,10 +144,17 @@ export default {
     width: 30%;
     height: 100vh;
     background-color: $txColor;
+    background-image: url("../../assets/images/bglogo.png");
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: 400px;
     .logo-area{
       cursor: pointer;
       width: 80px;
       margin: 20px;
+      &:hover{
+        animation: shake .83s;
+      }
       img{
         display: inline-block;
         width: 100%;
@@ -181,8 +188,11 @@ export default {
   .login-right{
     flex: 1;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     .login-inner-form{
-      margin-top: 200px;
+      //margin-top: 200px;
       margin-left: 150px;
       .weclome-slogan{
         display: flex;
@@ -201,7 +211,7 @@ export default {
         input{
           width: 500px;
           height: 40px;
-          border-bottom: 1px solid #929292;
+          border-bottom: 1px solid #c9c9c9;
           font-size: 15px;
           &::placeholder{
             color: #484848;
@@ -242,6 +252,12 @@ export default {
               align-items: center;
               margin-right: 20px;
               cursor: pointer;
+              &:last-child{
+                img{
+                  width: 28px;
+                  height: 28px;
+                }
+              }
               img{
                 width: 30px;
                 height: 30px;

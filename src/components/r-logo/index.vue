@@ -58,6 +58,7 @@ export default {
   transition: all .3s;
   &:hover{
     opacity: 0.9;
+    animation: shake .83s ;
   }
   img{
     display: block;

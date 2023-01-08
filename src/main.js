@@ -14,5 +14,6 @@ import './assets/styles/iconfont.scss'
 import 'normalize.css'
 // 公用样式
 import './assets/styles/common.scss'
-
+// 全局动画
+import './assets/styles/animated.scss'
 createApp(App).use(store).use(router).use(rui).mount('#app')
