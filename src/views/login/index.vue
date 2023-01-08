@@ -167,7 +167,7 @@ export default {
       text-align: left;
       color: #fff;
       //margin-left: 150px;
-      margin-top: 280px;
+      margin-top: 45%;
       height: 40px;
       .inner-slogan{
         margin: 0 auto;
@@ -198,7 +198,7 @@ export default {
         display: flex;
         h3{
           font-weight: normal;
-          font-size: 25px;
+          font-size: 30px;
           color: #333;
           &:nth-child(2){
             color: $txColor;
