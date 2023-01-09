@@ -8,7 +8,8 @@
       <!--标语区域-->
       <div class="login-slogan-area">
         <div class="inner-slogan">
-          <div class="line-one">{{sloganLanguage}}</div>
+          <!--多语言标识-->
+          <div class="line-one">{{ sloganLanguage }}</div>
           <div class="line-two">象米商城你身边的赚钱机器！</div>
         </div>
       </div>
@@ -35,7 +36,7 @@
           <div class="password-area">
             <Field :type="!showpwd?'password':'text'" placeholder="请输入密码"  v-model="formdata.password" name="password"></Field>
             <!--是否查看密码-->
-            <div class="checkpassword iconfont icon-biyanjing" @click="lookpwd" v-if="!showpwd"></div>
+            <div class="checkpassword iconfont icon-biyanjing" @click="lookpwd" v-if="showpwd"></div>
             <div class="checkpassword iconfont icon-yanjing" @click="lookpwd" v-else></div>
             <div class="error" v-if="errors.password">
               <i class="iconfont icon-cuowu"></i>
@@ -96,9 +97,8 @@ import { onMounted, reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 // 工具函数
 import { getRandom } from '@/utils'
-// api
+// api 用户登录
 import { userlogin } from '@/api/user'
-
 export default {
   name: 'login',
   setup () {
@@ -261,7 +261,7 @@ export default {
         display: flex;
         h3{
           font-weight: normal;
-          font-size: 30px;
+          font-size: 29px;
           color: #333;
           &:nth-child(2){
             color: $txColor;
@@ -291,7 +291,7 @@ export default {
           .iconfont{
             position: absolute;
             right: 0;
-            bottom: 5px;
+            bottom: 4px;
             font-size: 16px;
             cursor: pointer;
           }

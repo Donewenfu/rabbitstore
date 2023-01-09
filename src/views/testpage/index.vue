@@ -1,6 +1,6 @@
 <template>
   <div class="testpage">
-    <rpagination :total="31"></rpagination>
+    <rmessage></rmessage>
   </div>
 </template>
 

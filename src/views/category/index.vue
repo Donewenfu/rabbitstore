@@ -65,6 +65,7 @@ import rswiper from '@/components/r-swiper/index'
 import rmainproduct from '@/components/r-mainproduct/index'
 // api
 import { getBnanerData } from '@/api/home'
+// api
 import { getCategoryData } from '@/api/category'
 export default {
   name: 'category',
@@ -73,9 +74,11 @@ export default {
     const bannerList = reactive([])
     // vue route
     const route = useRoute()
+    // vue router
     const router = useRouter()
     // vuex
     const store = useStore()
+    // 获取banner数据
     getBnanerData().then((res) => {
       const { result } = res
       bannerList.push(...result)
@@ -83,6 +86,7 @@ export default {
     // 获取分类的数据
     const categoryData = computed(() => {
       let cate = {}
+      // 在分类中找到当前分类id
       const item = store.state.category.cateList.find(item => {
         return item.id === route.params.id
       })
