@@ -268,7 +268,6 @@ export default {
     flex-direction: column;
     justify-content: center;
     .login-inner-form{
-      //margin-top: 200px;
       margin-left: 150px;
       .weclome-slogan{
         display: flex;
