@@ -25,23 +25,23 @@ const routes = [
     component: layout,
     children: [
       // 首页
-      { path: '/', name: 'index', component: index },
+      { path: '/', name: 'index', component: index, meta: { title: '象米子商城' } },
       // 分类页面
-      { path: '/category/:id', name: 'category', component: category },
+      { path: '/category/:id', name: 'category', component: category, meta: { title: '加载中...' } },
       // 二级分类页面
-      { path: '/category/sub/:id', name: 'subcategory', component: subcategory },
+      { path: '/category/sub/:id', name: 'subcategory', component: subcategory, meta: { title: '加载中...' } },
       // 商品详情页面
-      { path: '/goodsdetail/:id', name: 'goodsdetail', component: goodsDetail },
+      { path: '/goodsdetail/:id', name: 'goodsdetail', component: goodsDetail, meta: { title: '加载中...' } },
       // 购物车界面
-      { path: '/cart', name: 'cartpage', component: cartpage }
+      { path: '/cart', name: 'cartpage', component: cartpage, meta: { title: '购物车' } }
     ]
   },
   // 登录界面
-  { path: '/login', name: 'loginpage', component: loginpage },
+  { path: '/login', name: 'loginpage', component: loginpage, meta: { title: '欢迎登录' } },
   // 测试页面
-  { path: '/testpage', name: 'testpage', component: testpage },
+  { path: '/testpage', name: 'testpage', component: testpage, meta: { title: '测试页面' } },
   // 404页面
-  { path: '/:pathMatch(.*)*', name: 'notpage', component: notpage }
+  { path: '/:pathMatch(.*)*', name: 'notpage', component: notpage, meta: { title: '没找到该页面' } }
 ]
 
 const router = createRouter({
@@ -51,6 +51,14 @@ const router = createRouter({
   scrollBehavior () {
     return { top: 0 }
   }
+})
+
+// 路由守卫
+router.beforeEach((to, from ,next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
 })
 
 export default router

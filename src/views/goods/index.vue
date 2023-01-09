@@ -205,6 +205,8 @@ const useGoods = () => {
       // nextTick 下一次dom更新循环结束的回调函数 返回的是一个promise
       await nextTick()
       goods.value = data.result
+      console.log(goods.value.name)
+      document.title = goods.value.name
       // 设置当前菜单的 选中项目
       if (goods.value.categories[0] && goods.value.categories[0].parent.name) {
         store.commit('user/setUserActive', goods.value.categories[0].parent.name)

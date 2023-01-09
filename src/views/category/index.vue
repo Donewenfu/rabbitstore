@@ -94,6 +94,7 @@ export default {
     const catelist = ref([])
     const getCateListData = async () => {
       const { result } = await getCategoryData(route.params.id)
+      document.title = result.name
       catelist.value = result
     }
 

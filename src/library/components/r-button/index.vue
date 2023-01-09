@@ -1,6 +1,14 @@
 <template>
   <div class="r-button-components">
-    <button class="r-button" :class="[type,size]" :style="[radiusStyle]">
+    <button
+      class="r-button"
+      :class="[type,size,disabled?'disable':'']"
+      :style="[radiusStyle]"
+      :disabled="disabled"
+      type="button"
+    >
+      <!--加载状态-->
+      <div class="loading-area iconfont icon-loading" v-if="loading"></div>
       <slot></slot>
     </button>
   </div>
@@ -25,9 +33,19 @@ export default {
     radius: {
       type: [Number, String],
       default: 5
+    },
+    // 是否loading加载
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    // 是否禁用按钮
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
-  setup (props, { emit }) {
+  setup (props) {
     const radiusStyle = computed(() => {
       return {
         'border-radius': props.radius + 'px'
@@ -41,14 +59,35 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@keyframes rotating{
+  0%{
+    transform:rotate(0deg)
+  }
+  to{
+    transform:rotate(1turn)
+  }
+}
 .r-button-components{
   .r-button{
     border: none;
     outline: none;
     cursor: pointer;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .loading-area{
+      margin-right: 5px;
+      font-size: 14px;
+      display: inline-block;
+      animation: rotating 1.5s infinite;
+    }
     &:hover{
       opacity: .8;
+    }
+    &.disable{
+      opacity: .5 !important;
+      cursor: not-allowed !important;
     }
     &.primary{
       background-color: $txColor;

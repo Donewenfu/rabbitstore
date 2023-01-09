@@ -170,6 +170,8 @@ export default {
         filterListData.value = res.result
         // 首次加载完毕
         firstLoading.value = true
+        // 设置标题
+        document.title = breadData.value.sub.name
       })
     }
     watch(() => route.params.id, (newval) => {

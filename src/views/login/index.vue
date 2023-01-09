@@ -22,30 +22,38 @@
           <h3>,很高兴您来到这里</h3>
         </div>
         <!--表单区域-->
-        <div class="form-area">
+        <Form class="form-area"  ref="formCom" :validation-schema="loginSchema" autocomplete="off" v-slot="{errors}" >
           <!--用户名-->
           <div class="username-area">
-            <input type="text" placeholder="请输入用户名" @blur="inputblur('username')" v-model="formdata.username">
-            <div class="error" v-if="showUsernameError && !formdata.username">
+            <Field  type="text" placeholder="请输入用户名"  v-model="formdata.account" name="account"></Field>
+            <div class="error" v-if="errors.account">
               <i class="iconfont icon-cuowu"></i>
-              <span class="error-text">请输入用户名</span>
+              <span class="error-text">{{ errors.account }}</span>
             </div>
           </div>
           <!--密码-->
           <div class="password-area">
-            <input type="password" placeholder="请输入密码" @blur="inputblur('password')" v-model="formdata.password">
-            <div class="error" v-if="showPasswordError && !formdata.password">
+            <Field type="password" placeholder="请输入密码"  v-model="formdata.password" name="password"></Field>
+            <div class="error" v-if="errors.password">
               <i class="iconfont icon-cuowu"></i>
-              <span class="error-text">请输入密码</span>
+              <span class="error-text">{{ errors.password }}</span>
             </div>
           </div>
           <!--登录按钮-->
           <div class="login-button">
-            <rbutton :radius="40" @click="login">登录</rbutton>
+            <rbutton :radius="40" @click="login" :disabled="loginloading" :loading="loginloading">登录</rbutton>
           </div>
           <!--是否同意协议-->
           <div class="agreement">
-            <rcheckbox v-model="isagreement">我已接受同意象米隐私条款</rcheckbox>
+            <div class="agreement-checkbox">
+              <Field v-model="formdata.agreement" as="rcheckbox"  name="agreement"></Field>
+              <span>我已接受同意象米</span>
+              <a href="javascript:;">隐私条款</a>
+            </div>
+            <div class="error" v-if="errors.agreement">
+              <i class="iconfont icon-cuowu"></i>
+              <span class="error-text">{{ errors.agreement }}</span>
+            </div>
           </div>
           <!--其他登录方式-->
           <div class="other-login-type">
@@ -61,45 +69,59 @@
                   <img src="../../assets/images/applelogin.png" alt="">
                 </div>
               </li>
+              <li>
+                <div class="login-type-icon">
+                  <i class="iconfont icon-QQ"></i>
+                </div>
+              </li>
             </ul>
           </div>
-        </div>
+        </Form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// 验证组件
+import { Form, Field } from 'vee-validate'
+// 表单验证函数
+import xmschema from '@/utils/verify-vue'
 // vue
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, computed } from 'vue'
 // vue-router
 import { useRouter } from 'vue-router'
 // 工具函数
 import { getRandom } from '@/utils'
+// api
+import { userlogin } from '@/api/user'
+
 export default {
   name: 'login',
   setup () {
     // vue-router
     const router = useRouter()
-    // 用户是否同意协议
-    const isagreement =  ref(false)
-    // 是否显示用户名错误
-    const showUsernameError = ref(false)
-    // 是否显示密码错误
-    const showPasswordError = ref(false)
+    // form表单组件
+    const formCom = ref(null)
+    // 按钮加载状态
+    const loginloading = ref(false)
     // 表单数据
     const formdata = reactive({
-      username: '',
-      password: ''
+      // 用户名
+      account: '',
+      // 密码
+      password: '',
+      // 用户是否同意协议
+      agreement: false
     })
     // 语言language
     const sloganLanguage = ref('您好！')
-    const languageList = ['您好！', '안녕하세요！', 'こんにちは!', 'Hola!', 'Hello!']
+    const languageList = ['您好！', '안녕하세요！', 'こんにちは!', 'Hola!', 'Hello!', '歡迎你！', '안녕하세요！']
     // 一秒切换语言
     const changeLangguage = () => {
       setInterval(() => {
         sloganLanguage.value = languageList[getRandom(0, languageList.length - 1)]
-      }, 1500)
+      }, 2000)
     }
     // 跳转到首页
     const goHome = () => {
@@ -108,28 +130,56 @@ export default {
     onMounted(() => {
       changeLangguage()
     })
-    // 点击登录
-    const login = () => {
-
-    }
-    // 输入框失去焦点
-    const inputblur = (name) => {
-      if (name === 'username' && !formdata.username) {
-        showUsernameError.value = true
-      } else if (name === 'password' && !formdata.password) {
-        showPasswordError.value = true
+    // 用户点击登录按钮
+    const login = async () => {
+      // 登录之前验证表单
+      const verify = await formCom.value.validate()
+      if (!verify) return
+      // 登录参数
+      const params = {
+        account: formdata.account,
+        password: formdata.password
       }
+      // 登录按钮loading加载
+      loginloading.value = true
+      userlogin(params).then((res) => {
+        console.log(res)
+        // 登录按钮loading加载
+        loginloading.value = false
+      }).catch((err) => {
+        console.log(err)
+        loginloading.value = false
+      })
+    }
+    // 表单验证规则
+    const loginSchema = {
+      // 账号验证方式
+      account: xmschema.account,
+      // 密码验证方式
+      password: xmschema.password,
+      // 用户协议验证方式
+      agreement: xmschema.agreement
     }
     return {
-      isagreement,
+      // 随机语言
       sloganLanguage,
+      // 用户电话回到首页
       goHome,
+      // 用户点击登录按钮
       login,
-      inputblur,
-      showUsernameError,
-      showPasswordError,
-      formdata
+      // 登录提交表单信息
+      formdata,
+      // 表单验证方式
+      loginSchema,
+      // form表单组件
+      formCom,
+      // 登录加载
+      loginloading
     }
+  },
+  components: {
+    Form,
+    Field
   }
 }
 </script>
@@ -237,6 +287,12 @@ export default {
         }
         .agreement{
           margin: 25px 0;
+          display: flex;
+          flex-direction: column;
+          .agreement-checkbox{
+            display: flex;
+            align-items: center;
+          }
         }
         .other-login-type{
           .title{
@@ -252,6 +308,10 @@ export default {
               align-items: center;
               margin-right: 20px;
               cursor: pointer;
+              .iconfont{
+                font-size: 35px;
+                color: #12b7f5;
+              }
               &:last-child{
                 img{
                   width: 28px;

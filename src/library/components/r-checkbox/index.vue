@@ -26,9 +26,11 @@ export default {
     // checkBox 选中的状态
     const ischeck = useVModel(props, 'modelValue', emit)
     const changeCheck = () => {
-      ischeck.value = !ischeck.value
+      // 需要用一个变量接收值
+      const newVal = !ischeck.value
+      ischeck.value = newVal
       // 自定义事件
-      emit('change', ischeck.value)
+      emit('change', newVal)
     }
     return { changeCheck, ischeck }
   }
