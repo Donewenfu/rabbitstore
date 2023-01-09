@@ -1,6 +1,6 @@
 <template>
   <div class="testpage">
-    <rmessage></rmessage>
+    <rmessage message="测试文字信息哎加就" type="error"></rmessage>
   </div>
 </template>
 

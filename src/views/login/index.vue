@@ -92,7 +92,7 @@ import { Form, Field } from 'vee-validate'
 // 表单验证函数
 import xmschema from '@/utils/verify-vue'
 // vue
-import { onMounted, reactive, ref, computed } from 'vue'
+import { onMounted, reactive, ref, getCurrentInstance } from 'vue'
 // vue-router
 import { useRouter } from 'vue-router'
 // 工具函数
@@ -110,6 +110,8 @@ export default {
     const showpwd = ref(false)
     // 按钮加载状态
     const loginloading = ref(false)
+    // 获取当前组件实例 获取当前组件实例
+    const { proxy } = getCurrentInstance()
     // 表单数据
     const formdata = reactive({
       // 用户名
@@ -121,8 +123,9 @@ export default {
     })
     // 语言language
     const sloganLanguage = ref('您好！')
+    // 语言列表数据
     const languageList = ['您好！', '안녕하세요！', 'こんにちは!', 'Hola!', 'Hello!', '歡迎你！', '안녕하세요！']
-    // 一秒切换语言
+    // 每隔2秒切换问候语
     const changeLangguage = () => {
       setInterval(() => {
         sloganLanguage.value = languageList[getRandom(0, languageList.length - 1)]
@@ -132,6 +135,7 @@ export default {
     const goHome = () => {
       router.push('/')
     }
+    // 组件挂载完成 随机生成问候语
     onMounted(() => {
       changeLangguage()
     })
@@ -147,14 +151,23 @@ export default {
       }
       // 登录按钮loading加载
       loginloading.value = true
-      userlogin(params).then((res) => {
-        console.log(res)
-        // 登录按钮loading加载
+      // 调用登录接口
+      try {
+        // 调用登录接口
+        const data = await userlogin(params)
+        console.log('登录成功的数据')
+        console.log(data)
+        console.log('登录成功的数据')
         loginloading.value = false
-      }).catch((err) => {
-        console.log(err)
+      } catch (e) {
+        // 消息提示
+        proxy.$message({
+          type: 'error',
+          text: '登录失败'
+        })
+        // 取消按钮loading加载
         loginloading.value = false
-      })
+      }
     }
     // 表单验证规则
     const loginSchema = {
