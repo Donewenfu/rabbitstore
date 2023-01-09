@@ -9,7 +9,8 @@
     >
       <!--加载状态-->
       <div class="loading-area iconfont icon-loading" v-if="loading"></div>
-      <slot></slot>
+      <div class="loading-text" v-if="loading && loadingText">{{ loadingText }}</div>
+      <slot v-else></slot>
     </button>
   </div>
 </template>
@@ -43,6 +44,11 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    // 加载提示文字
+    loadingText: {
+      type: String,
+      default: ''
     }
   },
   setup (props) {

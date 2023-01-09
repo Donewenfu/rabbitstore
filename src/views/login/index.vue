@@ -33,7 +33,10 @@
           </div>
           <!--密码-->
           <div class="password-area">
-            <Field type="password" placeholder="请输入密码"  v-model="formdata.password" name="password"></Field>
+            <Field :type="!showpwd?'password':'text'" placeholder="请输入密码"  v-model="formdata.password" name="password"></Field>
+            <!--是否查看密码-->
+            <div class="checkpassword iconfont icon-biyanjing" @click="lookpwd" v-if="!showpwd"></div>
+            <div class="checkpassword iconfont icon-yanjing" @click="lookpwd" v-else></div>
             <div class="error" v-if="errors.password">
               <i class="iconfont icon-cuowu"></i>
               <span class="error-text">{{ errors.password }}</span>
@@ -41,7 +44,7 @@
           </div>
           <!--登录按钮-->
           <div class="login-button">
-            <rbutton :radius="40" @click="login" :disabled="loginloading" :loading="loginloading">登录</rbutton>
+            <rbutton :radius="40" @click="login" :disabled="loginloading" :loading="loginloading" loadingText="客官正在登录中...">登录</rbutton>
           </div>
           <!--是否同意协议-->
           <div class="agreement">
@@ -103,14 +106,16 @@ export default {
     const router = useRouter()
     // form表单组件
     const formCom = ref(null)
+    // 是否显示密码
+    const showpwd = ref(false)
     // 按钮加载状态
     const loginloading = ref(false)
     // 表单数据
     const formdata = reactive({
       // 用户名
-      account: '',
+      account: 'xiaotuxian001',
       // 密码
-      password: '',
+      password: '123456',
       // 用户是否同意协议
       agreement: false
     })
@@ -160,6 +165,10 @@ export default {
       // 用户协议验证方式
       agreement: xmschema.agreement
     }
+    // 用户点击显示密码
+    const lookpwd = () => {
+      showpwd.value = !showpwd.value
+    }
     return {
       // 随机语言
       sloganLanguage,
@@ -174,7 +183,11 @@ export default {
       // form表单组件
       formCom,
       // 登录加载
-      loginloading
+      loginloading,
+      // 是否显示密码
+      showpwd,
+      // 用户点击眼睛
+      lookpwd
     }
   },
   components: {
@@ -272,7 +285,16 @@ export default {
           }
         }
         .password-area{
+          width: 500px;
           margin-top: 44px;
+          position: relative;
+          .iconfont{
+            position: absolute;
+            right: 0;
+            bottom: 5px;
+            font-size: 16px;
+            cursor: pointer;
+          }
         }
         .login-button{
           margin-top: 50px;
