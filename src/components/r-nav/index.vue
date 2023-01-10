@@ -6,10 +6,10 @@
           <!--已登录-->
           <template v-if="profile.account">
             <li>
-              <a href="javascript:;">张三</a>
+              <a href="javascript:;">{{ profile.nickname }}</a>
             </li>
             <li>
-              <a href="javascript:;">退出登录</a>
+              <a href="javascript:;" @click="logout">退出登录</a>
             </li>
           </template>
           <!--未登录-->
@@ -49,7 +49,7 @@ import { useStore } from 'vuex'
 // 计算属性
 import { computed } from 'vue'
 // vue-router
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 export default {
   name: 'appnav',
   setup () {
@@ -57,6 +57,8 @@ export default {
     const store = useStore()
     // vue-router
     const router = useRouter()
+    // 当前路由对象
+    const route = useRoute()
     // 计算属性 获取用户的账户信息 判断是否需要显示账号
     const profile = computed(() => {
       return store.state.user.profile
@@ -66,13 +68,19 @@ export default {
       switch (urlName) {
         case 'login':
           // 跳转到登录界面
-          router.push('/login')
+          router.push(`/login?redirectUrl=${encodeURIComponent(route.path)}`)
           break
       }
     }
+    // 用户点击退出登录
+    const logout = () => {
+      // 调用退出登录方法
+      store.commit('user/userLogout', { profile: {}, logoutPath: route.path })
+    }
     return {
       profile,
-      goUrl
+      goUrl,
+      logout
     }
   }
 }

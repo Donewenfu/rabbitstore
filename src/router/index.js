@@ -1,4 +1,7 @@
+// vue-router
 import { createRouter, createWebHashHistory } from 'vue-router'
+// vuex
+import store from '@/store'
 // lanyout组件
 const layout = () => import('@/views/layout')
 // home组件
@@ -13,6 +16,8 @@ const goodsDetail = () => import('@/views/goods')
 const cartpage = () => import('@/views/cart')
 // 登录页面
 const loginpage = () => import('@/views/login')
+// 协议页面
+const agreement = () => import('@/views/agreement')
 // 404页面 没有找到该页面
 const notpage = () => import('@/views/notpage')
 // 测试页面
@@ -33,7 +38,9 @@ const routes = [
       // 商品详情页面
       { path: '/goodsdetail/:id', name: 'goodsdetail', component: goodsDetail, meta: { title: '加载中...' } },
       // 购物车界面
-      { path: '/cart', name: 'cartpage', component: cartpage, meta: { title: '购物车' } }
+      { path: '/cart', name: 'cartpage', component: cartpage, meta: { title: '购物车' } },
+      // 协议页面
+      { path: '/agreement', name: 'agreement', component: agreement, meta: { title: '象米商城-协议' } }
     ]
   },
   // 登录界面
@@ -55,8 +62,17 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to, from ,next) => {
+  // 给页面设置标题
   if (to.meta.title) {
     document.title = to.meta.title
+  }
+  // 判断是否已经登录 如果用户已经登录 再次进入登录页面 直接返回
+  // 获取token
+  const token = store.state.user.profile.token
+  if (token) {
+    if (to.path === '/login') {
+      next('/')
+    }
   }
   next()
 })

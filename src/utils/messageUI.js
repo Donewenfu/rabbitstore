@@ -9,11 +9,11 @@ div.setAttribute('class', 'r-message-container')
 // 把节点放到body中
 document.body.appendChild(div)
 // 消息提示函数
-const message = ({ type, text, duration = 2500 }) => {
+const message = ({ type, text, offsetTop, duration = 2500 }) => {
   // 计时器
   let timer = null
   // 根据组件创建一个虚拟节点
-  const vNode = createVNode(rmessage, { type, text })
+  const vNode = createVNode(rmessage, { type, text, offsetTop })
   // 把虚拟节点 渲染到指定的容器中
   render(vNode, div)
   // 清除定时器

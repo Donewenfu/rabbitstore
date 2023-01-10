@@ -23,7 +23,7 @@
           <h3>,很高兴您来到这里</h3>
         </div>
         <!--表单区域-->
-        <Form class="form-area"  ref="formCom" :validation-schema="loginSchema" autocomplete="off" v-slot="{errors}" >
+        <Form class="form-area" ref="formCom" :validation-schema="loginSchema" autocomplete="off" v-slot="{errors}">
           <!--用户名-->
           <div class="username-area">
             <Field  type="text" placeholder="请输入用户名"  v-model="formdata.account" name="account"></Field>
@@ -38,6 +38,7 @@
             <!--是否查看密码-->
             <div class="checkpassword iconfont icon-biyanjing" @click="lookpwd" v-if="showpwd"></div>
             <div class="checkpassword iconfont icon-yanjing" @click="lookpwd" v-else></div>
+            <!--错误提示-->
             <div class="error" v-if="errors.password">
               <i class="iconfont icon-cuowu"></i>
               <span class="error-text">{{ errors.password }}</span>
@@ -45,15 +46,22 @@
           </div>
           <!--登录按钮-->
           <div class="login-button">
-            <rbutton :radius="40" @click="login" :disabled="loginloading" :loading="loginloading" loadingText="客官正在登录中...">登录</rbutton>
+            <rbutton
+              :radius="40"
+              @click="login"
+              :disabled="loginloading"
+              :loading="loginloading"
+              loadingText="登录中..."
+            >登录</rbutton>
           </div>
           <!--是否同意协议-->
           <div class="agreement">
             <div class="agreement-checkbox">
               <Field v-model="formdata.agreement" as="rcheckbox"  name="agreement"></Field>
               <span>我已接受同意象米</span>
-              <a href="javascript:;">隐私条款</a>
+              <a href="javascript:;" class="agreement-link" @click="goAgreement">隐私条款</a>
             </div>
+            <!--错误提示-->
             <div class="error" v-if="errors.agreement">
               <i class="iconfont icon-cuowu"></i>
               <span class="error-text">{{ errors.agreement }}</span>
@@ -63,17 +71,18 @@
           <div class="other-login-type">
             <p class="title">其他登录方式</p>
             <ul>
-              <li>
+              <li @click="gologinType('wechat')">
                 <div class="login-type-icon">
                   <img src="../../assets/images/icon_Wechat_Highlight.svg" alt="">
                 </div>
               </li>
-              <li>
+              <li @click="gologinType('apple')">
                 <div class="login-type-icon">
                   <img src="../../assets/images/applelogin.png" alt="">
                 </div>
               </li>
-              <li>
+              <li @click="gologinType('qq')">
+                <div class="hot-tag">new</div>
                 <div class="login-type-icon">
                   <i class="iconfont icon-QQ"></i>
                 </div>
@@ -92,26 +101,33 @@ import { Form, Field } from 'vee-validate'
 // 表单验证函数
 import xmschema from '@/utils/verify-vue'
 // vue
-import { onMounted, reactive, ref, getCurrentInstance } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 // vue-router
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 // 工具函数
 import { getRandom } from '@/utils'
 // api 用户登录
 import { userlogin } from '@/api/user'
+// 导入消息提示组件
+import Message from '@/utils/messageUI'
+// vuex
+import { useStore } from 'vuex'
+
 export default {
   name: 'login',
   setup () {
     // vue-router
     const router = useRouter()
+    // vuex
+    const store = useStore()
+    // 当前路由对象
+    const route = useRoute()
     // form表单组件
     const formCom = ref(null)
     // 是否显示密码
     const showpwd = ref(false)
     // 按钮加载状态
     const loginloading = ref(false)
-    // 获取当前组件实例 获取当前组件实例
-    const { proxy } = getCurrentInstance()
     // 表单数据
     const formdata = reactive({
       // 用户名
@@ -141,7 +157,7 @@ export default {
     })
     // 用户点击登录按钮
     const login = async () => {
-      // 登录之前验证表单
+      // 登录之前验证表单 校验通过请求登录api接口
       const verify = await formCom.value.validate()
       if (!verify) return
       // 登录参数
@@ -151,19 +167,31 @@ export default {
       }
       // 登录按钮loading加载
       loginloading.value = true
-      // 调用登录接口
+      // 登录
       try {
         // 调用登录接口
-        const data = await userlogin(params)
-        console.log('登录成功的数据')
-        console.log(data)
-        console.log('登录成功的数据')
+        const { result: { id, avatar, nickname, account, mobile, token } } = await userlogin(params)
+        // 消息提示
+        Message({
+          type: 'success',
+          text: `${nickname}您好！欢迎登录象米商城！`,
+          offsetTop: 40,
+          duration: 2000
+        })
+        // 取消按钮loading加载
         loginloading.value = false
+        // 把用户信息存储在vuex中
+        store.commit('user/setProfile', { id, avatar, nickname, account, mobile, token })
+        // 跳转到来源页面 或者首页
+        await router.push({
+          path: route.query.redirectUrl || '/'
+        })
       } catch (e) {
         // 消息提示
-        proxy.$message({
+        Message({
           type: 'error',
-          text: '登录失败'
+          text: '登录失败',
+          duration: 3000
         })
         // 取消按钮loading加载
         loginloading.value = false
@@ -175,12 +203,23 @@ export default {
       account: xmschema.account,
       // 密码验证方式
       password: xmschema.password,
-      // 用户协议验证方式
+      // 用户协议验证方式 用户是否同意协议
       agreement: xmschema.agreement
     }
     // 用户点击显示密码
     const lookpwd = () => {
       showpwd.value = !showpwd.value
+    }
+    // 点击登录方式
+    const gologinType = (type) => {
+      Message({
+        type: 'error',
+        text: '客官此登录方式暂未开通┗|｀O′|┛ 嗷~~'
+      })
+    }
+    // 跳转到协议页面
+    const goAgreement = () => {
+      router.push('/agreement')
     }
     return {
       // 随机语言
@@ -200,7 +239,11 @@ export default {
       // 是否显示密码
       showpwd,
       // 用户点击眼睛
-      lookpwd
+      lookpwd,
+      // 登录方式
+      gologinType,
+      // 跳转到协议
+      goAgreement
     }
   },
   components: {
@@ -242,7 +285,6 @@ export default {
       flex-direction: column;
       text-align: left;
       color: #fff;
-      //margin-left: 150px;
       margin-top: 45%;
       height: 40px;
       .inner-slogan{
@@ -326,6 +368,10 @@ export default {
           .agreement-checkbox{
             display: flex;
             align-items: center;
+            .agreement-link{
+              color: $txColor;
+              margin-left: 3px;
+            }
           }
         }
         .other-login-type{
@@ -342,6 +388,8 @@ export default {
               align-items: center;
               margin-right: 20px;
               cursor: pointer;
+              position: relative;
+              transition: all .3s;
               .iconfont{
                 font-size: 35px;
                 color: #12b7f5;
@@ -355,6 +403,22 @@ export default {
               img{
                 width: 30px;
                 height: 30px;
+              }
+              .hot-tag{
+                background-color: $errorColor;
+                color: #fff;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                font-size: 10px;
+                padding: 1px 3px;
+                position: absolute;
+                right: -12px;
+                top: -5px;
+                animation: shake 2s infinite;
+              }
+              &:hover{
+                transform: scale(1.2);
               }
             }
           }

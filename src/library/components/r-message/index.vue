@@ -1,5 +1,5 @@
 <template>
-    <div class="r-message-components" :style="[style[type]]" v-show="visible">
+    <div class="r-message-components" :style="[style[type],{'top':offsetTop+'px'}]" v-show="visible">
       <i class="iconfont" :class="[style[type].icon]"></i>
       <span>{{ text }}</span>
     </div>
@@ -20,6 +20,11 @@ export default {
     text: {
       type: String,
       default: '消息组件默认消息'
+    },
+    // 距离顶部的高度
+    offsetTop: {
+      type: Number,
+      default: 30
     }
   },
   setup () {
@@ -28,19 +33,19 @@ export default {
         icon: 'icon-cuowu',
         color: '#E6A23C',
         backgroundColor: '#fff',
-        borderColor: 'rgba(250, 236, 216, 0.5)'
+        borderColor: 'rgba(250, 236, 216, 0.8)'
       },
       error: {
         icon: 'icon-cuowu1',
         color: '#F56C6C',
         backgroundColor: '#fff',
-        borderColor: 'rgba(253, 226, 226, 0.5)'
+        borderColor: 'rgba(253, 226, 226, 0.8)'
       },
       success: {
         icon: 'icon-zhengque',
         color: '#67C23A',
         backgroundColor: '#fff',
-        borderColor: 'rgba(225, 243, 216, 0.5)'
+        borderColor: 'rgba(225, 243, 216, 0.8)'
       }
     }
     // 控制元素是否显示隐藏
@@ -60,10 +65,9 @@ export default {
 <style scoped lang="scss">
 .r-message-components{
   position: fixed;
-  z-index: 9999;
+  z-index: 99999;
   display: flex;
   left: 50%;
-  top: 30px;
   transform: translateX(-50%);
   align-items: center;
   background-color: #fff;
