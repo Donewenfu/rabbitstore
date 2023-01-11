@@ -9,7 +9,9 @@
       <div class="login-slogan-area">
         <div class="inner-slogan">
           <!--多语言标识-->
-          <div class="line-one">{{ sloganLanguage }}</div>
+          <div class="slogan-box">
+            <div class="line-one" v-for="(item, index) in languageList" :key="index">{{item}}</div>
+          </div>
           <div class="line-two">象米商城你身边的赚钱机器！</div>
         </div>
       </div>
@@ -140,20 +142,20 @@ export default {
     // 语言language
     const sloganLanguage = ref('您好！')
     // 语言列表数据
-    const languageList = ['您好！', '안녕하세요！', 'こんにちは!', 'Hola!', 'Hello!', '歡迎你！', '안녕하세요！']
+    const languageList = ref(['您好！', '안녕하세요！', 'こんにちは!', 'Hola!', 'Hello!', '歡迎你！', '您好！'])
     // 每隔2秒切换问候语
-    const changeLangguage = () => {
-      setInterval(() => {
-        sloganLanguage.value = languageList[getRandom(0, languageList.length - 1)]
-      }, 2000)
-    }
+    // const changeLangguage = () => {
+    //   setInterval(() => {
+    //     sloganLanguage.value = languageList[getRandom(0, languageList.length - 1)]
+    //   }, 2000)
+    // }
     // 跳转到首页
     const goHome = () => {
       router.push('/')
     }
     // 组件挂载完成 随机生成问候语
     onMounted(() => {
-      changeLangguage()
+      // changeLangguage()
     })
     // 用户点击登录按钮
     const login = async () => {
@@ -243,7 +245,8 @@ export default {
       // 登录方式
       gologinType,
       // 跳转到协议
-      goAgreement
+      goAgreement,
+      languageList
     }
   },
   components: {
@@ -289,11 +292,22 @@ export default {
       height: 40px;
       .inner-slogan{
         margin: 0 auto;
+        .slogan-box{
+          width: 200px;
+          height: 40px;
+          overflow: hidden;
+        }
       }
       .line-one{
         font-size: 28px;
         font-weight: bold;
-        transition: all .3s;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        animation:rowup 8s ease infinite;
+        animation-delay:1.5s;
+        animation-fill-mode:forwards;
+        //row 是一行  column column 是纵向
       }
       .line-two{
         width: 300px;

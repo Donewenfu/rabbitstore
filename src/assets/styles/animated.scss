@@ -17,3 +17,30 @@
         transform: translate3d(4px, 0, 0);
     }
 }
+//文字滚动
+@keyframes rowup {
+    0% {
+        transform:translateZ(0)
+    }
+    14.2% {
+        transform:translate3d(0,-40px,0)
+    }
+    24.8% {
+        transform:translate3d(0,-80px,0)
+    }
+    42.6% {
+        transform:translate3d(0,-120px,0)
+    }
+    56.8% {
+        transform:translate3d(0,-160px,0)
+    }
+    69% {
+        transform:translate3d(0,-200px,0)
+    }
+    83.2% {
+        transform:translate3d(0,-240px,0)
+    }
+    to {
+        transform:translate3d(0,-240px,0)
+    }
+}
