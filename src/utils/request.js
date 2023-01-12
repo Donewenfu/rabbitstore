@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use((res) => {
 }, (err) => {
   // 响应请求状态码是401时需要做响应处理
   if (err.response && err.response.status === 401) {
-    // 清空本地用户信息
+    // 清空本地用户信息 清空vuex 用户信息
     store.commit('user/setProfile', {})
     // 跳转到登录界面
     // 获取之前用户点击的路由地址

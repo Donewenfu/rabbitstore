@@ -305,6 +305,7 @@ export default {
         display: flex;
         align-items: center;
         animation:rowup 8s ease infinite;
+        // 动画延迟时间
         animation-delay:1.5s;
         animation-fill-mode:forwards;
         //row 是一行  column column 是纵向
