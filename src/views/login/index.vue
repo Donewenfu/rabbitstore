@@ -103,11 +103,9 @@ import { Form, Field } from 'vee-validate'
 // 表单验证函数
 import xmschema from '@/utils/verify-vue'
 // vue
-import { onMounted, reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 // vue-router
 import { useRouter, useRoute } from 'vue-router'
-// 工具函数
-import { getRandom } from '@/utils'
 // api 用户登录
 import { userlogin } from '@/api/user'
 // 导入消息提示组件
@@ -143,19 +141,16 @@ export default {
     const sloganLanguage = ref('您好！')
     // 语言列表数据
     const languageList = ref(['您好！', '안녕하세요！', 'こんにちは!', 'Hola!', 'Hello!', '歡迎你！', '您好！'])
-    // 每隔2秒切换问候语
-    // const changeLangguage = () => {
-    //   setInterval(() => {
-    //     sloganLanguage.value = languageList[getRandom(0, languageList.length - 1)]
-    //   }, 2000)
-    // }
     // 跳转到首页
     const goHome = () => {
+      // 设置vuex 为分类数据的第一项数据
+      store.commit('user/setUserActive', cateList.value[0].name)
+      // 回到首页
       router.push('/')
     }
-    // 组件挂载完成 随机生成问候语
-    onMounted(() => {
-      // changeLangguage()
+    // 获取导航分类数据
+    const cateList = computed(() => {
+      return store.state.category.cateList
     })
     // 用户点击登录按钮
     const login = async () => {
@@ -246,7 +241,10 @@ export default {
       gologinType,
       // 跳转到协议
       goAgreement,
-      languageList
+      // 语言list
+      languageList,
+      // 用户分类列表
+      cateList
     }
   },
   components: {
