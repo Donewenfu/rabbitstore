@@ -27,6 +27,8 @@ export default {
 .r-header-components{
   width: 100%;
   height: 110px;
+  background-image: url("../../assets/images/navbg.png");
+  background-repeat: no-repeat;
   background-color: #fff;
   .r-header-inner{
     height: 100%;

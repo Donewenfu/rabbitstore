@@ -1,7 +1,7 @@
 <template>
-        <div class="r-red-pack-components" v-show="visible">
+        <div class="r-red-pack-components" v-show="visible" :class="showAnimated?'':'hide'">
           <div class="c-red-pack-mask" >
-              <img src="../../assets/images/pack.png" :class="showAnimated?'show':'hide'"  alt="大红包" @click="getRedpick">
+              <img src="../../assets/images/pickred.png" :class="showAnimated?'show':''"  alt="大红包" @click="getRedpick">
           </div>
         </div>
 </template>
@@ -44,13 +44,14 @@ export default {
       showAnimated.value = !showAnimated.value
       setTimeout(() => {
         emit('update:modelValue', !visible.value)
+        Message({
+          type: 'success',
+          text: '恭喜小主，2023高薪就业！',
+          duration: 4000,
+          offsetTop: 170
+        })
       },300)
-      Message({
-        type: 'success',
-        text: '恭喜小主，2023高薪就业！',
-        duration: 4000,
-        offsetTop: 170
-      })
+
       // 如果用户点击了打开红包下次 进入首页的时候不在打开
       setStorageData('openredpack', true)
     }
@@ -183,8 +184,9 @@ export default {
     justify-content: center;
     align-items: center;
     img{
-      width: 260px;
+      width: 240px;
       cursor: pointer;
+      border-radius: 10px;
     }
     .show{
       animation: bounce-in 300ms linear;
