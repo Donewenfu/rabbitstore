@@ -79,6 +79,7 @@ export default {
 <style scoped lang="scss">
 .r-popularity-components{
   width: 100%;
+  overflow: hidden;
   .r-popularity-top{
     display: flex;
     align-items: center;

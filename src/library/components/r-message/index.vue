@@ -1,8 +1,8 @@
 <template>
-    <div class="r-message-components" :style="[style[type],{'top':offsetTop+'px'}]" v-show="visible">
-      <i class="iconfont" :class="[style[type].icon]"></i>
-      <span>{{ text }}</span>
-    </div>
+      <div class="r-message-components" :style="[style[type],{'top':offsetTop+'px'}]" v-show="visible">
+        <i class="iconfont" :class="[style[type].icon]"></i>
+        <span>{{ text }}</span>
+      </div>
 </template>
 
 <script>
@@ -63,15 +63,27 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@keyframes enteranimated {
+  0%{
+    opacity: 1;
+  }
+  50%{
+    opacity: 0;
+  }
+  from{
+    opacity: 1;
+  }
+}
 .r-message-components{
   position: fixed;
   z-index: 99999;
   display: flex;
-  left: 50%;
-  transform: translateX(-50%);
+  min-width: 150px;
   align-items: center;
+  justify-content: center;
+  left: 50%;
   background-color: #fff;
-  margin-left: auto;
+  margin-left: -100px;
   margin-right: auto;
   padding: 8px 25px;
   box-sizing: border-box;
@@ -79,6 +91,7 @@ export default {
   box-shadow: 1px 3px 10px rgb(0 0 0 / 5%);
   border-width: 1px;
   border-style: solid;
+  animation: shake .8s linear;
   span{
     margin-left: 5px;
   }

@@ -1,4 +1,5 @@
 <template>
+    <rredpack  v-model="showRenpick" ></rredpack>
   <div class="index-page">
     <div class="container">
       <!--轮播图区域 分类区域-->
@@ -57,6 +58,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 // 分类组件
 import rcategory from './components/r-category/index'
+
 // 轮播图组件
 import rswiper from '@/components/r-swiper/index'
 // 首页商品组件
@@ -69,15 +71,20 @@ import indexmainproduct from '@/components/r-indexmainproduct/index'
 import newSpecproduct from '@/components/r-newspec/index'
 // 骨架
 import mainskeleton from '@/components/r-skeletonproduct'
+// 红包组件
+import rredpack from '@/components/r-redpack'
 // 数据懒加载hook
 import useLazyData from '@/hook/useLazyData'
 // api
 import { getBnanerData, getHotBrandData, getIndexGoods, getNewProductData, getNewSpecData } from '@/api/home'
+import { getLocalStorageData } from '@/utils/storage'
 
 export default {
   name: 'index',
   setup () {
     const showbox = ref(false)
+    // 是否显示红包弹窗
+    const showRenpick = ref(true)
     // 人气商品 ref
     const hotproduct = ref(null)
     // 热门商品 ref
@@ -102,7 +109,17 @@ export default {
     onMounted(() => {
       // 获取banner数据
       getBanner()
+      // 检查是否打开过红包
+      openRedpack()
     })
+    // 是否打开红包弹窗
+    const openRedpack = () => {
+      if (getLocalStorageData('openredpack')) {
+        showRenpick.value = false
+      } else {
+        showRenpick.value = true
+      }
+    }
     // 获取轮播图数据
     const getBanner = async () => {
       const { result } = await getBnanerData()
@@ -121,7 +138,7 @@ export default {
     // 获取最新专题 数据懒加载
     indexState.newSpecdataspec = useLazyData(newproduct, getNewSpecData)
 
-    return { indexState, showbox, hotproduct, brandproduct, breanDataList, mainproduct, newproduct }
+    return { indexState, showbox, hotproduct, brandproduct, breanDataList, mainproduct, newproduct, showRenpick }
   },
   components: {
     rcategory,
@@ -130,7 +147,8 @@ export default {
     rpopularity,
     indexmainproduct,
     newSpecproduct,
-    mainskeleton
+    mainskeleton,
+    rredpack
   }
 }
 </script>
@@ -163,11 +181,10 @@ export default {
   opacity: 0;
 }
 .index-page{
-  height: 1000px;
   background-color: #f5f5f5;
-  height: 100%;
+  overflow: hidden;
   .container{
-    overflow: hidden;
+    //overflow: hidden;
     .index-cate-swiper{
       margin-top: 40px;
       display: flex;

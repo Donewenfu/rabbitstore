@@ -173,7 +173,7 @@ export default {
           type: 'success',
           text: `${nickname}您好！欢迎登录象米商城！`,
           offsetTop: 40,
-          duration: 2000
+          duration: 3000
         })
         // 取消按钮loading加载
         loginloading.value = false
@@ -211,7 +211,8 @@ export default {
     const gologinType = (type) => {
       Message({
         type: 'error',
-        text: '客官此登录方式暂未开通┗|｀O′|┛ 嗷~~'
+        text: '客官此登录方式暂未开通┗|｀O′|┛ 嗷~~',
+        duration: 3000
       })
     }
     // 跳转到协议页面
