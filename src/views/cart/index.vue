@@ -23,8 +23,8 @@
               <th class="handle">操作</th>
             </tr>
           </thead>
-          <tbody>
-            <template v-for="(item, index) in cartList">
+          <tbody v-if="firstCart">
+            <template v-for="(item, index) in cartList" :key="index">
               <tr>
                 <td>
                   <div class="cartproduct">
@@ -34,17 +34,19 @@
                     </div>
                     <!--购物车商品数据-->
                     <div class="product-info">
-                      <div class="product-img">
-                        <img :src="item.picture" :alt="item.name">
-                      </div>
-                      <!--商品信息-->
-                      <div class="product-info">
-                        <p>{{ item.name }}</p>
-                        <p>{{ item.attrsText }}</p>
+                      <div class="product-info-img-detail">
+                        <div class="product-img">
+                          <img :src="item.picture" :alt="item.name">
+                        </div>
+                        <!--商品信息-->
+                        <div class="product-info">
+                          <p class="ellipsis">{{ item.name }}</p>
+                          <p>{{ item.attrsText }}</p>
+                        </div>
                       </div>
                       <!--商品单价-->
                       <div class="product-price">
-                        <span>¥1254</span>
+                        <span>¥ {{item.nowPrice}}</span>
                       </div>
                       <!--商品数量组件-->
                       <div class="product-counter">
@@ -52,7 +54,7 @@
                       </div>
                       <!--商品小计-->
                       <div class="product-subtotal">
-                        <span>¥{{item.nowPrice}}</span>
+                        <span>¥{{computedSubtotal(item.nowPrice, item.count)}}</span>
                       </div>
                       <!--商品操作列-->
                       <div class="product-edit">
@@ -64,6 +66,9 @@
               </tr>
             </template>
           </tbody>
+          <div class="carloading" v-else>
+            <rloadinglogo></rloadinglogo>
+          </div>
         </table>
 
       </div>
@@ -81,7 +86,11 @@
           </div>
         </div>
         <!--底部结算右侧区域-->
-        <div class="cart-bottom-right"></div>
+        <div class="cart-bottom-right">
+          <span class="statistics">共件 {{computedProductNumTotal.userCartTotalNum}} 商品,已选择 {{computedProductNumTotal.userCartSelectNum}} 件,商品合计：</span>
+          <span class="totalPrice">¥{{ computedProductNumTotal.userSelectPrice }}</span>
+          <rbutton size="default">下单结算</rbutton>
+        </div>
       </div>
     </div>
   </div>
@@ -89,32 +98,55 @@
 
 <script>
 // api
-import { getCartList } from '@/api/cart'
+import {getCartList} from '@/api/cart'
 // vue
-import { ref } from 'vue'
+import {computed, ref} from 'vue'
+// vuex
+import {useStore} from 'vuex'
+
 export default {
   name: 'cartpage',
   setup () {
     // 购物车数据
     const cartList = ref([])
-    // 是否显示loadin加载
-    const cartLoading = ref(true)
+    // vuex
+    const store = useStore()
     // 是否全选
     const userSelectAll = ref(false)
+    // 购物车是否加载完毕
+    const firstCart = ref(false)
     // 获取购物车列表数据
     const getCartListData = async () => {
       const { result } = await getCartList()
       // 购物车列表数据
       cartList.value = result
       // 数据请求完毕关闭loading加载
-      cartLoading.value = false
+      firstCart.value = true
     }
     // 获取购物车数据
     getCartListData()
+    // 计算商品小计
+    const computedSubtotal = (price, count) => {
+      return (Number(count) * Number(price)).toFixed(2)
+    }
+    // 计算总件数 和 总价
+    const computedProductNumTotal = computed(() => {
+      return {
+        // 用户的购物车总件数
+        userCartTotalNum: cartList.value.reduce((p, c) => p + c.count, 0),
+        // 用户已选择的数量
+        userCartSelectNum: (cartList.value.filter(p => p.selected)).length,
+        // 用户已选择的 商品总价
+        userSelectPrice: (cartList.value.reduce((p, c) => p + (c.selected ? (c.count * Number(c.nowPrice)) : 0), 0)).toFixed(2)
+      }
+    })
+
     return {
       cartList,
-      cartLoading,
-      userSelectAll
+      userSelectAll,
+      firstCart,
+      computedSubtotal,
+      computedProductNumTotal
     }
   }
 }
@@ -135,6 +167,8 @@ export default {
     table{
       thead{
         width: 100%;
+        height: 40px;
+        border-bottom: 1px solid #f5f5f5;
         tr{
           display: flex;
           align-items: center;
@@ -167,10 +201,17 @@ export default {
           }
         }
       }
+      .carloading{
+        margin: 90px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
       tbody{
         .cartproduct{
           display: flex;
           align-items: center;
+          margin: 20px 0;
           .product-checkbox{
             width: 100px;
           }
@@ -178,11 +219,21 @@ export default {
             //width:300px;
             display: flex;
             align-items: center;
+            .product-info-img-detail{
+              width: 300px;
+              display: flex;
+              align-items: center;
+              .product-info{
+                margin-left: 10px;
+                height: 80px;
+
+              }
+            }
             .product-img{
-              width: 110px;
+              width: 80px;
               img{
-                width: 100px;
-                height: 100px;
+                width: 80px;
+                height: 80px;
                 border-radius: $borderRadius;
               }
             }
@@ -191,6 +242,7 @@ export default {
               width: 190px;
               flex-direction: column;
               p{
+                margin: 5px 0;
                 width:100%;
               }
             }
@@ -235,6 +287,34 @@ export default {
     margin-top: 20px;
     border-radius: $borderRadius;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    .cart-bottom-left{
+      display: flex;
+      align-items: center;
+      .select-all{
+        display: flex;
+        align-items: center;
+      }
+      .handle-area{
+        display: flex;
+        align-items: center;
+        span{
+          margin: 0 10px;
+        }
+      }
+    }
+    .cart-bottom-right{
+      display: flex;
+      align-items: center;
+      .totalPrice{
+        margin-left: 10px;
+        margin-right: 16px;
+        color: $priceColor;
+        font-weight: bold;
+        font-size: 20px;
+      }
+    }
   }
 }
 </style>

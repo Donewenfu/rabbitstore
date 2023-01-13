@@ -46,7 +46,8 @@ import { computed, inject, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // vuex
 import { useStore } from 'vuex'
-
+// 消息提示
+import Message from '@/utils/messageUI'
 export default {
   name: 'navlink',
   props: {
@@ -144,7 +145,15 @@ export default {
       if (store.state.user.profile.token) {
         router.push('/cart')
       } else {
-        router.push(`/login?redirectUrl=${encodeURIComponent(route.path)}`)
+        Message({
+          type: 'warn',
+          text: '小主你还没有登录奥～',
+          offsetTop: 170,
+          duration: 2000
+        })
+        setTimeout(() => {
+          router.push(`/login?redirectUrl=${encodeURIComponent(route.path)}`)
+        }, 2000)
       }
     }
     return { navList, goCart, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon, goSubcategory, changeRoute, userInfo }
