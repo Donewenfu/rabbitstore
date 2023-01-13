@@ -18,8 +18,8 @@
     </div>
     <!--购物车-->
     <div class="cart-area fr">
-      <i class="iconfont icon-gouwuche"></i>
-      <span class="cartnum">8</span>
+      <i class="iconfont icon-gouwuche" @click="goCart"></i>
+      <span class="cartnum" v-if="userInfo.token">{{ $store.getters['cart/getCartCount'] }}</span>
     </div>
     <!--移入显示盒子 -->
     <transition name="nav" tag="div">
@@ -134,8 +134,20 @@ export default {
       const { name } = data
       store.commit('user/setUserActive', name)
     }
-
-    return { navList, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon, goSubcategory, changeRoute }
+    // 获取用户信息
+    const userInfo = computed(() => {
+      return store.state.user.profile
+    })
+    // 用户点击购物车
+    const goCart = () => {
+      // 判断用户是否登录
+      if (store.state.user.profile.token) {
+        router.push('/cart')
+      } else {
+        router.push(`/login?redirectUrl=${encodeURIComponent(route.path)}`)
+      }
+    }
+    return { navList, goCart, bottomStyle, showPopup, hidePopup, isShowPopup, cateChildrenData, enter, delinputText, searchKey, showDelicon, goSubcategory, changeRoute, userInfo }
   },
   components: {
     rlogo
@@ -223,7 +235,7 @@ export default {
     .cartnum{
       position: absolute;
       top: -3px;
-      right: -10px;
+      left: 15px;
       background-color: #E26237;
       padding: 1px 4px;
       border-radius: 15px;

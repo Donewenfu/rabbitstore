@@ -56,7 +56,7 @@
             <!--计算组件-->
             <rcounter v-model="count" :max="goods.inventory"></rcounter>
             <!--按钮组件-->
-            <rbutton>加入购物车</rbutton>
+            <rbutton @click="addCart" :loading="addloading" :disabled="addloading" loading-text="加入中">加入购物车</rbutton>
           </div>
         </div>
       </div>
@@ -117,9 +117,15 @@ import { useRoute } from 'vue-router'
 import { nextTick, provide, ref, watch } from 'vue'
 // vuex
 import { useStore } from 'vuex'
+// 消息提示组件
+import Message from '@/utils/messageUI'
 export default {
   name: 'goodsDetail',
   setup () {
+    // 加入购物车按钮loading加载
+    const addloading = ref(false)
+    // vuex
+    const store = useStore()
     // 用户选中的数量
     const count = ref(1)
     // 商品数据
@@ -159,11 +165,40 @@ export default {
         goods.value.price = data.price
         goods.value.oldPrice = data.oldPrice
         goods.value.inventory = data.inventory
+        // 用户选中的skuid
+        goods.value.skuId = data.skuId
         // 更改计算器显示
         count.value = 1
       } else {
         count.value = 1
       }
+    }
+    // 加入购物车
+    const addCart = async () => {
+      if (!goods.value.skuId) {
+        Message({
+          type: 'error',
+          text: '客官规格选择错误',
+          offsetTop: 170
+        })
+        return
+      }
+      addloading.value = true
+      // 判断用户是否选中规格是否选择齐全
+      let params = {
+        // SKUID
+        skuId: goods.value.skuId,
+        // 数量
+        count: count.value
+      }
+      await store.dispatch('cart/addCart', params)
+      Message({
+        type: 'success',
+        text: '加入购物车成功！',
+        offsetTop: 170
+      })
+      // 取消按钮loading加载
+      addloading.value = false
     }
     return {
       goods,
@@ -172,7 +207,9 @@ export default {
       changeSku,
       count,
       loading,
-      hotproductData
+      hotproductData,
+      addCart,
+      addloading
     }
   },
   components: {
