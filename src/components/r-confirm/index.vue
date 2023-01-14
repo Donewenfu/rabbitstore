@@ -1,7 +1,7 @@
 <template>
-  <div class="r-confirm-components">
+  <div class="r-confirm-components" >
     <!--遮罩-->
-    <div class="r-confirm-mask" :class="{fade}"></div>
+    <div class="r-confirm-mask" :class="{fade}" ></div>
     <!--confirm内容区域-->
     <div class="r-confirm-content" :style="[style[type]]" :class="{fade}">
       <!--confirm 标题-->
@@ -25,6 +25,7 @@
 <script>
 // 按钮组件
 import rbutton from '@/library/components/r-button'
+import { useWindowSize } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
 export default {
   name: 'rconfirm',
@@ -54,6 +55,7 @@ export default {
     }
   },
   setup () {
+    const { width, height } = useWindowSize()
     // fade动画
     const fade = ref(false)
     // 元素挂载渲染完成
@@ -85,7 +87,9 @@ export default {
     }
     return {
       style,
-      fade
+      fade,
+      width,
+      height
     }
   },
   components: {
@@ -98,14 +102,22 @@ export default {
 .r-confirm-components{
   width: 100%;
   height: 100%;
+  //position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  //transform: translate(-50%);
   .r-confirm-mask{
     width: 100%;
-    position: fixed;
+    height: 100%;
+    //position: fixed;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    background: rgba(0,0,0,0);
+    position: fixed;
+    background: rgba(0,0,0,0.5);
     z-index: 100008;
     &.fade {
       transition: all 0.4s;

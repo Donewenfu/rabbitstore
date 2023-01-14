@@ -110,7 +110,7 @@ export default {
     }
     &.large{
       width: 160px;
-      height: 35px;
+      height: 40px;
     }
     &.default{
       width: 110px;

@@ -6,7 +6,7 @@
           <!--已登录-->
           <template v-if="profile.account">
             <li>
-              <a href="javascript:;">{{ profile.nickname }}</a>
+              <a href="javascript:;">{{ profile.account }}</a>
             </li>
             <li>
               <a href="javascript:;" @click="logout">退出登录</a>

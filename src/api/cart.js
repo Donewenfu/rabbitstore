@@ -28,3 +28,4 @@ export function delCartData (params) {
 export function updateProductNum (skuid, count) {
   return request(`/member/cart/${skuid}`, 'PUT', { count })
 }
+
