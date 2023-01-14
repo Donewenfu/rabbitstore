@@ -14,8 +14,8 @@
         <!--收货地址-->
         <div class="area-line">
           <div class="title">收货地址</div>
-          <div class="address-area" v-if="checkorderData.userAddresses">
-            <div class="address-left">
+          <div class="address-area">
+            <div class="address-left" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length>0">
               <ul>
                 <li>
                   <span>收<i></i>货<i></i>人:</span>
@@ -31,8 +31,12 @@
                 </li>
               </ul>
             </div>
+            <div class="address-left addressempty">
+              <i class="iconfont icon-cuowu1"></i>
+              <span>需要添加地址才能支付订单！</span>
+            </div>
             <div class="address-right">
-              <div class="address-right-left">修改地址</div>
+              <div class="address-right-left" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length>0">修改地址</div>
               <div class="address-right-right">
                 <rbutton type="line" size="default">切换地址</rbutton>
                 <rbutton type="line" size="default">添加地址</rbutton>
@@ -191,6 +195,16 @@ export default {
           box-sizing: border-box;
           display: flex;
           justify-content: space-between;
+          align-items: center;
+          .addressempty{
+            display: flex;
+            align-items: center;
+            .iconfont{
+              color: $txColor;
+              margin-right: 3px;
+            }
+            color: $txColor;
+          }
           .address-left{
             ul{
               li{

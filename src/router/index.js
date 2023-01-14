@@ -32,7 +32,7 @@ const routes = [
     component: layout,
     children: [
       // 首页
-      { path: '/', name: 'index', component: index, meta: { title: '象米子商城' } },
+      { path: '/', name: 'index', component: index, meta: { title: '象米商城' } },
       // 分类页面
       { path: '/category/:id', name: 'category', component: category, meta: { title: '加载中...' } },
       // 二级分类页面
