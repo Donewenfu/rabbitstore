@@ -103,17 +103,22 @@ export default {
       background-color: $warnColor;
       color: #fff;
     }
+    &.line{
+      background-color: #fff !important;
+      color: $txColor !important;
+      border: 1px solid $txColor;
+    }
     &.large{
       width: 160px;
-      height: 40px;
+      height: 35px;
     }
     &.default{
-      width: 100px;
-      height: 40px;
+      width: 110px;
+      height: 35px;
     }
     &.small{
       width: 80px;
-      height: 30px;
+      height: 35px;
       font-size: 12px !important;
     }
   }

@@ -18,6 +18,8 @@ const cartpage = () => import('@/views/cart')
 const loginpage = () => import('@/views/login')
 // 协议页面
 const agreement = () => import('@/views/agreement')
+// 订单确认页面
+const checkorder = () => import('@/views/checkorder')
 // 404页面 没有找到该页面
 const notpage = () => import('@/views/notpage')
 // 测试页面
@@ -39,6 +41,8 @@ const routes = [
       { path: '/goodsdetail/:id', name: 'goodsdetail', component: goodsDetail, meta: { title: '加载中...' } },
       // 购物车界面
       { path: '/cart', name: 'cartpage', component: cartpage, meta: { title: '购物车' } },
+      // 订单确认页面
+      { path: '/checkorder', name: 'checkorder', component: checkorder, meta: { title: '订单确认页面' } },
       // 协议页面
       { path: '/agreement', name: 'agreement', component: agreement, meta: { title: '象米商城-协议' } }
     ]

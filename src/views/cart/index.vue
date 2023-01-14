@@ -14,7 +14,8 @@
           <thead>
             <tr>
               <th class="selectAll">
-                <rcheckbox v-model="userSelectAll"><span>全选</span></rcheckbox>
+                <rcheckbox v-model="isUserSelectAll" @change="userSelectCheckboxAll" v-if="cartList.length>0"><span>全选</span></rcheckbox>
+                <rcheckbox  v-else><span>全选</span></rcheckbox>
               </th>
               <th class="productinfo">商品信息</th>
               <th class="unitprice">单价</th>
@@ -24,47 +25,54 @@
             </tr>
           </thead>
           <tbody v-if="firstCart">
-            <template v-for="(item, index) in cartList" :key="index">
-              <tr>
-                <td>
-                  <div class="cartproduct">
-                    <!--购物车选择框-->
-                    <div class="product-checkbox">
-                      <rcheckbox v-model="item.selected"></rcheckbox>
-                    </div>
-                    <!--购物车商品数据-->
-                    <div class="product-info">
-                      <div class="product-info-img-detail">
-                        <div class="product-img">
-                          <img :src="item.picture" :alt="item.name">
+            <div v-if="cartList.length > 0">
+              <template v-for="(item, index) in cartList" :key="index">
+                <tr>
+                  <td>
+                    <div class="cartproduct">
+                      <!--购物车选择框-->
+                      <div class="product-checkbox">
+                        <rcheckbox v-model="item.selected" @change="$event=>singSelectChange(item.skuId,$event)" ></rcheckbox>
+                      </div>
+                      <!--购物车商品数据-->
+                      <div class="product-info">
+                        <div class="product-info-img-detail">
+                          <div class="product-img">
+                            <img :src="item.picture" :alt="item.name">
+                          </div>
+                          <!--商品信息-->
+                          <div class="product-info">
+                            <p class="ellipsis">{{ item.name }}</p>
+                            <p>{{ item.attrsText }}</p>
+                          </div>
                         </div>
-                        <!--商品信息-->
-                        <div class="product-info">
-                          <p class="ellipsis">{{ item.name }}</p>
-                          <p>{{ item.attrsText }}</p>
+                        <!--商品单价-->
+                        <div class="product-price">
+                          <span>¥ {{item.nowPrice}}</span>
+                        </div>
+                        <!--商品数量组件-->
+                        <div class="product-counter">
+                          <rcounter v-model="item.count" @change="$event => changeCount(item.skuId,item.count)"></rcounter>
+                        </div>
+                        <!--商品小计-->
+                        <div class="product-subtotal">
+                          <span>¥{{computedSubtotal(item.nowPrice, item.count)}}</span>
+                        </div>
+                        <!--商品操作列-->
+                        <div class="product-edit">
+                          <i class="iconfont icon-delete" @click="delproduct('sing', item.skuId)"></i>
                         </div>
                       </div>
-                      <!--商品单价-->
-                      <div class="product-price">
-                        <span>¥ {{item.nowPrice}}</span>
-                      </div>
-                      <!--商品数量组件-->
-                      <div class="product-counter">
-                        <rcounter v-model="item.count"></rcounter>
-                      </div>
-                      <!--商品小计-->
-                      <div class="product-subtotal">
-                        <span>¥{{computedSubtotal(item.nowPrice, item.count)}}</span>
-                      </div>
-                      <!--商品操作列-->
-                      <div class="product-edit">
-                        <i class="iconfont icon-delete"></i>
-                      </div>
                     </div>
-                  </div>
-                </td>
-              </tr>
-            </template>
+                  </td>
+                </tr>
+              </template>
+            </div>
+            <div v-else class="listempty">
+              <img src="../../assets/images/emptygoods.png" alt="没有商品">
+              <span>小主您的购物车没有商品哟！<span class="gohome" @click="gohome">去首页看看？</span></span>
+            </div>
+
           </tbody>
           <div class="carloading" v-else>
             <rloadinglogo></rloadinglogo>
@@ -78,18 +86,18 @@
         <div class="cart-bottom-left">
           <!--全选框-->
           <div class="select-all">
-            <rcheckbox></rcheckbox>
+            <rcheckbox v-model="isUserSelectAll" @change="userSelectCheckboxAll" v-if="cartList.length>0"></rcheckbox>
           </div>
           <div class="handle-area">
-            <span>删除商品</span>
-            <span>清空失效商品</span>
+            <span @click="delproduct('select')">删除商品</span>
+            <span @click="noefficacy">清空失效商品</span>
           </div>
         </div>
         <!--底部结算右侧区域-->
         <div class="cart-bottom-right">
           <span class="statistics">共件 {{computedProductNumTotal.userCartTotalNum}} 商品,已选择 {{computedProductNumTotal.userCartSelectNum}} 件,商品合计：</span>
           <span class="totalPrice">¥{{ computedProductNumTotal.userSelectPrice }}</span>
-          <rbutton size="default">下单结算</rbutton>
+          <rbutton size="default" :disabled="computedProductNumTotal.userCartSelectNum === 0" @click="gocheckorder">下单结算</rbutton>
         </div>
       </div>
     </div>
@@ -98,11 +106,17 @@
 
 <script>
 // api
-import {getCartList} from '@/api/cart'
+import { carSelect, singSelect, delCartData, updateProductNum } from '@/api/cart'
 // vue
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 // vuex
-import {useStore} from 'vuex'
+import { useStore } from 'vuex'
+// 消息提示
+import Message from '@/utils/messageUI'
+// 确认提示框
+import Confirm from '@/utils/confirmUI'
+// vue router
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'cartpage',
@@ -111,15 +125,19 @@ export default {
     const cartList = ref([])
     // vuex
     const store = useStore()
+    // vue-router
+    const router = useRouter()
     // 是否全选
     const userSelectAll = ref(false)
     // 购物车是否加载完毕
     const firstCart = ref(false)
     // 获取购物车列表数据
     const getCartListData = async () => {
-      const { result } = await getCartList()
+      // const { result } = await getCartList()
       // 购物车列表数据
-      cartList.value = result
+      // cartList.value = result
+      await store.dispatch('cart/getCartList')
+      cartList.value = store.state.cart.list
       // 数据请求完毕关闭loading加载
       firstCart.value = true
     }
@@ -141,12 +159,123 @@ export default {
       }
     })
 
+    // 用户全选
+    const userSelectCheckboxAll = async (userselect) => {
+      cartList.value.forEach(p => {
+        p.selected = userselect
+      })
+      const params = {
+        // 选中状态
+        selected: userselect,
+        // ids 商品skuid集合
+        ids: cartList.value.map(p => {
+          return p.skuId
+        })
+      }
+      await carSelect(params)
+      Message({
+        type: 'success',
+        text: userselect ? '全选成功！' : '已取消全选！',
+        offsetTop: 170
+      })
+    }
+
+    // 计算是否全选
+    const isUserSelectAll = computed(() => {
+      return cartList.value.every(p => p.selected)
+    })
+
+    // 用户单独选中
+    const singSelectChange = async (data, event) => {
+      await singSelect(data, { selected: event })
+      Message({
+        type: 'success',
+        text: '修改状态成功！',
+        offsetTop: 170
+      })
+    }
+    // 删除商品
+    const delproduct = (type, skuid) => {
+      // 判断用户是否有选中的商品
+      if (computedProductNumTotal.value.userCartSelectNum <= 0 && type === 'select') {
+        Message({
+          type: 'warn',
+          text: '您没有选中的商品！',
+          offsetTop: 170,
+          duration: 2500
+        })
+        return
+      }
+      Confirm({
+        type: 'warn',
+        title: '温馨提示！',
+        content:'确认删除该数据吗?'
+      }).then(async () => {
+        const params = {
+          ids: []
+        }
+        if (type === 'sing') {
+          params.ids = [skuid]
+        } else {
+          params.ids = cartList.value.map(p => {
+            if (p.selected) {
+              return p.skuId
+            }
+          })
+        }
+        await delCartData(params)
+        Message({
+          type: 'success',
+          text: '商品删除成功！',
+          offsetTop: 170
+        })
+        await getCartListData()
+      }).catch(() => {
+        Message({
+          type: 'warn',
+          text: '已取消！',
+          offsetTop: 170
+        })
+      })
+    }
+    // 点击清空失效
+    const noefficacy = () => {
+      Message({
+        type: 'warn',
+        text: '功能开发中哦！',
+        offsetTop: 170
+      })
+    }
+
+    // 用户更新商品数量
+    const changeCount = async (skuid, count) => {
+      await updateProductNum(skuid, count)
+      // 调用vuex actions方法
+      await store.dispatch('cart/getCartList')
+    }
+
+    // 跳转到首页
+    const gohome = () => {
+      router.push('/')
+    }
+    // 去订单确认页面
+    const gocheckorder = () => {
+      router.push('/checkorder')
+    }
     return {
       cartList,
       userSelectAll,
       firstCart,
       computedSubtotal,
-      computedProductNumTotal
+      computedProductNumTotal,
+      userSelectCheckboxAll,
+      isUserSelectAll,
+      singSelectChange,
+      delproduct,
+      noefficacy,
+      changeCount,
+      gohome,
+      gocheckorder
     }
   }
 }
@@ -158,6 +287,23 @@ export default {
   overflow: hidden;
   .cart-cart-bread{
     padding: 20px 0;
+  }
+  .listempty{
+    margin: 150px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img{
+      width: 130px;
+    }
+    span{
+      margin-top: 10px;
+      color: #999;
+    }
+    .gohome{
+      color: $txColor;
+      cursor: pointer;
+    }
   }
   .cart-content{
     background-color: #fff;
@@ -300,6 +446,7 @@ export default {
         display: flex;
         align-items: center;
         span{
+          cursor: pointer;
           margin: 0 10px;
         }
       }
