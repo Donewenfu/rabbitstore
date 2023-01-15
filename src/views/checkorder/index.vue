@@ -39,7 +39,7 @@
               <div class="address-right-left" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length>0" @click="editAddress">修改地址</div>
               <div class="address-right-right">
                 <rbutton type="line" size="default" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length>0" @click="changeAddress">切换地址</rbutton>
-                <rbutton type="line" size="default">添加地址</rbutton>
+                <rbutton type="line" size="default" @click="showAddressdialog = true">添加地址</rbutton>
               </div>
             </div>
           </div>
@@ -136,7 +136,7 @@
       </div>
     </div>
     <!-- 填写地址组件 -->
-    <addAddressDialog></addAddressDialog>
+    <addAddressDialog v-model:visible="showAddressdialog"></addAddressDialog>
   </div>
 </template>
 
@@ -152,7 +152,10 @@ import addAddressDialog from './component/r-addressdialog'
 export default {
   name: 'checkorder',
   setup () {
+    // 结算订单数据
     const checkorderData = ref({})
+    // 是否显示弹窗
+    const showAddressdialog = ref(false)
     // 获取确认订单信息
     const getCheckOrder = async () => {
       const { result } = await getCheckorderDat()
@@ -181,7 +184,8 @@ export default {
     return {
       checkorderData,
       editAddress,
-      changeAddress
+      changeAddress,
+      showAddressdialog
     }
   },
   components: {

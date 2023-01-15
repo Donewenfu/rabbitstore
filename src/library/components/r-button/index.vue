@@ -117,9 +117,9 @@ export default {
       height: 35px;
     }
     &.small{
-      width: 80px;
+      width: 90px;
       height: 35px;
-      font-size: 12px !important;
+      font-size: 13px !important;
     }
   }
 }
