@@ -31,14 +31,14 @@
                 </li>
               </ul>
             </div>
-            <div class="address-left addressempty">
+            <div class="address-left addressempty" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length<=0">
               <i class="iconfont icon-cuowu1"></i>
               <span>需要添加地址才能支付订单！</span>
             </div>
             <div class="address-right">
-              <div class="address-right-left" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length>0">修改地址</div>
+              <div class="address-right-left" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length>0" @click="editAddress">修改地址</div>
               <div class="address-right-right">
-                <rbutton type="line" size="default">切换地址</rbutton>
+                <rbutton type="line" size="default" v-if="checkorderData.userAddresses && checkorderData.userAddresses.length>0" @click="changeAddress">切换地址</rbutton>
                 <rbutton type="line" size="default">添加地址</rbutton>
               </div>
             </div>
@@ -135,14 +135,20 @@
         </div>
       </div>
     </div>
-
+    <!-- 填写地址组件 -->
+    <addAddressDialog></addAddressDialog>
   </div>
 </template>
 
 <script>
 // api
 import { getCheckorderDat } from '@/api/order'
+// vue
 import { onMounted, ref } from 'vue'
+// 消息提示
+import message from '@/utils/messageUI'
+// 用户添加地址弹窗
+import addAddressDialog from './component/r-addressdialog'
 export default {
   name: 'checkorder',
   setup () {
@@ -156,9 +162,30 @@ export default {
     onMounted(() => {
       getCheckOrder()
     })
-    return {
-      checkorderData
+    // 编辑地址
+    const editAddress = () => {
+      message({
+        type: 'warn',
+        text: '臣妾做不到啊！',
+        offsetTop: 170
+      })
     }
+    // 切换地址
+    const changeAddress = () => {
+      message({
+        type: 'warn',
+        text: '程序员小哥正在开发中！',
+        offsetTop: 170
+      })
+    }
+    return {
+      checkorderData,
+      editAddress,
+      changeAddress
+    }
+  },
+  components: {
+    addAddressDialog
   }
 }
 </script>
