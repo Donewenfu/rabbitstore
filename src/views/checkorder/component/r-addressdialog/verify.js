@@ -1,12 +1,13 @@
 export default {
   // 验证收货人信息
   receiver (value) {
+    console.log('verify')
     if (!value) return '请输入收货人'
     return true
   },
   // 验证手机号
   contact (value) {
-    const TEL_REGEXP = /^1([38]d|5[0-35-9]|7[3678])d{8}$/
+    const TEL_REGEXP = /^1[3-9]\d{9}/
     if (!TEL_REGEXP.test(value)) return '手机号错误🙅'
     return true
   },

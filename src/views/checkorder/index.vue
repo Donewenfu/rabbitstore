@@ -136,7 +136,7 @@
       </div>
     </div>
     <!-- 填写地址组件 -->
-    <addAddressDialog v-model:visible="showAddressdialog"></addAddressDialog>
+    <addAddressDialog v-model:visible="showAddressdialog" @addressSuccess="addressSuccess"></addAddressDialog>
   </div>
 </template>
 
@@ -181,11 +181,16 @@ export default {
         offsetTop: 170
       })
     }
+    // 添加地址成功
+    const addressSuccess = () => {
+      getCheckOrder()
+    }
     return {
       checkorderData,
       editAddress,
       changeAddress,
-      showAddressdialog
+      showAddressdialog,
+      addressSuccess
     }
   },
   components: {

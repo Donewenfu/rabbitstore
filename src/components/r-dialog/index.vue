@@ -16,7 +16,7 @@
       <!-- dialog footer -->
       <div class="r-dialog-footer">
         <rbutton type="line" size="default" @click="closeDialog">取消</rbutton>
-        <rbutton size="default">确认</rbutton>
+        <rbutton size="default" @click="confirm">确认</rbutton>
       </div>
     </div>
   </div>
@@ -79,10 +79,15 @@ export default {
         fade.value = props.visible
       }, 0)
     }, { immediate: true })
+    // 用户点击确认
+    const confirm = () => {
+      emit('confirm')
+    }
     return {
       dialogStyle,
       closeDialog,
-      fade
+      fade,
+      confirm
     }
   }
 }

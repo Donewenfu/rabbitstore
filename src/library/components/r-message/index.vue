@@ -76,7 +76,7 @@ export default {
 }
 .r-message-components{
   position: fixed;
-  z-index: 99999;
+  z-index: 9999999;
   display: flex;
   min-width: 150px;
   align-items: center;

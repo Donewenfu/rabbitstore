@@ -1,19 +1,19 @@
 <template>
   <div class="r-addAddressDialog-components">
-    <rdialog width="50%" height="auto" v-model:visible="visible" title="添加收货地址👋" @close="closedialog">
-      <Form class="address-form" :validation-schema="addformVerify" >
+    <rdialog width="50%" height="auto" v-model:visible="visible" title="添加收货地址👋" @close="closedialog" @confirm="confirm">
+      <Form class="address-form" :validation-schema="addformVerify"  autocomplete="off" ref="formCom">
         <ul>
           <li>
             <span>收货人：</span>
-            <Field type="text" placeholder="请输入收货人" v-model="formData.receiver" name="receiver"></Field>
+            <Field type="text" placeholder="请输入收货人" v-model.trim="formData.receiver" name="receiver"></Field>
           </li>
           <li>
             <span>手机号：</span>
-            <Field type="text" placeholder="请输入手机号" v-model="formData.contact" name="contact"></Field>
+            <Field type="number" placeholder="请输入手机号" v-model.number="formData.contact" name="contact"></Field>
           </li>
           <li class="areacom">
             <span>地区：</span>
-            <rselectcity  @change="selectCity"></rselectcity>
+            <rselectcity  @change="selectCity" :fullLocation="fullLocation"></rselectcity>
           </li>
           <li>
             <span>详细地址：</span>
@@ -21,7 +21,7 @@
           </li>
           <li>
             <span>邮政编码：</span>
-            <Field type="text" placeholder="请输入邮政编码" v-model="formData.postalCode" name="postalCode"></Field>
+            <Field type="number" placeholder="请输入邮政编码" v-model="formData.postalCode" name="postalCode"></Field>
           </li>
           <li>
             <span>地址标签：</span>
@@ -43,17 +43,40 @@ import { Form, Field } from 'vee-validate'
 // 表单验证函数
 import xmschema from './verify'
 // vue
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+// 消息提示
+import message from '@/utils/messageUI'
 export default {
   setup (props, { emit }) {
+    // 表单实例
+    const formCom = ref(null)
+    // 地区选择
+    const fullLocation = ref('')
     const closedialog = () => {
+      formData.receiver = ''
+      formData.contact = ''
+      formData.provinceCode = ''
+      formData.cityCode = ''
+      formData.countyCode = ''
+      formData.address = ''
+      formData.postalCode = ''
+      formData.addressTags = ''
+      formData.isDefault = 0
+      formData.fullLocation = ''
+      // 省份编码
+      formData.provinceCode = ''
+      // 城市编码
+      formData.cityCode = ''
+      // 地区编码
+      formData.countyCode = ''
+      // 地区文字
+      fullLocation.value = ''
       emit('update:visible', false)
     }
     // 表单验证
     const addformVerify = {
       receiver: xmschema.receiver,
       contact: xmschema.contact,
-      areainfo: xmschema.areainfo,
       address: xmschema.address,
       postalCode: xmschema.postalCode
     }
@@ -82,13 +105,45 @@ export default {
     })
     // 用户选中地区
     const selectCity = (data) => {
-      console.log(data);
+      // 省份编码
+      formData.provinceCode = data.provinceCode
+      // 城市编码
+      formData.cityCode = data.cityCode
+      // 地区编码
+      formData.countyCode = data.countyCode
+      // 地区文字
+      fullLocation.value = data.fullLocation
+    }
+    const confirm = async () => {
+      // 登录之前验证表单 校验通过请求登录api接口
+      const verify = await formCom.value.validate()
+      if (!verify || !formData.provinceCode) {
+        message({
+          type: 'error',
+          text: '信息还没填写完整哦！',
+          offsetTop: 170
+        })
+        return
+      }
+      // 请求接口
+      await addAddressData(formData)
+      emit('update:visible', false)
+      message({
+        type: 'success',
+        text: '小主地址添加成功，愉快购物～',
+        offsetTop: 170
+      })
+
+      emit('addressSuccess')
     }
     return {
       closedialog,
       addformVerify,
       formData,
-      selectCity
+      selectCity,
+      confirm,
+      formCom,
+      fullLocation
     }
   },
   props: {
@@ -135,6 +190,7 @@ export default {
           padding: 10px;
           box-sizing: border-box;
           border: 1px solid #e6e6e6;
+          border-radius: 3px;
         }
         :deep{
             .r-selectcity-components{
@@ -145,6 +201,12 @@ export default {
               border-radius: 0;
               height: 40px;
               justify-content: space-between;
+              p{
+                color: #d2d2d2 !important;
+              }
+              .full{
+                color: #333 !important;
+              }
             }
             .city-data-box{
                 top: 50px;

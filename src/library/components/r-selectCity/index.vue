@@ -1,8 +1,8 @@
 <template>
   <div class="r-selectcity-components" ref="target">
     <div class="selectcity-box" :class="showCitybox?'on':''" @click="toggle">
-      <p v-if="!fullLocation">{{placeholder}}</p>
-      <p v-else>{{ fullLocation }}</p>
+      <p v-if="!fullLocation" class="empty">{{placeholder}}</p>
+      <p v-else class="full">{{ fullLocation }}</p>
       <i class="iconfont icon-next-icon-copy"></i>
     </div>
     <!--城市数据盒子-->
