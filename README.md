@@ -1,6 +1,11 @@
-# xianmiStore 象米商城练
+# vue3-小兔鲜商城
+
+改了一些UI样式
+
+在线体验链接：https://donewenfu.github.io/rabbitstore/#/
 
 ## Project setup 项目安装依赖
+
 ```
 npm install
 ```
@@ -21,4 +26,3 @@ npm run lint
 ```
 
 ### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
