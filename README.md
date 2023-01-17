@@ -1,28 +1,24 @@
-# vue3-小兔鲜商城
+# vue3-小兔鲜商城-UI更新🥳
 
-根据小兔鲜项目改了一些UI样式
+> 根据小兔鲜项目改了一些UI样式!
+>
 
-在线体验链接：https://donewenfu.github.io/rabbitstore/#/
-
-## Project setup 项目安装依赖
+## 安装 🚗
 
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development 运行项目
+### 运行 🚕
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production 构建项目
+### 构建 🚌
 ```
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+### 预览地址
 
-### Customize configuration
+https://donewenfu.github.io/rabbitstore/#/
