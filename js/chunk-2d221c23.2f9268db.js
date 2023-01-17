@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d221c23"],{cc5b:function(e,t,c){"use strict";c.r(t);var n=c("7a23");const o={class:"testpage"};function s(e,t,c,s,r,a){const p=Object(n["resolveComponent"])("rmessage");return Object(n["openBlock"])(),Object(n["createElementBlock"])("div",o,[Object(n["createVNode"])(p,{message:"测试文字信息哎加就",type:"error"})])}var r={name:"testpage"},a=c("d959"),p=c.n(a);const d=p()(r,[["render",s]]);t["default"]=d}}]);
+//# sourceMappingURL=chunk-2d221c23.2f9268db.js.map
