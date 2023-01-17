@@ -1,6 +1,6 @@
 # vue3-小兔鲜商城
 
-改了一些UI样式
+根据小兔鲜项目改了一些UI样式
 
 在线体验链接：https://donewenfu.github.io/rabbitstore/#/
 
