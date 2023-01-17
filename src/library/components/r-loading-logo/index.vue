@@ -1,13 +1,19 @@
 <template>
   <div class="c-loading-components">
     <img src="../../../assets/images/logo.svg" alt="" class="logo-loading">
-    <p>客官加载中...</p>
+    <p>{{ loadingtext }}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "rloadinglogo"
+  name: "rloadinglogo",
+  props: {
+    loadingtext: {
+      type: String,
+      default: '客官加载中...'
+    }
+  }
 }
 </script>
 

@@ -157,7 +157,7 @@ export default {
   }
 }
 .cate-product-box{
-  margin-top: 40px;
+  //margin-top: 40px;
   width: 1062px;
   height: 426px;
   background-color: #fff;

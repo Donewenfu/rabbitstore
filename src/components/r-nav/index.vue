@@ -22,7 +22,7 @@
             </li>
           </template>
           <li>
-            <a href="javascript:;">我的订单</a>
+            <a href="javascript:;" @click="goUrl('order')">我的订单</a>
           </li>
           <li>
             <a href="javascript:;">会员中心</a>
@@ -69,6 +69,9 @@ export default {
         case 'login':
           // 跳转到登录界面
           router.push(`/login?redirectUrl=${encodeURIComponent(route.path)}`)
+          break
+        case 'order':
+          router.push('/member')
           break
       }
     }

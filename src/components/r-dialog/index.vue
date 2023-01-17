@@ -14,7 +14,7 @@
         <slot>内容区域</slot>
       </div>
       <!-- dialog footer -->
-      <div class="r-dialog-footer">
+      <div class="r-dialog-footer" v-if="showFooter">
         <rbutton type="line" size="default" @click="closeDialog">取消</rbutton>
         <rbutton size="default" @click="confirm">确认</rbutton>
       </div>
@@ -52,6 +52,10 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
   setup (props, { emit }) {

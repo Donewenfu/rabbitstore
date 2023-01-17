@@ -19,15 +19,15 @@
               <ul>
                 <li>
                   <span>收<i></i>货<i></i>人:</span>
-                  <span>{{ checkorderData.userAddresses[0].address }}</span>
+                  <span>{{ checkorderData.userAddresses[checkorderData.userAddresses.length-1].receiver }}</span>
                 </li>
                 <li>
                   <span>联系方式:</span>
-                  <span>{{ checkorderData.userAddresses[0].contact }}</span>
+                  <span>{{ checkorderData.userAddresses[checkorderData.userAddresses.length-1].contact }}</span>
                 </li>
                 <li>
                   <span>收货地址:</span>
-                  <span>{{ checkorderData.userAddresses[0].fullLocation }}</span>
+                  <span>{{ checkorderData.userAddresses[checkorderData.userAddresses.length-1].fullLocation }}</span>
                 </li>
               </ul>
             </div>
@@ -91,7 +91,7 @@
           <div class="title">配送选择</div>
           <div class="deliveryd-area">
             <ul>
-              <li><span>工作日配送</span></li>
+              <li class="active"><span>工作日配送</span></li>
               <li><span>周末配送</span></li>
             </ul>
           </div>
@@ -101,7 +101,7 @@
           <div class="title">支付方式</div>
           <div class="payType-area">
             <ul>
-              <li><span>在线支付</span></li>
+              <li class="active"><span>在线支付</span></li>
               <li><span>货到付款</span></li>
             </ul>
           </div>
@@ -131,7 +131,7 @@
           </div>
         </div>
         <div class="gopay-area">
-          <rbutton>提交订单</rbutton>
+          <rbutton @click="submitOrder" :loading="payLoading"   loadingText ='正在为您提交订单' :disabled="!(checkorderData.userAddresses && checkorderData.userAddresses.length>0)">提交订单</rbutton>
         </div>
       </div>
     </div>
@@ -142,20 +142,26 @@
 
 <script>
 // api
-import { getCheckorderDat } from '@/api/order'
+import { getCheckorderDat, createOrderinfo } from '@/api/order'
 // vue
 import { onMounted, ref } from 'vue'
 // 消息提示
 import message from '@/utils/messageUI'
 // 用户添加地址弹窗
 import addAddressDialog from './component/r-addressdialog'
+// vue-router
+import { useRouter } from 'vue-router'
 export default {
   name: 'checkorder',
   setup () {
+    // vue-router
+    const router = useRouter()
     // 结算订单数据
     const checkorderData = ref({})
     // 是否显示弹窗
     const showAddressdialog = ref(false)
+    // 提交订单按钮 是否加载
+    const payLoading = ref(false)
     // 获取确认订单信息
     const getCheckOrder = async () => {
       const { result } = await getCheckorderDat()
@@ -185,12 +191,47 @@ export default {
     const addressSuccess = () => {
       getCheckOrder()
     }
+    // 提交订单
+    const submitOrder = async () => {
+      // loading加载
+      payLoading.value = true
+      const params = {
+        // 商品集合  {skuId: "300284889", count: 1}
+        goods: checkorderData.value.goods.map(p => {
+          return {
+            skuId: p.skuId,
+            count: p.count
+          }
+        }),
+        // 所选地址Id
+        addressId: checkorderData.value.userAddresses[checkorderData.value.userAddresses.length-1].id,
+        // 配送时间类型，1为不限，2为工作日，3为双休或假日
+        deliveryTimeType: 2,
+        // 支付方式，1为在线支付，2为货到付款
+        payType: 1,
+        // 支付渠道：支付渠道，1支付宝、2微信--支付方式为在线支付时，传值，为货到付款时，不传值
+        payChannel: 1,
+        // 买家留言
+        buyerMessage: '拿好一点的货'
+      }
+      const data = await createOrderinfo(params)
+      if (data.msg === '操作成功') {
+        // 取消loading加载
+        payLoading.value = false
+        // 跳转到支付页面
+        await router.replace({
+          path: `/pay/${data.result.id}`
+        })
+      }
+    }
     return {
       checkorderData,
       editAddress,
       changeAddress,
       showAddressdialog,
-      addressSuccess
+      addressSuccess,
+      submitOrder,
+      payLoading
     }
   },
   components: {

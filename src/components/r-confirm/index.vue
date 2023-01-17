@@ -15,7 +15,7 @@
       </div>
       <!--confirm footer-->
       <div class="confirm-fooer">
-        <rbutton type="small" @click="canCelCallback">取消</rbutton>
+        <rbutton type="small" @click="canCelCallback" v-if="showClose">取消</rbutton>
         <rbutton type="primary" size="default" @click="confirmCallback">确定</rbutton>
       </div>
     </div>
@@ -52,6 +52,11 @@ export default {
     // 确认
     confirmCallback: {
       type: Function
+    },
+    // 是否显示取消
+    showClose: {
+      type: Boolean,
+      default: true
     }
   },
   setup () {

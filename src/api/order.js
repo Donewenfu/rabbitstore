@@ -10,3 +10,13 @@ export function getCheckorderDat () {
 export function addAddressData (params) {
   return request('/member/address', 'POST', params)
 }
+
+// 提交订单
+export function createOrderinfo (params) {
+  return request('/member/order', 'POST', params)
+}
+
+// 获取我的订单
+export function getOrderInfo (id) {
+  return request(`/member/order/${id}`, 'GET')
+}

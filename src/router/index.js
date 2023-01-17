@@ -20,6 +20,14 @@ const loginpage = () => import('@/views/login')
 const agreement = () => import('@/views/agreement')
 // 订单确认页面
 const checkorder = () => import('@/views/checkorder')
+// 支付页面
+const pay = () => import('@/views/pay')
+// 我的界面
+const member = () => import('@/views/member')
+
+// 我的界面子页面
+const info = () => import('@/views/member/info')
+
 // 404页面 没有找到该页面
 const notpage = () => import('@/views/notpage')
 // 测试页面
@@ -43,6 +51,19 @@ const routes = [
       { path: '/cart', name: 'cartpage', component: cartpage, meta: { title: '购物车' } },
       // 订单确认页面
       { path: '/checkorder', name: 'checkorder', component: checkorder, meta: { title: '订单确认页面' } },
+      // 支付页面
+      { path: '/pay/:id', name: 'pay', component: pay, meta: { title: '订单支付' } },
+      // 我的界面
+      {
+        path: '/member',
+        name: 'member',
+        component: member,
+        meta: { title: '我的' },
+        redirect: '/member/info',
+        children: [
+          { path: 'info', name: 'info', component: info, meta: { title: '我的信息' } }
+        ]
+      },
       // 协议页面
       { path: '/agreement', name: 'agreement', component: agreement, meta: { title: '象米商城-协议' } }
     ]

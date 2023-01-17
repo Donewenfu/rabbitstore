@@ -9,7 +9,9 @@ div.setAttribute('class', 'c-confirm-container')
 // 把节点放到body中
 document.body.appendChild(div)
 // 确认弹窗函数
-const confirm = ({ type, title, content }) => {
+const confirm = ({ type, title, content, showClose = true }) => {
+  console.log('**')
+  console.log(showClose)
   return new Promise((resolve, reject) => {
     // 用户点击取消的回调函数
     const canCelCallback = () => {
@@ -30,7 +32,7 @@ const confirm = ({ type, title, content }) => {
     }
 
     // 创建节点
-    const vNode = createVNode(rconfirm, { type, title, content,  confirmCallback, canCelCallback })
+    const vNode = createVNode(rconfirm, { type, title, content, showClose , confirmCallback, canCelCallback })
     document.body.style = 'overflow: hidden;'
     // 渲染
     render(vNode, div)
