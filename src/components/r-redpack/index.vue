@@ -1,7 +1,7 @@
 <template>
         <div class="r-red-pack-components" v-show="visible" :class="showAnimated?'':'hide'">
           <div class="c-red-pack-mask" >
-              <img src="../../assets/images/pickred.png" :class="showAnimated?'show':''"  alt="大红包" @click="getRedpick">
+              <img src="http://yingtuadmin.spanishknow.com/airticket/20230117163939.png" :class="showAnimated?'show':''"  alt="大红包" @click="getRedpick">
           </div>
         </div>
 </template>
