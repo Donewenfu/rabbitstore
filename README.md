@@ -3,6 +3,10 @@
 > 根据小兔鲜项目改了一些UI样式!
 >
 
+## 预览地址 💡
+
+https://donewenfu.github.io/rabbitstore/#/
+
 ## 安装 🚗
 
 ```
@@ -19,6 +23,12 @@ npm run serve
 npm run build
 ```
 
-### 预览地址
+## 预览图 🎎
 
-https://donewenfu.github.io/rabbitstore/#/
+![](https://p.ipic.vip/7s5278.png)
+
+![](https://p.ipic.vip/nqgvwt.png)
+
+![](https://p.ipic.vip/28mouu.png)
+
+![](https://p.ipic.vip/hs6d4w.png)
