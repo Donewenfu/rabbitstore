@@ -29,10 +29,12 @@ const member = () => import('@/views/member')
 const info = () => import('@/views/member/info')
 // 我的界面订单界面
 const order = () => import('@/views/member/order')
+// 我的界面订单详情页面
+const orderdetail = () => import('@/views/member/detail')
 // 404页面 没有找到该页面
 const notpage = () => import('@/views/notpage')
 // 测试页面
-const testpage =  () => import('@/views/testpage')
+const testpage = () => import('@/views/testpage')
 // 路由规则
 const routes = [
   {
@@ -63,7 +65,8 @@ const routes = [
         redirect: '/member/info',
         children: [
           { path: 'info', name: 'info', component: info, meta: { title: '我的信息' } },
-          { path: 'order', name: 'order', component: order, meta: { title: '我的订单' } }
+          { path: 'order', name: 'order', component: order, meta: { title: '我的订单' } },
+          { path: 'orderdetail/:id', name: 'orderdetail', component: orderdetail, meta: { title: '订单详情' } }
         ]
       },
       // 协议页面

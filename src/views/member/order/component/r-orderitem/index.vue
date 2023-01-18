@@ -53,7 +53,7 @@
         <!--商品操作-->
         <div class="product-operate">
           <rbutton size="small" v-if="orderData.countdown!==-1" @click="gopay(orderData)">立即付款</rbutton>
-          <span>查看详情</span>
+          <span @click="goDetial(orderData)">查看详情</span>
           <span v-if="orderData.countdown!==-1">取消订单</span>
         </div>
       </div>
@@ -67,6 +67,7 @@
 import { useRouter } from 'vue-router'
 // hook
 import { useOrderTime } from '@/hook/ordertime'
+// vue
 import { watch } from 'vue'
 
 export default {
@@ -92,12 +93,16 @@ export default {
       immediate: true
     })
     watch(() => isendTime, () => {
-      console.log('订单结束监听到了')
       emit('refreshOrder')
     })
+    // 用户点击订单详情
+    const goDetial = (data) => {
+      router.push(`/member/orderdetail/${data.id}`)
+    }
     return {
       gopay,
-      timeText
+      timeText,
+      goDetial
     }
   }
 }

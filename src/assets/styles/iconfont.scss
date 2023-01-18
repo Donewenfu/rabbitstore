@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3751176 */
-  src: url('//at.alicdn.com/t/c/font_3751176_773h7kbbytp.woff2?t=1673939249216') format('woff2'),
-  url('//at.alicdn.com/t/c/font_3751176_773h7kbbytp.woff?t=1673939249216') format('woff'),
-  url('//at.alicdn.com/t/c/font_3751176_773h7kbbytp.ttf?t=1673939249216') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3751176_ccbqpnp53qc.woff2?t=1674030643190') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3751176_ccbqpnp53qc.woff?t=1674030643190') format('woff'),
+       url('//at.alicdn.com/t/c/font_3751176_ccbqpnp53qc.ttf?t=1674030643190') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-jinbi-04:before {
+  content: "\e668";
 }
 
 .icon-dizhi:before {
