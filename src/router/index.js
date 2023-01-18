@@ -27,7 +27,8 @@ const member = () => import('@/views/member')
 
 // 我的界面子页面
 const info = () => import('@/views/member/info')
-
+// 我的界面订单界面
+const order = () => import('@/views/member/order')
 // 404页面 没有找到该页面
 const notpage = () => import('@/views/notpage')
 // 测试页面
@@ -61,7 +62,8 @@ const routes = [
         meta: { title: '我的' },
         redirect: '/member/info',
         children: [
-          { path: 'info', name: 'info', component: info, meta: { title: '我的信息' } }
+          { path: 'info', name: 'info', component: info, meta: { title: '我的信息' } },
+          { path: 'order', name: 'order', component: order, meta: { title: '我的订单' } }
         ]
       },
       // 协议页面

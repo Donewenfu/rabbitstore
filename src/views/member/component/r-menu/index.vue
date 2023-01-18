@@ -75,18 +75,17 @@ export default {
       margin-top: 20px;
       li{
         width: 100%;
-        height: 40px;
         margin: 10px 0;
-        border-radius: $borderRadius;
+        border-radius: 6px;
         display: flex;
-        padding: 10px;
+        padding: 10px 10px;
         box-sizing: border-box;
         align-items: center;
         color: #333;
         transition: all .3s;
         cursor: pointer;
         &:hover{
-          background-color: #19CE60B2;
+          background-color: $txColor;
           color: #fff;
           font-weight: bold;
         }

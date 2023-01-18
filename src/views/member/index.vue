@@ -40,7 +40,6 @@ export default {
     .content-area{
       flex: 1;
       margin-left: 20px;
-      background-color: #fff;
       border-radius: $borderRadius;
     }
   }
