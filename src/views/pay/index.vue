@@ -145,11 +145,11 @@ export default {
     })
     // 跳转到订单详情页面
     const goOrderdetail = () => {
-      message({
-        type: 'error',
-        text: '写代码太累！',
-        offsetTop: 170
-      })
+      showPaydialog.value = false
+      setTimeout(() => {
+          router.push('/member/order')
+      },0)
+
     }
     return {
       payPath,

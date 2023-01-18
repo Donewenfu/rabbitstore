@@ -20,3 +20,8 @@ export function createOrderinfo (params) {
 export function getOrderInfo (id) {
   return request(`/member/order/${id}`, 'GET')
 }
+
+// 获取订单列表
+export function getOrderList (params) {
+  return request('/member/order', 'GET', params)
+}

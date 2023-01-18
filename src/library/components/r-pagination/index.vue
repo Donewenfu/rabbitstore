@@ -57,8 +57,6 @@ export default {
     const pager = computed(() => {
       // 计算总页数 向上取整
       const pageCount = Math.ceil(mytotal.value / mypagesize.value)
-      console.log('***')
-      console.log(pageCount)
       // 计算偏移值
       const offset = Math.floor(count / 2)
       // 计算开始页码

@@ -33,13 +33,16 @@
     <!--获取我的足迹-->
     <div class="my-history">
       <rowitme title="我的足迹">
-        <div class="myhistory-list">
+        <div class="myhistory-list" v-if="myhistStory.length>0">
           <div class="hitstory-item" v-for="(item,index) in myhistStory" :key="index" @click="goUrl(item)">
             <img :src="item.spu.picture" alt="">
             <div class="item-content">
               <p>{{item.spu.name}}</p>
             </div>
           </div>
+        </div>
+        <div class="empty" v-else>
+          <rempty></rempty>
         </div>
       </rowitme>
     </div>
@@ -59,7 +62,8 @@ import rowitme from '../component/r-rowitem'
 import { getHotProduct, getBrowseHistory } from '@/api/member'
 // vuerouter
 import { useRouter } from 'vue-router'
-
+// 空值组件
+import rempty from '@/components/r-empty'
 export default {
   name: 'info',
   setup () {
@@ -125,7 +129,8 @@ export default {
     }
   },
   components: {
-    rowitme
+    rowitme,
+    rempty
   }
 }
 </script>
@@ -205,8 +210,8 @@ export default {
   .myhistory-list{
     display: flex;
     align-items: center;
-    justify-content: space-between;
     .hitstory-item{
+      margin-right: 30px;
       cursor: pointer;
       width: 160px;
       height: 160px;

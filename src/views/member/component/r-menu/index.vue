@@ -3,7 +3,9 @@
     <div class="r-menu-item">
       <div class="r-menu-title">个人中心</div>
       <ul>
-        <li>个人中心</li>
+        <li>
+          <RouterLink to="/member/info" exact-active-class="menuActive">个人中心</RouterLink>
+        </li>
         <li>个人信息</li>
         <li>安全设置</li>
         <li>地址管理</li>
@@ -13,7 +15,9 @@
     <div class="r-menu-item">
       <div class="r-menu-title">交易管理</div>
       <ul>
-        <li>我的订单</li>
+        <li>
+          <RouterLink to="/member/order" exact-active-class="menuActive">订单中心</RouterLink>
+        </li>
         <li>优惠卷</li>
         <li>礼品卡</li>
         <li>晒单评价</li>
@@ -75,20 +79,41 @@ export default {
       margin-top: 20px;
       li{
         width: 100%;
-        margin: 10px 0;
         border-radius: 6px;
         display: flex;
-        padding: 10px 10px;
+        padding: 10px 0px;
         box-sizing: border-box;
         align-items: center;
         color: #333;
         transition: all .3s;
         cursor: pointer;
-        &:hover{
-          background-color: $txColor;
-          color: #fff;
-          font-weight: bold;
+
+        a{
+          display: block;
+          width: 100%;
+          transition: all .3s;
+          &.menuActive{
+            display: block;
+            border-radius: 6px;
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            background-color: $txColor;
+            color: #fff;
+            font-weight: bold;
+          }
+          &:hover{
+            display: block;
+            border-radius: 6px;
+            padding: 10px;
+            width: 100%;
+            height: 100%;
+            background-color: $txColor;
+            color: #fff;
+            font-weight: bold;
+          }
         }
+
       }
     }
     &:last-child{

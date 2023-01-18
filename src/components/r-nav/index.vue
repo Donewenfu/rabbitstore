@@ -72,9 +72,9 @@ export default {
           break
         case 'order':
           if (profile.value.token) {
-            router.push('/member')
+            router.push('/member/order')
           } else {
-            router.push(`/login?redirectUrl=${encodeURIComponent('/member')}`)
+            router.push(`/login?redirectUrl=${encodeURIComponent('/member/order')}`)
           }
           break
       }
