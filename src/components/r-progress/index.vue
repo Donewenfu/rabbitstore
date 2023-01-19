@@ -48,13 +48,37 @@ export default {
       font-size: 22px;
       &::after{
         content: '';
-        width: 50%;
+        width: 40%;
         display: block;
         position: absolute;
         height: 2px;
         right: 0;
         top: 25px;
         background-color: $txColor;
+      }
+      &:before{
+        content: '';
+        width: 40%;
+        display: block;
+        position: absolute;
+        height: 2px;
+        left: -7px;
+        top: 25px;
+        background-color: #e4e4e4;
+      }
+    }
+    &:first-child{
+      .progress-num-step{
+        &:before{
+          display: none;
+        }
+      }
+    }
+    &:last-child{
+      .progress-num-step{
+        &:after{
+          display: none;
+        }
       }
     }
     .progress-title, .progress-date{

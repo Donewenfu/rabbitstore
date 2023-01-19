@@ -25,7 +25,7 @@
             <a href="javascript:;" @click="goUrl('order')">我的订单</a>
           </li>
           <li>
-            <a href="javascript:;">会员中心</a>
+            <a href="javascript:;" @click="goUrl('vip')">会员中心</a>
           </li>
           <li>
             <a href="javascript:;">帮助中心</a>
@@ -77,6 +77,12 @@ export default {
             router.push(`/login?redirectUrl=${encodeURIComponent('/member/order')}`)
           }
           break
+        case 'vip':
+          if (profile.value.token) {
+            router.push('/member/info')
+          } else {
+            router.push(`/login?redirectUrl=${encodeURIComponent('/member/info')}`)
+          }
       }
     }
     // 用户点击退出登录

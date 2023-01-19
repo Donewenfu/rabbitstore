@@ -19,12 +19,18 @@
     <div class="next" v-if="mycurrent<pager.pageCount" @click="changePager(mycurrent+1)">下一页</div>
 
     <div class="disable" v-else>下一页</div>
+    <!--页码-->
+    <div class="jump-page">
+      <p>跳转</p>
+      <input type="text" v-model="userJumppage"  @keyup.enter="jumpageDown">
+    </div>
   </div>
 </template>
 
 <script>
 // vue
 import { watch, ref, computed } from 'vue'
+import message from '@/utils/messageUI'
 export default {
   name: 'rpagination',
   props: {
@@ -45,6 +51,8 @@ export default {
     }
   },
   setup (props, { emit }) {
+    // 用户输入跳转的页面
+    const userJumppage = ref('')
     // 约定显示几个页码按钮
     const count = 5
     // 总条数
@@ -106,10 +114,47 @@ export default {
         emit('currentpage', data)
       }
     }
+    // 用户按下跳转页面
+    const jumpageDown = () => {
+      if (!userJumppage.value) {
+        message({
+          type: 'error',
+          text: '请输入页码',
+          offsetTop: 170
+        })
+        return
+      }
+      // 计算总共有多少页码
+      const totalPage = Math.ceil(props.total / props.pageSize)
+      if (parseInt(userJumppage.value) > totalPage) {
+        message({
+          type: 'warn',
+          text: '输入的页面大于当前页码！',
+          offsetTop: 170
+        })
+        userJumppage.value = ''
+        return
+      }
+      // 判断用户输入的页码是否小于1
+      if (parseInt(userJumppage.value) < 1) {
+        message({
+          type: 'warn',
+          text: '页面输入错误！',
+          offsetTop: 170
+        })
+        userJumppage.value = ''
+        return
+      }
+      // 发起请求
+      // 自定义事件 传递用户输入的页码
+      emit('currentpage', parseInt(userJumppage.value))
+    }
     return {
       pager,
       mycurrent,
-      changePager
+      changePager,
+      userJumppage,
+      jumpageDown
     }
   }
 }
@@ -120,6 +165,22 @@ export default {
   display: flex;
   align-items: center;
   cursor:pointer;
+  .jump-page{
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    input{
+      border: 1px solid #e4e4e4;
+      font-size: 14px;
+      width: 30px;
+      height: 25px;
+      border-radius: 3px;
+      padding: 3px;
+      box-sizing: border-box;
+      margin-left: 10px;
+      text-align: center;
+    }
+  }
   .prev,.next{
     border: 1px solid #e4e4e4;
     border-radius: 3px;
