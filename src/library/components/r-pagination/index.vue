@@ -145,7 +145,6 @@ export default {
         userJumppage.value = ''
         return
       }
-      // 发起请求
       // 自定义事件 传递用户输入的页码
       emit('currentpage', parseInt(userJumppage.value))
     }

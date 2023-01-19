@@ -6,7 +6,13 @@
         <div class="order-detail-top-info-left">
           <div class="order-state">
             <i class="iconfont icon-jinbi-04"></i>
-            <span>待付款</span>
+            <span v-if="orderInfo.orderState === 1">待付款</span>
+            <span v-if="orderInfo.orderState === 2">待发货</span>
+            <span v-if="orderInfo.orderState === 3">待收货</span>
+            <span v-if="orderInfo.orderState === 4">待评价</span>
+            <span v-if="orderInfo.orderState === 5">已完成</span>
+            <span v-if="orderInfo.orderState === 6">已取消</span>
+            <!-- 1为待付款、2为待发货、3为待收货、4为待评价、5为已完成、6为已取消 -->
           </div>
           <!-- 订单编号下单时间 -->
           <div class="order-number-date">
@@ -57,7 +63,7 @@
               </div>
               <!--商品数量-->
               <div class="product-count">
-                <span>{{item.totalNum}}</span>
+                <span>{{item.quantity}}</span>
               </div>
               <!--商品小计-->
               <div class="product-subtotal">
@@ -65,7 +71,7 @@
               </div>
               <!--实付-->
               <div class="product-paytotal">
-                <span>¥{{item.totalMoney}}</span>
+                <span>¥{{item.realPay}}</span>
               </div>
             </li>
           </ul>
@@ -73,59 +79,59 @@
       </div>
     </div>
     <!--收货信息-->
-    <div class="takegoods">
+    <div class="takegoods infobox">
       <div class="order-title">收货信息</div>
       <div class="info-content">
         <ul>
           <li>
-            <span>收货人:</span>
-            <span>张三</span>
+            <span>收<i></i>货<i></i>人: </span>
+            <span>{{ orderInfo.receiverContact  }}</span>
           </li>
           <li>
-            <span>联系方式:</span>
-            <span>张三</span>
+            <span>联系方式: </span>
+            <span>{{orderInfo.receiverMobile}}</span>
           </li>
           <li>
-            <span>收货地址:</span>
-            <span>天津市</span>
+            <span>收货地址: </span>
+            <span>{{orderInfo.receiverAddress}}</span>
           </li>
         </ul>
       </div>
     </div>
     <!--支付方式和送货时间-->
-    <div class="payType">
+    <div class="payType infobox">
       <div class="order-title">支付方式及送货时间</div>
       <div class="info-content">
         <ul>
           <li>
-            <span>支付方式:</span>
-            <span>张三</span>
+            <span>支付方式: </span>
+            <span>支付宝</span>
           </li>
           <li>
-            <span>送货时间:</span>
-            <span>张三</span>
+            <span>送货时间: </span>
+            <span>{{orderInfo.createTime}}</span>
           </li>
         </ul>
       </div>
     </div>
     <!--订单信息-->
-    <div class="orderinfo">
+    <div class="orderinfo infobox">
       <div class="order-title">订单信息</div>
       <div class="info-content">
         <ul>
           <li>
-            <span>订单编号:</span>
-            <span>张三</span>
+            <span>订单编号: </span>
+            <span>{{orderInfo.id}}</span>
           </li>
           <li>
-            <span>下单时间:</span>
-            <span>2022-12-09 14:23:13</span>
+            <span>下单时间: </span>
+            <span>{{orderInfo.createTime}}</span>
           </li>
         </ul>
       </div>
     </div>
     <!--订单价格-->
-    <div class="order-total-price">
+    <div class="order-total-price" v-if="false">
       <ul>
         <li>
           <span>商品件数:</span>
@@ -183,7 +189,8 @@ export default {
     })
     // 用户点击付款
     const goPay = () => {
-      router.push(`/pay/${orderInfo.id}`)
+      return
+      // router.push(`/pay/${orderInfo.id}`)
     }
     return {
       orderInfo,
@@ -248,12 +255,23 @@ export default {
         }
         .order-product-body{
           ul{
+            width: 100%;
+            border: 1px solid #f5f5f5;
             li{
+              border-bottom: 1px solid #f5f5f5;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              padding: 20px;
+              box-sizing: border-box;
               .product-info{
+                flex: 1;
+                display: flex;
+                align-items: center;
                 .product-info-img{
-                  width: 80px;
+                  width: 70px;
                   text-align: center;
-                  height: 80px;
+                  height: 70px;
                   border-radius: 10px;
                   overflow: hidden;
                   img{
@@ -261,8 +279,58 @@ export default {
                     height: 100%;
                   }
                 }
+                .product-info-info-text{
+                  margin-left: 10px;
+                  height: 70px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  p{
+                    margin: 5px 0;
+                  }
+                }
+              }
+              .product-price{
+                width: 84px;
+                text-align:center;
+              }
+              .product-count{
+                width: 120px;
+                text-align: center;
+              }
+              .product-subtotal{
+                width: 100px;
+                text-align: center;
+              }
+              .product-paytotal{
+                width: 100px;
+                text-align: center;
+              }
+              &:last-child{
+                border-bottom: none;
               }
             }
+          }
+        }
+      }
+    }
+    .infobox{
+      margin-top: 50px;
+      border: 1px solid #f5f5f5;
+      padding: 20px;
+      box-sizing: border-box;
+      .order-title{
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      ul{
+        li{
+          line-height: 30px;
+          i{
+            width: 0.5rem;
+            display: inline-block;
           }
         }
       }
